@@ -16,7 +16,7 @@ const fastify_1 = __importDefault(require("fastify"));
 const electron_1 = require("electron");
 const cors_1 = __importDefault(require("@fastify/cors"));
 const socket_io_1 = require("socket.io");
-const DataRoute_1 = __importDefault(require("./DataRoute"));
+const PessoaRoute_1 = __importDefault(require("./PessoaRoute"));
 const DataProvider_1 = __importDefault(require("./DataProvider"));
 const fastify = (0, fastify_1.default)({
     logger: true,
@@ -30,7 +30,7 @@ fastify.register(cors_1.default, {
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
 });
-fastify.register(DataRoute_1.default, { prefix: "/data" });
+fastify.register(PessoaRoute_1.default, { prefix: "/pessoa" });
 const io = new socket_io_1.Server(fastify.server, {
     cors: {
         origin: "*",

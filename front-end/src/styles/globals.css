@@ -2,11 +2,15 @@
 @config "../../tailwind.config.js";
 
 body {
-	@apply bg-gray-900 w-screen h-screen;
+	@apply bg-slate-800 w-screen h-screen;
 }
 
 * {
 	@apply outline-none;
+}
+
+button {
+	@apply cursor-pointer;
 }
 
 select {

@@ -1,0 +1,201 @@
+import Input from "@/components/Input";
+import { useState } from "react";
+import { ResultadoType, usePessoa } from "@/hooks/usePessoa";
+
+export default function Resultados({ onClose }: { onClose: () => void }) {
+	const {
+		pessoa: { ...pessoa },
+		...pessoas
+	} = usePessoa();
+	const [form, setForm] = useState<ResultadoType>({
+		od: "",
+		oe: "",
+		d250: "",
+		d500: "",
+		d1000: "",
+		d2000: "",
+		d3000: "",
+		d4000: "",
+		d6000: "",
+		d8000: "",
+		dcera: "",
+		e250: "",
+		e500: "",
+		e1000: "",
+		e2000: "",
+		e3000: "",
+		e4000: "",
+		e6000: "",
+		e8000: "",
+		ecera: "",
+		obs: "",
+	});
+
+	const handleChange = (e: any) => {
+		setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+	};
+
+	const handleSubmit = async (e: any) => {
+		e.preventDefault();
+		const status = await pessoas.update({ ...pessoa, resultados: form });
+		if (status) {
+			alert("Exame registrado com sucesso!");
+			const data = await pessoas.get(pessoa.id);
+			if (!Array.isArray(data)) pessoas.set(data);
+			onClose();
+		} else alert("Erro ao finalizar exame!");
+	};
+
+	return (
+		<form
+			onSubmit={handleSubmit}
+			className="bg-gray-900 p-6 text-white shadow-xl rounded-lg"
+		>
+			<h2 className="text-center text-xl font-semibold mb-6">
+				Formulário de Exames
+			</h2>
+
+			<h3 className="mt-4 font-semibold">Resultados</h3>
+			<div className="flex space-x-4 w-full">
+				<div className="flex flex-col w-full">
+					<Input
+						label="Ouvido Direito"
+						name="od"
+						value={form.od}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OD 250Hz"
+						name="d250"
+						value={form.d250}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OD 500Hz"
+						name="d500"
+						value={form.d500}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OD 1000Hz"
+						name="d1000"
+						value={form.d1000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OD 2000Hz"
+						name="d2000"
+						value={form.d2000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OD 3000Hz"
+						name="d3000"
+						value={form.d3000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OD 4000Hz"
+						name="d4000"
+						value={form.d4000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OD 6000Hz"
+						name="d6000"
+						value={form.d6000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OD 8000Hz"
+						name="d8000"
+						value={form.d8000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OD CERA"
+						name="dcera"
+						value={form.dcera}
+						onChange={handleChange}
+					/>
+				</div>
+
+				<div className="flex flex-col w-full">
+					<Input
+						label="Ouvido Esquerdo"
+						name="oe"
+						value={form.oe}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OE 250Hz"
+						name="e250"
+						value={form.e250}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OE 500Hz"
+						name="e500"
+						value={form.e500}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OE 1000Hz"
+						name="e1000"
+						value={form.e1000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OE 2000Hz"
+						name="e2000"
+						value={form.e2000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OE 3000Hz"
+						name="e3000"
+						value={form.e3000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OE 4000Hz"
+						name="e4000"
+						value={form.e4000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OE 6000Hz"
+						name="e6000"
+						value={form.e6000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OE 8000Hz"
+						name="e8000"
+						value={form.e8000}
+						onChange={handleChange}
+					/>
+					<Input
+						label="OE CERA"
+						name="ecera"
+						value={form.ecera}
+						onChange={handleChange}
+					/>
+				</div>
+			</div>
+			<Input
+				label="Observações"
+				name="obs"
+				value={form.obs}
+				onChange={handleChange}
+			/>
+
+			<button
+				type="submit"
+				className="bg-green-500 hover:bg-green-600 w-full text-white p-3 rounded font-semibold mt-4"
+			>
+				Salvar Exame
+			</button>
+		</form>
+	);
+}

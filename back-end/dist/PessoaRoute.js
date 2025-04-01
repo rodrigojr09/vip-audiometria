@@ -25,22 +25,26 @@ function DataRoute(fastify) {
         .post("/create", (request, reply) => __awaiter(this, void 0, void 0, function* () {
         const data = request.body;
         const result = yield provider.createData(data);
-        return result;
+        reply.status(201);
     }))
         .put("/update", (request, reply) => __awaiter(this, void 0, void 0, function* () {
         const data = request.body;
         const result = yield provider.updateData(data);
-        return result;
+        reply.status(201);
     }))
         .delete("/delete", (request, reply) => __awaiter(this, void 0, void 0, function* () {
         const data = request.query;
         console.log(request.query);
         const result = yield provider.deleteData(data.id);
-        return result;
+        reply.status(201);
     }))
         .get("/download", (request, reply) => __awaiter(this, void 0, void 0, function* () {
         const { id, type } = request.query;
         const data = yield provider.downloadData(id, type);
-        return data;
+        if (data) {
+            return data;
+        }
+        else
+            return { error: "Arquivo nao encontrado" };
     }));
 }

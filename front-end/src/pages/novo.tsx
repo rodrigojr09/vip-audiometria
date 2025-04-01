@@ -1,13 +1,13 @@
 import Input from "@/components/Input";
 import { v4 as uuidv4 } from "uuid";
-import { DataType, useData } from "@/hooks/useData";
 import { ChangeEvent, FormEvent, useState } from "react";
 import moment from "@/utils/moment";
 import socket from "@/utils/socket";
+import { PessoaType, usePessoa } from "@/hooks/usePessoa";
 
 export default function Novo() {
-	const api = useData();
-	const [form, setForm] = useState<DataType>({
+	const pessoas = usePessoa();
+	const [form, setForm] = useState<PessoaType>({
 		id: uuidv4(),
 		nome: "",
 		cpf: "",
@@ -17,25 +17,59 @@ export default function Novo() {
 		funcao: "",
 		empresa: "",
 		responsavel: "",
+		resultados: {
+			od: "",
+			d250: "",
+			d500: "",
+			d1000: "",
+			d2000: "",
+			d3000: "",
+			d4000: "",
+			d6000: "",
+			d8000: "",
+			dcera: "",
+			oe: "",
+			e250: "",
+			e500: "",
+			e1000: "",
+			e2000: "",
+			e3000: "",
+			e4000: "",
+			e6000: "",
+			e8000: "",
+			ecera: "",
+			obs: "",
+		},
 	});
 
 	const handleChange = (
 		e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
 	) => {
-		setForm((prev) => ({ ...prev, [e.target.name]: e.target.name === "dataExame" ? moment(e.target.value).format() : e.target.value }));
+		setForm((prev) => ({
+			...prev,
+			[e.target.name]:
+				e.target.name === "dataExame"
+					? moment(e.target.value).format()
+					: e.target.value,
+		}));
 	};
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		api.createData(form);
-		socket.emit("get");
+		const res = await pessoas.create(form);
+		if (!res) {
+			return alert("Erro ao criar pessoa");
+		} else {
+			socket.emit("get");
+			location.href = "/";
+		}
 	};
 
 	return (
-		<div className="flex items-center flex-1 justify-center min-h-screen p-4">
+		<div className="flex items-center flex-1 w-[75%] justify-center min-h-screen p-4">
 			<form
 				onSubmit={handleSubmit}
-				className="bg-gray-900 p-6 w-full max-w-xl  text-white shadow-xl rounded-lg"
+				className="bg-gray-900 p-6 w-full text-white shadow-xl rounded-lg"
 			>
 				<h2 className="text-center text-xl font-semibold mb-6">
 					Formulário de Exames
@@ -100,12 +134,21 @@ export default function Novo() {
 						]}
 					/>
 
-					<button
-						type="submit"
-						className="bg-vip hover:bg-green-600 transition-colors text-white p-3 rounded font-semibold"
-					>
-						Enviar
-					</button>
+					<div className="flex justify-between w-full space-x-4">
+						<button
+							type="submit"
+							className="bg-vip hover:bg-green-600 w-full transition-colors text-white p-3 rounded font-semibold"
+						>
+							Enviar
+						</button>
+						<button
+							type="reset"
+							onClick={() => (location.href = "/")}
+							className="bg-red-500 hover:bg-red-600 w-full transition-colors text-white p-3 rounded font-semibold"
+						>
+							Voltar
+						</button>
+					</div>
 				</div>
 			</form>
 		</div>

@@ -1,15 +1,15 @@
 import Sidebar from "@/components/Sidebar";
-import DataProvider from "@/hooks/useData";
+import PessoaProvider from "@/hooks/usePessoa";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<div className="flex w-screen h-screen">
-			<DataProvider>
+			<PessoaProvider>
 				<Sidebar />
 				<Component {...pageProps} />
-			</DataProvider>
+			</PessoaProvider>
 		</div>
 	);
 }

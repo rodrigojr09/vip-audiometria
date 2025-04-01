@@ -2,7 +2,7 @@ import Fastify from "fastify";
 import { app } from "electron";
 import fastifyCors from "@fastify/cors";
 import { Server } from "socket.io";
-import DataRoute from "./DataRoute";
+import DataRoute from "./PessoaRoute";
 import DataProvider from "./DataProvider";
 
 const fastify = Fastify({
@@ -19,7 +19,7 @@ fastify.register(fastifyCors, {
 	methods: ["GET", "POST", "PUT", "DELETE"],
 });
 
-fastify.register(DataRoute, { prefix: "/data" });
+fastify.register(DataRoute, { prefix: "/pessoa" });
 const io = new Server(fastify.server, {
 	cors: {
 		origin: "*",
