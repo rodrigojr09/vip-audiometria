@@ -5,17 +5,20 @@ import { Download, FileText, Trash, Upload, User } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
-  const { pessoa, ...pessoas } = usePessoa();
-  const [enableResultado,setEnableResultado] = useState(false);
+	const { pessoa, ...pessoas } = usePessoa();
+	const [enableResultado, setEnableResultado] = useState(false);
 	if (!pessoa)
 		return (
-			<div className="flex items-center justify-center w-[75%] h-screen text-gray-500">
+			<div className="flex items-center ml-[25%] justify-center w-[75%] h-screen text-gray-500">
 				Selecione uma pessoa para mais informações
 			</div>
 		);
 
+	if (enableResultado)
+		return <Resultados onClose={() => setEnableResultado(false)} />;
+
 	return (
-		<div className="p-6 min-h-screen w-[75%] text-white">
+		<div className="p-6 ml-[25%] h-full w-[75%] relative text-white">
 			{/* 📌 Cabeçalho */}
 			<div className="flex justify-between items-center border-b pb-4 mb-6 border-gray-700">
 				<h1 className="text-2xl font-bold flex items-center space-x-2">
@@ -91,9 +94,6 @@ export default function Home() {
 					<span>Deletar</span>
 				</button>
 			</div>
-			{ enableResultado &&
-        <Resultados onClose={()=>setEnableResultado(false)} />
-			}
 		</div>
 	);
 }

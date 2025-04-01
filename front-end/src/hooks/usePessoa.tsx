@@ -60,52 +60,50 @@ export default function PessoaProvider({
 
 	async function get(id?: string) {
 		const result = await axios.get(
-			api_url + "/pessoa/get" + (id ? `?id=${id}` : "")
+			`${api_url}/pessoa/get${id ? `?id=${id}` : ""}`
 		);
 		return result.data;
 	}
+
 	async function create(data: PessoaType) {
-		const result = await axios.post(api_url + "/pessoa/create", data);
+		const result = await axios.post(`${api_url}/pessoa/create`, data);
 		return result.status === 201;
 	}
 
 	async function update(data: PessoaType) {
-		const result = await axios.put(api_url + "/pessoa/update", data);
+		const result = await axios.put(`${api_url}/pessoa/update`, data);
 		return result.status === 201;
 	}
 
 	async function deletePessoa(id: string) {
-		const result = await axios.delete(api_url + "/pessoa/delete?id=" + id);
+		const result = await axios.delete(`${api_url}/pessoa/delete?id=${id}`);
 		return result.status === 201;
 	}
 
 	async function download(id: string, type: "resultado" | "requisicao") {
 		try {
 			const response = await axios.get(
-				api_url + `/pessoa/download?id=${id}&type=${type}`,
+				`${api_url}/pessoa/download?id=${id}&type=${type}`,
 				{
-					responseType: "blob", // Garantir que o retorno seja um Blob (arquivo binário)
+					responseType: "blob",
 				}
 			);
 
-			console.log("📄 Blob recebido:", response.data); // Debug: mostra o blob no console
+			console.log("📄 Blob recebido:", response.data);
 
-			// Criar um link para download
 			const blob = new Blob([response.data], {
 				type: response.data.type,
 			});
 			const url = window.URL.createObjectURL(blob);
 			const link = document.createElement("a");
 
-			// Definir o nome do arquivo e acionar o download
 			link.href = url;
 			link.download = `${type} - ${id}.${
-				type === "requisicao" ? "xlsx" : "xlsx"
+				type === "requisicao" ? "xlsx" : "xlsm"
 			}`;
 			document.body.appendChild(link);
 			link.click();
 
-			// Limpar a URL criada para liberar memória
 			window.URL.revokeObjectURL(url);
 			document.body.removeChild(link);
 
@@ -116,7 +114,7 @@ export default function PessoaProvider({
 	}
 
 	return (
-		<PessoaContext
+		<PessoaContext.Provider
 			value={{
 				pessoa,
 				set: setPessoa,
@@ -128,9 +126,10 @@ export default function PessoaProvider({
 			}}
 		>
 			{children}
-		</PessoaContext>
+		</PessoaContext.Provider>
 	);
 }
+
 export function usePessoa() {
 	const context = useContext(PessoaContext);
 	if (context === undefined) {

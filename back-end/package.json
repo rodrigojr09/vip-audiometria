@@ -4,8 +4,10 @@
 	"main": "dist/index.js",
 	"license": "MIT",
 	"scripts": {
+		"dev": "yarn build && cross-env NODE_ENV=development electron .",
 		"build": "tsc",
-		"dev": "yarn build && electron ."
+		"start": "cross-env NODE_ENV=production electron .",
+		"compile": "tsc"
 	},
 	"devDependencies": {
 		"@types/node": "^22.13.14",
@@ -17,6 +19,24 @@
 		"exceljs": "^4.4.0",
 		"fastify": "^5.2.2",
 		"moment-timezone": "^0.5.48",
-		"socket.io": "^4.8.1"
+		"socket.io": "^4.8.1",
+		"xlsx-populate": "^1.21.0"
+	},
+	"build": {
+		"appId": "vip.projeto.audiometria",
+		"productName": "Audiometria",
+		"files": [
+			"assets",
+			"dist/**/*",
+			"views/**/*",
+			"data/**/*"
+		],
+		"directories": {
+			"buildResources": "assets",
+			"output": "../Audiometria"
+		},
+		"win": {
+			"icon": "assets/icon.ico"
+		}
 	}
 }

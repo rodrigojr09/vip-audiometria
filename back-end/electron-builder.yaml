@@ -1,0 +1,26 @@
+appId: br.com.vipsst.Audiometria
+productName: Audiometria
+copyright: "© 2025 Rodrigo"
+directories:
+    output: dist
+    buildResources: assets
+
+files:
+    - "dist/**/*"
+    - "data/**/*"
+    - "package.json"
+
+extraMetadata:
+    main: "dist/index.js"
+
+win:
+    target: nsis
+    icon: "assets/icon.ico"
+    artifactName: "${productName}-setup-${version}.exe"
+
+nsis:
+    oneClick: false
+    allowToChangeInstallationDirectory: true
+    perMachine: false
+    createDesktopShortcut: true
+    createStartMenuShortcut: true

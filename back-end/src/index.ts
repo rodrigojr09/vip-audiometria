@@ -1,9 +1,10 @@
 import Fastify from "fastify";
-import { app } from "electron";
+import { app, BrowserWindow, nativeImage } from "electron";
 import fastifyCors from "@fastify/cors";
 import { Server } from "socket.io";
 import DataRoute from "./PessoaRoute";
 import DataProvider from "./DataProvider";
+import { existsSync } from "fs";
 
 const fastify = Fastify({
 	logger: true,
@@ -38,6 +39,12 @@ io.on("connection", (socket) => {
 });
 
 app.on("ready", () => {
+	const win = new BrowserWindow({
+		icon: nativeImage.createFromPath("./assets/icon.png"),
+		title: "VIP Audiometria",
+	});
+	win.loadURL("http://localhost:48731");
+	win.maximize();
 	fastify.listen({ host: "0.0.0.0", port: 48732 }, () => {
 		console.log("Servidor rodando em http://0.0.0.0:48732");
 	});

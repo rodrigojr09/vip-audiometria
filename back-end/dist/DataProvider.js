@@ -46,6 +46,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
+const xlsx_populate_1 = __importDefault(require("xlsx-populate"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const exceljs_1 = __importDefault(require("exceljs"));
 const fs = __importStar(require("fs"));
@@ -59,6 +60,8 @@ class DataProvider {
             fs.mkdirSync(path_data);
         if (!fs.existsSync(path_data + "/data.json"))
             fs.writeFileSync(path_data + "/data.json", JSON.stringify({ version: "1.0.0", datas: [] }));
+        if (!fs.existsSync(path_data + "/Requisicao.xlsx"))
+            fs;
         return path_data + "/data.json";
     }
     constructor() {
@@ -102,7 +105,7 @@ class DataProvider {
     }
     downloadData(id, type) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
             const data = (yield this.getData(id));
             if (!data)
                 return undefined;
@@ -140,65 +143,50 @@ class DataProvider {
                 }
             }
             else {
+                const filePath = `${path_data}/Resultado.xlsm`;
                 try {
-                    const filePath = `${path_data}/Resultado.xlsx`;
-                    const workbook = new exceljs_1.default.Workbook();
-                    yield workbook.xlsx.readFile(filePath);
-                    const worksheet = workbook.getWorksheet(23);
-                    if (!worksheet) {
-                        console.error("❌ Planilha não encontrada no arquivo!");
+                    const workbook = yield xlsx_populate_1.default.fromFileAsync(filePath);
+                    const sheet = workbook.sheets()[0];
+                    if (!sheet) {
+                        console.error("❌ Planilha não encontrada!");
                         return;
                     }
-                    const nameCell = worksheet.getRow(11).getCell(7);
-                    const cpfCell = worksheet.getRow(12).getCell(7);
-                    const dataExameCell = worksheet.getRow(13).getCell(7);
-                    const tipoExameCell = worksheet.getRow(12).getCell(18);
-                    const empresaCell = worksheet.getRow(13).getCell(18);
-                    const dataNascimento = worksheet.getRow(11).getCell(29);
-                    const funcaoCell = worksheet.getRow(12).getCell(28);
-                    // Resultados Direito
-                    const d8000Cell = worksheet.getRow(22).getCell(13);
-                    const d6000Cell = worksheet.getRow(22).getCell(12);
-                    const d4000Cell = worksheet.getRow(22).getCell(11);
-                    const d3000Cell = worksheet.getRow(22).getCell(10);
-                    const d2000Cell = worksheet.getRow(22).getCell(9);
-                    const d1000Cell = worksheet.getRow(22).getCell(8);
-                    const d500Cell = worksheet.getRow(22).getCell(7);
-                    const d250Cell = worksheet.getRow(22).getCell(6);
-                    // Resultados Esquerdo
-                    const e8000Cell = worksheet.getRow(22).getCell(29);
-                    const e6000Cell = worksheet.getRow(22).getCell(28);
-                    const e4000Cell = worksheet.getRow(22).getCell(27);
-                    const e3000Cell = worksheet.getRow(22).getCell(26);
-                    const e2000Cell = worksheet.getRow(22).getCell(25);
-                    const e1000Cell = worksheet.getRow(22).getCell(24);
-                    const e500Cell = worksheet.getRow(22).getCell(23);
-                    const e250Cell = worksheet.getRow(22).getCell(22);
-                    d8000Cell.value = (_a = data.resultados) === null || _a === void 0 ? void 0 : _a.d8000;
-                    d6000Cell.value = (_b = data.resultados) === null || _b === void 0 ? void 0 : _b.d6000;
-                    d4000Cell.value = (_c = data.resultados) === null || _c === void 0 ? void 0 : _c.d4000;
-                    d3000Cell.value = (_d = data.resultados) === null || _d === void 0 ? void 0 : _d.d3000;
-                    d2000Cell.value = (_e = data.resultados) === null || _e === void 0 ? void 0 : _e.d2000;
-                    d1000Cell.value = (_f = data.resultados) === null || _f === void 0 ? void 0 : _f.d1000;
-                    d500Cell.value = (_g = data.resultados) === null || _g === void 0 ? void 0 : _g.d500;
-                    d250Cell.value = (_h = data.resultados) === null || _h === void 0 ? void 0 : _h.d250;
-                    e8000Cell.value = (_j = data.resultados) === null || _j === void 0 ? void 0 : _j.e8000;
-                    e6000Cell.value = (_k = data.resultados) === null || _k === void 0 ? void 0 : _k.e6000;
-                    e4000Cell.value = (_l = data.resultados) === null || _l === void 0 ? void 0 : _l.e4000;
-                    e3000Cell.value = (_m = data.resultados) === null || _m === void 0 ? void 0 : _m.e3000;
-                    e2000Cell.value = (_o = data.resultados) === null || _o === void 0 ? void 0 : _o.e2000;
-                    e1000Cell.value = (_p = data.resultados) === null || _p === void 0 ? void 0 : _p.e1000;
-                    e500Cell.value = (_q = data.resultados) === null || _q === void 0 ? void 0 : _q.e500;
-                    e250Cell.value = (_r = data.resultados) === null || _r === void 0 ? void 0 : _r.e250;
-                    nameCell.value = data.nome.toUpperCase();
-                    cpfCell.value = data.cpf;
-                    dataExameCell.value = moment(data.dataExame).format("DD/MM/YYYY");
-                    tipoExameCell.value = data.tipoExame.toUpperCase();
-                    empresaCell.value = data.empresa.toUpperCase();
-                    dataNascimento.value = moment(data.dataNascimento).format("DD/MM/YYYY");
-                    funcaoCell.value = data.funcao.toUpperCase();
-                    const buffer = yield workbook.xlsx.writeBuffer();
-                    return buffer;
+                    sheet.cell("G11").value(data.nome.toUpperCase());
+                    sheet.cell("G12").value(data.cpf);
+                    sheet
+                        .cell("G13")
+                        .value(moment(data.dataExame).format("DD/MM/YYYY"));
+                    sheet.cell("R12").value(data.tipoExame.toUpperCase());
+                    sheet.cell("R13").value(data.empresa.toUpperCase());
+                    sheet
+                        .cell("AC11")
+                        .value(moment(data.dataNascimento).format("DD/MM/YYYY"));
+                    sheet.cell("AB12").value(data.funcao.toUpperCase());
+                    // Audiometria Direita
+                    sheet.cell("M22").value((_a = data.resultados) === null || _a === void 0 ? void 0 : _a.d8000);
+                    sheet.cell("L22").value((_b = data.resultados) === null || _b === void 0 ? void 0 : _b.d6000);
+                    sheet.cell("K22").value((_c = data.resultados) === null || _c === void 0 ? void 0 : _c.d4000);
+                    sheet.cell("J22").value((_d = data.resultados) === null || _d === void 0 ? void 0 : _d.d3000);
+                    sheet.cell("I22").value((_e = data.resultados) === null || _e === void 0 ? void 0 : _e.d2000);
+                    sheet.cell("H22").value((_f = data.resultados) === null || _f === void 0 ? void 0 : _f.d1000);
+                    sheet.cell("G22").value((_g = data.resultados) === null || _g === void 0 ? void 0 : _g.d500);
+                    sheet.cell("F22").value((_h = data.resultados) === null || _h === void 0 ? void 0 : _h.d250);
+                    // Audiometria Esquerda
+                    sheet.cell("AC22").value((_j = data.resultados) === null || _j === void 0 ? void 0 : _j.e8000);
+                    sheet.cell("AB22").value((_k = data.resultados) === null || _k === void 0 ? void 0 : _k.e6000);
+                    sheet.cell("AA22").value((_l = data.resultados) === null || _l === void 0 ? void 0 : _l.e4000);
+                    sheet.cell("Z22").value((_m = data.resultados) === null || _m === void 0 ? void 0 : _m.e3000);
+                    sheet.cell("Y22").value((_o = data.resultados) === null || _o === void 0 ? void 0 : _o.e2000);
+                    sheet.cell("X22").value((_p = data.resultados) === null || _p === void 0 ? void 0 : _p.e1000);
+                    sheet.cell("W22").value((_q = data.resultados) === null || _q === void 0 ? void 0 : _q.e500);
+                    sheet.cell("V22").value((_r = data.resultados) === null || _r === void 0 ? void 0 : _r.e250);
+                    for (let i = 47, a = 0; i <= 52; i++, a++) {
+                        const arr = (_s = data.resultados) === null || _s === void 0 ? void 0 : _s.obs.split("<br>");
+                        const str = arr[a];
+                        if (str)
+                            sheet.cell(`E${i}`).value(str);
+                    }
+                    return yield workbook.outputAsync();
                 }
                 catch (error) {
                     console.error("❌ Erro ao atualizar a planilha:", error);

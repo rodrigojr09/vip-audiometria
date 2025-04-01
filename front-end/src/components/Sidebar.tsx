@@ -20,7 +20,7 @@ export default function Sidebar() {
 
 	if (router.asPath === "/")
 		return (
-			<div className="w-[25%] h-screen bg-slate-900 text-white shadow-xl">
+			<div className="w-[25%] h-full fixed min-h-max bg-slate-900 text-white shadow-xl">
 				<div className="p-4">
 					<h2 className="text-xl font-semibold mb-4">
 						Lista de Pessoas

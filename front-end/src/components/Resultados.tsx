@@ -1,5 +1,5 @@
 import Input from "@/components/Input";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { ResultadoType, usePessoa } from "@/hooks/usePessoa";
 
 export default function Resultados({ onClose }: { onClose: () => void }) {
@@ -7,37 +7,46 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 		pessoa: { ...pessoa },
 		...pessoas
 	} = usePessoa();
-	const [form, setForm] = useState<ResultadoType>({
-		od: "",
-		oe: "",
-		d250: "",
-		d500: "",
-		d1000: "",
-		d2000: "",
-		d3000: "",
-		d4000: "",
-		d6000: "",
-		d8000: "",
-		dcera: "",
-		e250: "",
-		e500: "",
-		e1000: "",
-		e2000: "",
-		e3000: "",
-		e4000: "",
-		e6000: "",
-		e8000: "",
-		ecera: "",
-		obs: "",
-	});
+	const [form, setForm] = useState<ResultadoType>(
+		pessoa.resultados || {
+			od: "",
+			oe: "",
+			d250: "",
+			d500: "",
+			d1000: "",
+			d2000: "",
+			d3000: "",
+			d4000: "",
+			d6000: "",
+			d8000: "",
+			dcera: "",
+			e250: "",
+			e500: "",
+			e1000: "",
+			e2000: "",
+			e3000: "",
+			e4000: "",
+			e6000: "",
+			e8000: "",
+			ecera: "",
+			obs: "",
+		}
+	);
 
-	const handleChange = (e: any) => {
+	const handleChange = (
+		e: ChangeEvent<
+			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+		>
+	) => {
 		setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
-		const status = await pessoas.update({ ...pessoa, resultados: form });
+		const status = await pessoas.update({
+			...pessoa,
+			resultados: { ...form, obs: form.obs.replaceAll("\n", "<br>") },
+		});
 		if (status) {
 			alert("Exame registrado com sucesso!");
 			const data = await pessoas.get(pessoa.id);
@@ -49,7 +58,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className="bg-gray-900 p-6 text-white shadow-xl rounded-lg"
+			className="bg-gray-900 p-6 w-full ml-[25%] h-full min-h-max text-white shadow-xl rounded-lg"
 		>
 			<h2 className="text-center text-xl font-semibold mb-6">
 				Formulário de Exames
@@ -186,16 +195,25 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 			<Input
 				label="Observações"
 				name="obs"
-				value={form.obs}
+				type="area"
+				value={form.obs.replaceAll("<br>","\n")}
 				onChange={handleChange}
 			/>
 
-			<button
-				type="submit"
-				className="bg-green-500 hover:bg-green-600 w-full text-white p-3 rounded font-semibold mt-4"
-			>
-				Salvar Exame
-			</button>
+			<div className="flex space-x-4">
+				<button
+					type="submit"
+					className="bg-green-500 hover:bg-green-600 w-full text-white p-3 rounded font-semibold mt-4"
+				>
+					Salvar Exame
+				</button>
+				<button
+					type="submit"
+					className="bg-red-500 hover:bg-red-600 w-full text-white p-3 rounded font-semibold mt-4"
+				>
+					Voltar
+				</button>
+			</div>
 		</form>
 	);
 }

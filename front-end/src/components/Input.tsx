@@ -5,7 +5,9 @@ type InputFieldProps = {
 	name: string;
 	value: string;
 	onChange: (
-		e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+		e: ChangeEvent<
+			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+		>
 	) => void;
 	type?: string;
 	options?: string[];
@@ -26,7 +28,7 @@ const Input: React.FC<InputFieldProps> = ({
 			<label htmlFor={name} className="text-sm font-medium text-gray-200">
 				{label}
 			</label>
-			{type === "select" ? (
+			{type === "select" && (
 				<select
 					id={name}
 					name={name}
@@ -44,7 +46,8 @@ const Input: React.FC<InputFieldProps> = ({
 						</option>
 					))}
 				</select>
-			) : (
+			)}
+			{(type === "text" || type === "date") && (
 				<input
 					id={name}
 					type={type}
@@ -55,6 +58,17 @@ const Input: React.FC<InputFieldProps> = ({
 					placeholder={label}
 					required={required}
 				/>
+			)}
+			{type === "area" && (
+				<textarea
+					id={name}
+					name={name}
+					value={value}
+					onChange={onChange}
+					className="border border-vip bg-gray-800 p-2 rounded w-full text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-vip"
+					placeholder={label}
+					required={required}
+				></textarea>
 			)}
 		</div>
 	);

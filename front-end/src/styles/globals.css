@@ -5,13 +5,18 @@ body {
 	@apply bg-slate-800 w-screen h-screen;
 }
 
+html {
+	@apply h-full w-full;
+}
+
 * {
-	@apply outline-none;
+	@apply outline-none overflow-x-hidden;
 }
 
 button {
 	@apply cursor-pointer;
 }
+
 
 select {
   @apply appearance-none;

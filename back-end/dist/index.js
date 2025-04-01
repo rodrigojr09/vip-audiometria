@@ -47,6 +47,12 @@ io.on("connection", (socket) => {
     }));
 });
 electron_1.app.on("ready", () => {
+    const win = new electron_1.BrowserWindow({
+        icon: electron_1.nativeImage.createFromPath("./assets/icon.png"),
+        title: "VIP Audiometria",
+    });
+    win.loadURL("http://localhost:48731");
+    win.maximize();
     fastify.listen({ host: "0.0.0.0", port: 48732 }, () => {
         console.log("Servidor rodando em http://0.0.0.0:48732");
     });

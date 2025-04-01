@@ -2,3 +2,5 @@
 /front-end/.next
 /front-end/node_modules
 *.lock
+/back-end/.next
+/back-end/dist

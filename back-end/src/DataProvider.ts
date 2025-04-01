@@ -1,4 +1,5 @@
 import { app } from "electron";
+import XlsxPopulate from "xlsx-populate";
 import MomentJS from "moment-timezone";
 import ExcelJS from "exceljs";
 import * as fs from "fs";
@@ -54,6 +55,8 @@ export default class DataProvider {
 				path_data + "/data.json",
 				JSON.stringify({ version: "1.0.0", datas: [] })
 			);
+		if (!fs.existsSync(path_data + "/Requisicao.xlsx"))
+			fs
 		return path_data + "/data.json";
 	}
 
@@ -147,76 +150,56 @@ export default class DataProvider {
 				return undefined;
 			}
 		} else {
+			const filePath = `${path_data}/Resultado.xlsm`;
 			try {
-				const filePath = `${path_data}/Resultado.xlsx`;
-				const workbook = new ExcelJS.Workbook();
-				await workbook.xlsx.readFile(filePath);
-				const worksheet = workbook.getWorksheet(23);
+				const workbook = await XlsxPopulate.fromFileAsync(filePath);
 
-				if (!worksheet) {
-					console.error("❌ Planilha não encontrada no arquivo!");
+				const sheet = workbook.sheets()[0];
+
+				if (!sheet) {
+					console.error("❌ Planilha não encontrada!");
 					return;
 				}
 
-				const nameCell = worksheet.getRow(11).getCell(7);
-				const cpfCell = worksheet.getRow(12).getCell(7);
-				const dataExameCell = worksheet.getRow(13).getCell(7);
-				const tipoExameCell = worksheet.getRow(12).getCell(18);
-				const empresaCell = worksheet.getRow(13).getCell(18);
-				const dataNascimento = worksheet.getRow(11).getCell(29);
-				const funcaoCell = worksheet.getRow(12).getCell(28);
+				sheet.cell("G11").value(data.nome.toUpperCase());
+				sheet.cell("G12").value(data.cpf);
+				sheet
+					.cell("G13")
+					.value(moment(data.dataExame).format("DD/MM/YYYY"));
+				sheet.cell("R12").value(data.tipoExame.toUpperCase());
+				sheet.cell("R13").value(data.empresa.toUpperCase());
+				sheet
+					.cell("AC11")
+					.value(moment(data.dataNascimento).format("DD/MM/YYYY"));
+				sheet.cell("AB12").value(data.funcao.toUpperCase());
 
-				// Resultados Direito
-				const d8000Cell = worksheet.getRow(22).getCell(13);
-				const d6000Cell = worksheet.getRow(22).getCell(12);
-				const d4000Cell = worksheet.getRow(22).getCell(11);
-				const d3000Cell = worksheet.getRow(22).getCell(10);
-				const d2000Cell = worksheet.getRow(22).getCell(9);
-				const d1000Cell = worksheet.getRow(22).getCell(8);
-				const d500Cell = worksheet.getRow(22).getCell(7);
-				const d250Cell = worksheet.getRow(22).getCell(6);
-				// Resultados Esquerdo
-				const e8000Cell = worksheet.getRow(22).getCell(29);
-				const e6000Cell = worksheet.getRow(22).getCell(28);
-				const e4000Cell = worksheet.getRow(22).getCell(27);
-				const e3000Cell = worksheet.getRow(22).getCell(26);
-				const e2000Cell = worksheet.getRow(22).getCell(25);
-				const e1000Cell = worksheet.getRow(22).getCell(24);
-				const e500Cell = worksheet.getRow(22).getCell(23);
-				const e250Cell = worksheet.getRow(22).getCell(22);
+				// Audiometria Direita
+				sheet.cell("M22").value(data.resultados?.d8000);
+				sheet.cell("L22").value(data.resultados?.d6000);
+				sheet.cell("K22").value(data.resultados?.d4000);
+				sheet.cell("J22").value(data.resultados?.d3000);
+				sheet.cell("I22").value(data.resultados?.d2000);
+				sheet.cell("H22").value(data.resultados?.d1000);
+				sheet.cell("G22").value(data.resultados?.d500);
+				sheet.cell("F22").value(data.resultados?.d250);
 
-				d8000Cell.value = data.resultados?.d8000;
-				d6000Cell.value = data.resultados?.d6000;
-				d4000Cell.value = data.resultados?.d4000;
-				d3000Cell.value = data.resultados?.d3000;
-				d2000Cell.value = data.resultados?.d2000;
-				d1000Cell.value = data.resultados?.d1000;
-				d500Cell.value = data.resultados?.d500;
-				d250Cell.value = data.resultados?.d250;
-				e8000Cell.value = data.resultados?.e8000;
-				e6000Cell.value = data.resultados?.e6000;
-				e4000Cell.value = data.resultados?.e4000;
-				e3000Cell.value = data.resultados?.e3000;
-				e2000Cell.value = data.resultados?.e2000;
-				e1000Cell.value = data.resultados?.e1000;
-				e500Cell.value = data.resultados?.e500;
-				e250Cell.value = data.resultados?.e250;
+				// Audiometria Esquerda
+				sheet.cell("AC22").value(data.resultados?.e8000);
+				sheet.cell("AB22").value(data.resultados?.e6000);
+				sheet.cell("AA22").value(data.resultados?.e4000);
+				sheet.cell("Z22").value(data.resultados?.e3000);
+				sheet.cell("Y22").value(data.resultados?.e2000);
+				sheet.cell("X22").value(data.resultados?.e1000);
+				sheet.cell("W22").value(data.resultados?.e500);
+				sheet.cell("V22").value(data.resultados?.e250);
 
-				nameCell.value = data.nome.toUpperCase();
-				cpfCell.value = data.cpf;
-				dataExameCell.value = moment(data.dataExame).format(
-					"DD/MM/YYYY"
-				);
-				tipoExameCell.value = data.tipoExame.toUpperCase();
-				empresaCell.value = data.empresa.toUpperCase();
-				dataNascimento.value = moment(data.dataNascimento).format(
-					"DD/MM/YYYY"
-				);
-				funcaoCell.value = data.funcao.toUpperCase();
+				for (let i = 47, a = 0; i <= 52; i++, a++) {
+					const arr = data.resultados?.obs.split("<br>") as string[];
+					const str = arr[a];
+					if (str) sheet.cell(`E${i}`).value(str);
+				}
 
-				const buffer = await workbook.xlsx.writeBuffer();
-
-				return buffer;
+				return await workbook.outputAsync();
 			} catch (error) {
 				console.error("❌ Erro ao atualizar a planilha:", error);
 				return undefined;
