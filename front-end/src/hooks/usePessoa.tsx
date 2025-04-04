@@ -11,6 +11,7 @@ export interface PessoaType {
 	funcao: string;
 	empresa: string;
 	responsavel: string;
+	documento: string;
 	resultados: ResultadoType | undefined;
 }
 
@@ -91,19 +92,25 @@ export default function PessoaProvider({
 
 			console.log("📄 Blob recebido:", response.data);
 
+			// Criar um blob a partir da resposta
 			const blob = new Blob([response.data], {
 				type: response.data.type,
 			});
 			const url = window.URL.createObjectURL(blob);
 			const link = document.createElement("a");
 
-			link.href = url;
-			link.download = `${type} - ${id}.${
+			// Nome do arquivo
+			const fileName = `${type.toUpperCase()} - ${pessoa?.nome}.${
 				type === "requisicao" ? "xlsx" : "xlsm"
 			}`;
-			document.body.appendChild(link);
-			link.click();
 
+			// Configurar o link para download
+			link.href = url;
+			link.download = fileName;
+			document.body.appendChild(link);
+			//link.click();
+
+			// Revogar a URL após o download
 			window.URL.revokeObjectURL(url);
 			document.body.removeChild(link);
 

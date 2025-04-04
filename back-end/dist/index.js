@@ -13,11 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_1 = __importDefault(require("fastify"));
+const static_1 = __importDefault(require("@fastify/static"));
 const electron_1 = require("electron");
 const cors_1 = __importDefault(require("@fastify/cors"));
 const socket_io_1 = require("socket.io");
 const PessoaRoute_1 = __importDefault(require("./PessoaRoute"));
 const DataProvider_1 = __importDefault(require("./DataProvider"));
+const fs_1 = require("fs");
+const path_1 = __importDefault(require("path"));
+const isDev = process.env.NODE_ENV === "development"; // Verifica o ambiente
 const fastify = (0, fastify_1.default)({
     logger: true,
 });
@@ -31,6 +35,19 @@ fastify.register(cors_1.default, {
     methods: ["GET", "POST", "PUT", "DELETE"],
 });
 fastify.register(PessoaRoute_1.default, { prefix: "/pessoa" });
+fastify.register(static_1.default, {
+    root: path_1.default.join(__dirname, "../views"),
+    prefix: "/",
+});
+fastify.setNotFoundHandler((req, reply) => {
+    const requestedPath = path_1.default.join(__dirname, "../views", req.url + ".html");
+    // Verifica se o arquivo HTML existe e serve ele
+    if ((0, fs_1.existsSync)(requestedPath)) {
+        return reply.type("text/html").send((0, fs_1.readFileSync)(requestedPath));
+    }
+    // Se não existir, retorna erro 404
+    reply.code(404).send("Página não encontrada");
+});
 const io = new socket_io_1.Server(fastify.server, {
     cors: {
         origin: "*",
@@ -46,15 +63,32 @@ io.on("connection", (socket) => {
         socket.emit("data", dados);
     }));
 });
+let win = null;
 electron_1.app.on("ready", () => {
-    const win = new electron_1.BrowserWindow({
-        icon: electron_1.nativeImage.createFromPath("./assets/icon.png"),
+    win = new electron_1.BrowserWindow({
+        icon: electron_1.nativeImage.createFromPath(path_1.default.join(__dirname, "assets", "icon.png")),
         title: "VIP Audiometria",
+        show: false, // Evita abrir antes de carregar
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
     });
-    win.loadURL("http://localhost:48731");
-    win.maximize();
-    fastify.listen({ host: "0.0.0.0", port: 48732 }, () => {
+    // Inicia o servidor Fastify antes de carregar a URL
+    fastify.listen({ host: "0.0.0.0", port: 48732 }, (err) => {
+        if (err) {
+            console.error("Erro ao iniciar o servidor:", err);
+            electron_1.app.quit();
+            return;
+        }
         console.log("Servidor rodando em http://0.0.0.0:48732");
+        // Depois que o servidor iniciar, carregar a página no Electron
+        if (isDev)
+            win === null || win === void 0 ? void 0 : win.loadURL("http://localhost:48731");
+        else
+            win === null || win === void 0 ? void 0 : win.loadURL("http://localhost:48732/");
+        win === null || win === void 0 ? void 0 : win.maximize();
+        win === null || win === void 0 ? void 0 : win.show();
     });
 });
 electron_1.app.on("window-all-closed", () => {

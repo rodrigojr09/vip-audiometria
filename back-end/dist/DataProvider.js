@@ -53,7 +53,7 @@ const fs = __importStar(require("fs"));
 function moment(date) {
     return (0, moment_timezone_1.default)(date).tz("America/Sao_Paulo");
 }
-const path_data = `${electron_1.app.getPath("documents")}/VIP-Audiometria`;
+const path_data = `\\\\server-tec\\Tecnico\\Sistemas VIP\\VIP-Audiometria`;
 class DataProvider {
     getPath() {
         if (!fs.existsSync(path_data))
@@ -103,9 +103,35 @@ class DataProvider {
             return id;
         });
     }
+    download(data, type, name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const blob = new Blob([data], { type: "application/vnd.ms-excel" });
+                // Pergunta ao usuário onde salvar
+                const { filePath } = yield electron_1.dialog.showSaveDialog({
+                    title: "Salvar arquivo",
+                    defaultPath: `${type.toUpperCase()} - ${name}}.${type === "requisicao" ? "xlsx" : "xlsm"}`,
+                    filters: [{ name: "Excel", extensions: ["xlsx", "xlsm"] }],
+                });
+                if (filePath) {
+                    // Converte o Blob em Buffer
+                    const arrayBuffer = yield blob.arrayBuffer();
+                    const buffer = Buffer.from(arrayBuffer);
+                    // Salva o arquivo no caminho escolhido
+                    fs.writeFileSync(filePath, buffer);
+                    console.log("✅ Arquivo salvo em:", filePath);
+                    // Abre o arquivo automaticamente
+                    electron_1.shell.openPath(filePath);
+                }
+            }
+            catch (error) {
+                console.error("❌ Erro ao baixar o arquivo:", error);
+            }
+        });
+    }
     downloadData(id, type) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
             const data = (yield this.getData(id));
             if (!data)
                 return undefined;
@@ -127,15 +153,19 @@ class DataProvider {
                     const funcaoCell = worksheet.getRow(6).getCell(2);
                     const empresaCell = worksheet.getRow(7).getCell(2);
                     const tipoExameCell = worksheet.getRow(4).getCell(7);
+                    const responsavelCell = worksheet.getRow(5).getCell(6);
+                    const documentoCell = worksheet.getRow(7).getCell(6);
                     nameCell.value = data.nome;
                     nascimentoCell.value = moment(data.dataNascimento).format("DD/MM/YYYY");
+                    responsavelCell.value = data.responsavel;
+                    documentoCell.value = data.documento;
                     cpfCell.value = data.cpf;
                     dataExameCell.value = moment(data.dataExame).format("DD/MM/YYYY");
                     funcaoCell.value = data.funcao;
                     empresaCell.value = data.empresa;
                     tipoExameCell.value = `(${data.tipoExame === "admissional" ? "X" : " "})Adm  (${data.tipoExame === "demissional" ? "X" : " "})Dem  (${data.tipoExame === "periodico" ? "X" : " "})Per  (${data.tipoExame === "mudanca" ? "X" : " "})Mud. Fun`;
                     // 📌 Salva as alterações no arquivo
-                    return yield workbook.xlsx.writeBuffer();
+                    return this.download(yield workbook.xlsx.writeBuffer(), type, data.nome);
                 }
                 catch (error) {
                     console.error("❌ Erro ao atualizar a planilha:", error);
@@ -180,13 +210,17 @@ class DataProvider {
                     sheet.cell("X22").value((_p = data.resultados) === null || _p === void 0 ? void 0 : _p.e1000);
                     sheet.cell("W22").value((_q = data.resultados) === null || _q === void 0 ? void 0 : _q.e500);
                     sheet.cell("V22").value((_r = data.resultados) === null || _r === void 0 ? void 0 : _r.e250);
+                    sheet.cell("L40").value((_s = data.resultados) === null || _s === void 0 ? void 0 : _s.od);
+                    sheet.cell("U40").value((_t = data.resultados) === null || _t === void 0 ? void 0 : _t.oe);
+                    sheet.cell("S57").value(data.responsavel);
+                    sheet.cell("S58").value(data.documento);
                     for (let i = 47, a = 0; i <= 52; i++, a++) {
-                        const arr = (_s = data.resultados) === null || _s === void 0 ? void 0 : _s.obs.split("<br>");
+                        const arr = (_u = data.resultados) === null || _u === void 0 ? void 0 : _u.obs.split("<br>");
                         const str = arr[a];
                         if (str)
                             sheet.cell(`E${i}`).value(str);
                     }
-                    return yield workbook.outputAsync();
+                    return this.download(yield workbook.outputAsync(), type, data.nome);
                 }
                 catch (error) {
                     console.error("❌ Erro ao atualizar a planilha:", error);

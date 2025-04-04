@@ -29,8 +29,6 @@ export default function DataRoute(fastify: FastifyInstance) {
 		.get("/download", async (request, reply) => {
 			const { id, type } = request.query as any;
 			const data = await provider.downloadData(id, type);
-			if (data) {
-				return data;
-			} else return { error: "Arquivo nao encontrado" };
+			return true;
 		});
 }

@@ -1,6 +1,7 @@
 import Resultados from "@/components/Resultados";
 import { usePessoa } from "@/hooks/usePessoa";
 import moment from "@/utils/moment";
+import socket from "@/utils/socket";
 import { Download, FileText, Trash, Upload, User } from "lucide-react";
 import { useState } from "react";
 
@@ -87,7 +88,12 @@ export default function Home() {
 				</button>
 
 				<button
-					onClick={() => pessoas.delete(pessoa.id)}
+					onClick={() =>
+						pessoas.delete(pessoa.id).then(() => {
+							socket.emit("get");
+							pessoas.set(undefined);
+						})
+					}
 					className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 px-4 py-2 w-1/4 rounded-lg transition"
 				>
 					<Trash size={18} />

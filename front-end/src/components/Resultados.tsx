@@ -70,7 +70,9 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 					<Input
 						label="Ouvido Direito"
 						name="od"
+						type="select"
 						value={form.od}
+						options={["NORMAL","ALTERADO"]}
 						onChange={handleChange}
 					/>
 					<Input
@@ -133,7 +135,9 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 					<Input
 						label="Ouvido Esquerdo"
 						name="oe"
+						type="select"
 						value={form.oe}
+						options={["NORMAL","ALTERADO"]}
 						onChange={handleChange}
 					/>
 					<Input
@@ -208,7 +212,8 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 					Salvar Exame
 				</button>
 				<button
-					type="submit"
+					type="button"
+					onClick={onClose}
 					className="bg-red-500 hover:bg-red-600 w-full text-white p-3 rounded font-semibold mt-4"
 				>
 					Voltar

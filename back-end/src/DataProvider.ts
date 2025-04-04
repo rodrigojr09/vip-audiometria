@@ -1,4 +1,4 @@
-import { app } from "electron";
+import { app, dialog, shell } from "electron";
 import XlsxPopulate from "xlsx-populate";
 import MomentJS from "moment-timezone";
 import ExcelJS from "exceljs";
@@ -8,7 +8,7 @@ function moment(date?: string) {
 	return MomentJS(date).tz("America/Sao_Paulo");
 }
 
-const path_data = `${app.getPath("documents")}/VIP-Audiometria`;
+const path_data = `\\\\server-tec\\Tecnico\\Sistemas VIP\\VIP-Audiometria`;
 
 export interface PessoaType {
 	id: string;
@@ -20,6 +20,7 @@ export interface PessoaType {
 	funcao: string;
 	empresa: string;
 	responsavel: string;
+	documento: string;
 	resultados: ResultadoType | undefined;
 }
 
@@ -55,8 +56,7 @@ export default class DataProvider {
 				path_data + "/data.json",
 				JSON.stringify({ version: "1.0.0", datas: [] })
 			);
-		if (!fs.existsSync(path_data + "/Requisicao.xlsx"))
-			fs
+		if (!fs.existsSync(path_data + "/Requisicao.xlsx")) fs;
 		return path_data + "/data.json";
 	}
 
@@ -101,6 +101,37 @@ export default class DataProvider {
 		return id;
 	}
 
+	async download(data: any, type: "resultado" | "requisicao", name: string) {
+		try {
+			const blob = new Blob([data], { type: "application/vnd.ms-excel" });
+
+			// Pergunta ao usuário onde salvar
+			const { filePath } = await dialog.showSaveDialog({
+				title: "Salvar arquivo",
+				defaultPath: `${type.toUpperCase()} - ${name}}.${
+					type === "requisicao" ? "xlsx" : "xlsm"
+				}`,
+				filters: [{ name: "Excel", extensions: ["xlsx", "xlsm"] }],
+			});
+
+			if (filePath) {
+				// Converte o Blob em Buffer
+				const arrayBuffer = await blob.arrayBuffer();
+				const buffer = Buffer.from(arrayBuffer);
+
+				// Salva o arquivo no caminho escolhido
+				fs.writeFileSync(filePath, buffer);
+
+				console.log("✅ Arquivo salvo em:", filePath);
+
+				// Abre o arquivo automaticamente
+				shell.openPath(filePath);
+			}
+		} catch (error) {
+			console.error("❌ Erro ao baixar o arquivo:", error);
+		}
+	}
+
 	async downloadData(id: string, type: "resultado" | "requisicao") {
 		const data = (await this.getData(id)) as PessoaType;
 		if (!data) return undefined;
@@ -126,11 +157,15 @@ export default class DataProvider {
 				const funcaoCell = worksheet.getRow(6).getCell(2);
 				const empresaCell = worksheet.getRow(7).getCell(2);
 				const tipoExameCell = worksheet.getRow(4).getCell(7);
+				const responsavelCell = worksheet.getRow(5).getCell(6);
+				const documentoCell = worksheet.getRow(7).getCell(6);
 
 				nameCell.value = data.nome;
 				nascimentoCell.value = moment(data.dataNascimento).format(
 					"DD/MM/YYYY"
 				);
+				responsavelCell.value = data.responsavel;
+				documentoCell.value = data.documento;
 				cpfCell.value = data.cpf;
 				dataExameCell.value = moment(data.dataExame).format(
 					"DD/MM/YYYY"
@@ -144,7 +179,11 @@ export default class DataProvider {
 				})Per  (${data.tipoExame === "mudanca" ? "X" : " "})Mud. Fun`;
 
 				// 📌 Salva as alterações no arquivo
-				return await workbook.xlsx.writeBuffer();
+				return this.download(
+					await workbook.xlsx.writeBuffer(),
+					type,
+					data.nome
+				);
 			} catch (error) {
 				console.error("❌ Erro ao atualizar a planilha:", error);
 				return undefined;
@@ -193,13 +232,21 @@ export default class DataProvider {
 				sheet.cell("W22").value(data.resultados?.e500);
 				sheet.cell("V22").value(data.resultados?.e250);
 
+				sheet.cell("L40").value(data.resultados?.od);
+				sheet.cell("U40").value(data.resultados?.oe);
+				sheet.cell("S57").value(data.responsavel);
+				sheet.cell("S58").value(data.documento);
 				for (let i = 47, a = 0; i <= 52; i++, a++) {
 					const arr = data.resultados?.obs.split("<br>") as string[];
 					const str = arr[a];
 					if (str) sheet.cell(`E${i}`).value(str);
 				}
 
-				return await workbook.outputAsync();
+				return this.download(
+					await workbook.outputAsync(),
+					type,
+					data.nome
+				);
 			} catch (error) {
 				console.error("❌ Erro ao atualizar a planilha:", error);
 				return undefined;

@@ -1,0 +1,18 @@
+yarn run v1.22.22
+$ tsc && electron-builder --win --x64
+  • electron-builder  version=26.0.12 os=10.0.19045
+  • loaded configuration  file=package.json ("build" field)
+  • description is missed in the package.json  appPackageFile=C:\Users\user\Desktop\Sistemas VIP\vip-audiometria\back-end\package.json
+  • author is missed in the package.json  appPackageFile=C:\Users\user\Desktop\Sistemas VIP\vip-audiometria\back-end\package.json
+  • executing @electron/rebuild  electronVersion=35.1.2 arch=x64 buildFromSource=false appDir=./
+  • installing native dependencies  arch=x64
+  • completed installing native dependencies
+  • packaging       platform=win32 arch=x64 electron=35.1.2 appOutDir=C:\Users\user\Desktop\Sistemas VIP\vip-audiometria\Audiometria\win-unpacked
+  • updating asar integrity executable resource  executablePath=C:\Users\user\Desktop\Sistemas VIP\vip-audiometria\Audiometria\win-unpacked\Audiometria.exe
+  • signing with signtool.exe  path=C:\Users\user\Desktop\Sistemas VIP\vip-audiometria\Audiometria\win-unpacked\Audiometria.exe
+  • building        target=nsis file=C:\Users\user\Desktop\Sistemas VIP\vip-audiometria\Audiometria\Audiometria Setup 1.0.0.exe archs=x64 oneClick=true perMachine=false
+  • signing with signtool.exe  path=C:\Users\user\Desktop\Sistemas VIP\vip-audiometria\Audiometria\win-unpacked\resources\elevate.exe
+  • signing with signtool.exe  path=C:\Users\user\Desktop\Sistemas VIP\vip-audiometria\Audiometria\__uninstaller-nsis-back-end.exe
+  • signing with signtool.exe  path=C:\Users\user\Desktop\Sistemas VIP\vip-audiometria\Audiometria\Audiometria Setup 1.0.0.exe
+  • building block map  blockMapFile=C:\Users\user\Desktop\Sistemas VIP\vip-audiometria\Audiometria\Audiometria Setup 1.0.0.exe.blockmap
+Done in 80.66s.

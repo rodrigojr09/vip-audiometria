@@ -41,10 +41,6 @@ function DataRoute(fastify) {
         .get("/download", (request, reply) => __awaiter(this, void 0, void 0, function* () {
         const { id, type } = request.query;
         const data = yield provider.downloadData(id, type);
-        if (data) {
-            return data;
-        }
-        else
-            return { error: "Arquivo nao encontrado" };
+        return true;
     }));
 }

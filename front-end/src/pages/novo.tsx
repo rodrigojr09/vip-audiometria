@@ -17,29 +17,8 @@ export default function Novo() {
 		funcao: "",
 		empresa: "",
 		responsavel: "",
-		resultados: {
-			od: "",
-			d250: "",
-			d500: "",
-			d1000: "",
-			d2000: "",
-			d3000: "",
-			d4000: "",
-			d6000: "",
-			d8000: "",
-			dcera: "",
-			oe: "",
-			e250: "",
-			e500: "",
-			e1000: "",
-			e2000: "",
-			e3000: "",
-			e4000: "",
-			e6000: "",
-			e8000: "",
-			ecera: "",
-			obs: "",
-		},
+		documento: "",
+		resultados: undefined,
 	});
 
 	const handleChange = (
@@ -119,6 +98,12 @@ export default function Novo() {
 					label="Médico Responsável"
 					name="responsavel"
 					value={form.responsavel}
+					onChange={handleChange}
+				/>
+				<Input
+					label="Documento do Médico"
+					name="documento"
+					value={form.documento}
 					onChange={handleChange}
 				/>
 				<Input
