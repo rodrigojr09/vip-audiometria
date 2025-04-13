@@ -37,9 +37,7 @@ const Input: React.FC<InputFieldProps> = ({
 					className="border border-vip bg-gray-800 p-2 rounded w-full text-white focus:outline-none focus:ring-2 focus:ring-vip"
 					required={required}
 				>
-					<option value="" className="text-gray-400">
-						---- Selecione o tipo de exame ----
-					</option>
+					<option value={""}>{label}</option>
 					{options?.map((option, index) => (
 						<option key={index} value={option}>
 							{option.charAt(0).toUpperCase() + option.slice(1)}

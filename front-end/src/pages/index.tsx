@@ -1,7 +1,6 @@
 import Resultados from "@/components/Resultados";
 import { usePessoa } from "@/hooks/usePessoa";
-import moment from "@/utils/moment";
-import socket from "@/utils/socket";
+import moment from "@/lib/moment";
 import { Download, FileText, Trash, Upload, User } from "lucide-react";
 import { useState } from "react";
 
@@ -90,7 +89,7 @@ export default function Home() {
 				<button
 					onClick={() =>
 						pessoas.delete(pessoa.id).then(() => {
-							socket.emit("get");
+							pessoas.refresh();
 							pessoas.set(undefined);
 						})
 					}

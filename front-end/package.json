@@ -3,21 +3,32 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "next dev --turbopack --port=48731",
+		"dev": "next dev --turbopack",
 		"build": "next build",
 		"export": "next export",
 		"start": "next start --port=48731",
-		"lint": "next lint"
+		"lint": "next lint",
+		"prisma": "prisma generate"
 	},
 	"dependencies": {
+		"@prisma/client": "^6.6.0",
 		"axios": "^1.8.4",
+		"chart.js": "^4.4.8",
+		"chartjs-node-canvas": "^5.0.0",
+		"docx": "^9.3.0",
+		"docxtemplater": "^3.61.1",
+		"docxtemplater-image-module-free": "^1.1.1",
+		"exceljs": "^4.4.0",
 		"lucide-react": "^0.485.0",
 		"moment-timezone": "^0.5.48",
 		"next": "15.2.4",
+		"open-docxtemplater-image-module": "^1.0.3",
+		"pizzip": "^3.1.8",
 		"react": "18",
 		"react-dom": "18",
 		"socket.io-client": "^4.8.1",
-		"uuid": "^11.1.0"
+		"uuid": "^11.1.0",
+		"xlsx-populate": "^1.21.0"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",
@@ -29,6 +40,7 @@
 		"eslint": "^9",
 		"eslint-config-next": "latest",
 		"postcss": "^8",
+		"prisma": "^6.6.0",
 		"tailwindcss": "^4",
 		"typescript": "^5"
 	}

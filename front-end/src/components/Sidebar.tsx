@@ -1,26 +1,16 @@
-import { PessoaType, usePessoa } from "@/hooks/usePessoa";
-import moment from "@/utils/moment";
-import socket from "@/utils/socket";
+import { usePessoa } from "@/hooks/usePessoa";
+import moment from "@/lib/moment";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Sidebar() {
 	const [search, setSearch] = useState<string>("");
-	const [pessoas, setPessoas] = useState<PessoaType[]>([]);
 	const router = useRouter();
 	const api = usePessoa();
 
-	socket.on("data", (data: PessoaType[]) => {
-		setPessoas(data as PessoaType[]);
-	});
-
-	useEffect(() => {
-		socket.emit("get");
-	}, []);
-
 	if (router.asPath === "/")
 		return (
-			<div className="w-[25%] h-full fixed min-h-max bg-slate-900 text-white shadow-xl">
+			<div className="w-[25%] h-screen fixed bg-slate-900 text-white shadow-xl">
 				<div className="p-4">
 					<h2 className="text-xl font-semibold mb-4">
 						Lista de Pessoas
@@ -39,7 +29,7 @@ export default function Sidebar() {
 						Criar
 					</button>
 					<ul className="space-y-2">
-						{pessoas
+						{api.pessoas
 							.filter(
 								(person) =>
 									person.nome

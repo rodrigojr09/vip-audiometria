@@ -1,13 +1,15 @@
 import Input from "@/components/Input";
 import { v4 as uuidv4 } from "uuid";
 import { ChangeEvent, FormEvent, useState } from "react";
-import moment from "@/utils/moment";
-import socket from "@/utils/socket";
-import { PessoaType, usePessoa } from "@/hooks/usePessoa";
+import moment from "@/lib/moment";
+import { Pessoa } from "@prisma/client";
+import { usePessoa } from "@/hooks/usePessoa";
+import { dados } from "@/lib/dados";
+import {  ChevronRight } from "lucide-react";
 
 export default function Novo() {
 	const pessoas = usePessoa();
-	const [form, setForm] = useState<PessoaType>({
+	const [form, setForm] = useState<Pessoa>({
 		id: uuidv4(),
 		nome: "",
 		cpf: "",
@@ -18,7 +20,7 @@ export default function Novo() {
 		empresa: "",
 		responsavel: "",
 		documento: "",
-		resultados: undefined,
+		resultados: null,
 	});
 
 	const handleChange = (
@@ -41,7 +43,7 @@ export default function Novo() {
 		if (!res) {
 			return alert("Erro ao criar pessoa");
 		} else {
-			socket.emit("get");
+			pessoas.refresh();
 			location.href = "/";
 		}
 	};
@@ -94,18 +96,29 @@ export default function Novo() {
 					value={form.empresa}
 					onChange={handleChange}
 				/>
+
 				<Input
-					label="Médico Responsável"
+					label="Selecione um Responsavel"
 					name="responsavel"
+					type="select"
 					value={form.responsavel}
-					onChange={handleChange}
+					onChange={(e) => {
+						setForm((prev) => ({
+							...prev,
+							responsavel: e.target.value,
+							documento:
+								dados.medicas.find(
+									(pessoa) => pessoa.nome === e.target.value
+								)?.documento || "",
+						}));
+					}}
+					options={dados.medicas.map((pessoa) => pessoa.nome)}
 				/>
-				<Input
-					label="Documento do Médico"
-					name="documento"
-					value={form.documento}
-					onChange={handleChange}
-				/>
+				{form.responsavel !== "" && (
+					<p className="flex space-x-2">
+						<ChevronRight /> <span>{form.documento}</span>
+					</p>
+				)}
 				<Input
 					label="Tipo de Exame"
 					name="tipoExame"

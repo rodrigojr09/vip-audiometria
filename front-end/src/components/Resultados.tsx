@@ -1,6 +1,7 @@
 import Input from "@/components/Input";
 import { ChangeEvent, useState } from "react";
-import { ResultadoType, usePessoa } from "@/hooks/usePessoa";
+import { usePessoa } from "@/hooks/usePessoa";
+import { ResultadoType } from "@prisma/client";
 
 export default function Resultados({ onClose }: { onClose: () => void }) {
 	const {
@@ -72,7 +73,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 						name="od"
 						type="select"
 						value={form.od}
-						options={["NORMAL","ALTERADO"]}
+						options={["NORMAL", "ALTERADO"]}
 						onChange={handleChange}
 					/>
 					<Input
@@ -137,7 +138,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 						name="oe"
 						type="select"
 						value={form.oe}
-						options={["NORMAL","ALTERADO"]}
+						options={["NORMAL", "ALTERADO"]}
 						onChange={handleChange}
 					/>
 					<Input
@@ -200,7 +201,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 				label="Observações"
 				name="obs"
 				type="area"
-				value={form.obs.replaceAll("<br>","\n")}
+				value={form.obs.replaceAll("<br>", "\n")}
 				onChange={handleChange}
 			/>
 
