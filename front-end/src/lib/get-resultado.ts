@@ -5,6 +5,7 @@ import ImageModule from "docxtemplater-image-module-free";
 import axios from "axios";
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
 import { Pessoa, ResultadoType } from "@prisma/client";
+import moment from "./moment";
 
 const width = 600;
 const height = 385;
@@ -109,7 +110,7 @@ function saveFile(buffer: Buffer, fileName: string) {
 	writeFileSync("./public/" + fileName, buffer);
 }
 
-export async function gerarDoc(pessoa: Pessoa) {
+export async function getResultadoFile(pessoa: Pessoa) {
 	try {
 		const response = await axios.get(
 			"http://localhost:3000/arquivos/Resultado.docx",
@@ -117,8 +118,6 @@ export async function gerarDoc(pessoa: Pessoa) {
 				responseType: "arraybuffer",
 			}
 		);
-
-		const zip = new PizZip(response.data);
 
 		await createChartImageBuffer(pessoa.resultados!);
 
@@ -129,18 +128,24 @@ export async function gerarDoc(pessoa: Pessoa) {
 				return readFileSync(tag);
 			},
 			getSize() {
-				return [272.126,174.614];
+				return [272.126, 174.614];
 			},
+		});
+
+		const zip = new PizZip(response.data);
+		const doc = new DocxTemplater(zip, {
+			modules: [imageModule],
+			linebreaks: true,
 		});
 
 		const data = {
 			nome: pessoa.nome,
 			cpf: pessoa.cpf,
-			nascimento: pessoa.dataNascimento,
+			nascimento: moment(pessoa.dataNascimento).format("DD/MM/YYYY"),
 			empresa: pessoa.empresa,
 			funcao: pessoa.funcao,
 			tipoExame: pessoa.tipoExame,
-			dataExame: pessoa.dataExame,
+			dataExame: moment(pessoa.dataExame).format("DD/MM/YYYY"),
 			responsavel: pessoa.responsavel,
 			documento: pessoa.documento,
 			od: pessoa.resultados?.od || "NORMAL",
@@ -169,11 +174,6 @@ export async function gerarDoc(pessoa: Pessoa) {
 			resultadoD: "public/od.png",
 			resultadoE: "public/oe.png",
 		};
-
-		const doc = new DocxTemplater(zip, {
-			modules: [imageModule],
-			linebreaks: true,
-		});
 		doc.render(data);
 
 		const finalBuffer = doc.getZip().generate({ type: "nodebuffer" });

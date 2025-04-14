@@ -1,4 +1,5 @@
-import { gerarDoc } from "./chart";
+import getRequisicao from "./get-requisicao";
+import { getResultadoFile } from "./get-resultado";
 import prisma from "./prisma";
 import { Pessoa } from "@prisma/client";
 
@@ -36,7 +37,10 @@ class DataProvider {
 		if (!data) return undefined;
 
 		if (type == "resultado") {
-			const doc = await gerarDoc(data);
+			const doc = await getResultadoFile(data);
+			return doc;
+		} else {
+			const doc = await getRequisicao(data);
 			return doc;
 		}
 	}
