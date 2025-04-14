@@ -113,7 +113,7 @@ function saveFile(buffer: Buffer, fileName: string) {
 export async function getResultadoFile(pessoa: Pessoa) {
 	try {
 		const response = await axios.get(
-			"http://localhost:3000/arquivos/Resultado.docx",
+			"https://audiometria.vipsst.com.br/arquivos/Resultado.docx",
 			{
 				responseType: "arraybuffer",
 			}

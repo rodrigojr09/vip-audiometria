@@ -6,7 +6,7 @@ import moment from "./moment";
 
 export default async function getRequisicao(pessoa: Pessoa) {
 	const response = await axios.get(
-		"http://localhost:3000/arquivos/Requisicao.docx",
+		"https://audiometria.vipsst.com.br/arquivos/Requisicao.docx",
 		{
 			responseType: "arraybuffer",
 		}
