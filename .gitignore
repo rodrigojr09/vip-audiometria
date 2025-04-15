@@ -5,3 +5,6 @@
 /back-end/.next
 /back-end/dist
 /Audiometria
+/front/.next
+/node_modules
+/views
