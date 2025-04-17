@@ -4,6 +4,15 @@ import { app, BrowserWindow, nativeImage, shell } from "electron";
 import fastifyCors from "@fastify/cors";
 import path from "path";
 import { existsSync, readFileSync, writeFileSync } from "fs";
+import dotenv from "dotenv";
+
+dotenv.config()
+
+import createRoute from "./pessoa/create";
+import getRoute from "./pessoa/get";
+import updateRoute from "./pessoa/update";
+import deleteRoute from "./pessoa/delete";
+import downloadRoute from "./pessoa/download";
 
 const isDev = process.env.NODE_ENV === "development"; // Verifica o ambiente
 
@@ -13,12 +22,6 @@ const fastify = Fastify({
 
 fastify.register(fastifyCors, {
 	origin: "*",
-	allowedHeaders: [
-		"Content-Type",
-		"Authorization",
-		"Access-Control-Allow-Origin",
-	],
-	methods: ["GET", "POST", "PUT", "DELETE"],
 });
 
 fastify.register(FastifyStatic, {
@@ -38,21 +41,13 @@ fastify.setNotFoundHandler((req, reply) => {
 	reply.code(404).send("Página não encontrada");
 });
 
-let win: BrowserWindow | null = null;
+fastify.post("/pessoa/create", createRoute);
+fastify.get("/pessoa/get", getRoute);
+fastify.put("/pessoa/update", updateRoute);
+fastify.delete("/pessoa/delete", deleteRoute);
+fastify.get("/pessoa/download", downloadRoute);
 
-fastify.get("/upload", async (req: FastifyRequest, res: FastifyReply) => {
-	const { file, name } = req.query as {
-		file: string | undefined;
-		name: string | undefined;
-	};
-	if (!file || !name)
-		return res.status(400).send({ error: "Arquivo não fornecido" });
-	const buffer = Buffer.from(file, "base64");
-	const filePath = path.join(app.getPath("documents"), "Audiometria", name);
-	writeFileSync(filePath, buffer);
-	shell.openPath(filePath);
-	return res.status(200).send({ message: "Arquivo enviado com sucesso" });
-});
+let win: BrowserWindow | null = null;
 
 app.on("ready", () => {
 	win = new BrowserWindow({
@@ -68,17 +63,17 @@ app.on("ready", () => {
 	});
 
 	// Inicia o servidor Fastify antes de carregar a URL
-	fastify.listen({ host: "0.0.0.0", port: 48732 }, (err) => {
+	fastify.listen({ host: "0.0.0.0", port: 7961 }, (err) => {
 		if (err) {
 			console.error("Erro ao iniciar o servidor:", err);
 			app.quit();
 			return;
 		}
-		console.log("Servidor rodando em http://0.0.0.0:48732");
+		console.log("Servidor rodando em http://0.0.0.0:7961");
 
 		// Depois que o servidor iniciar, carregar a página no Electron
-		if (isDev) win?.loadURL("http://localhost:48731");
-		else win?.loadURL("http://localhost:48732/");
+		if(isDev) win?.loadURL("http://localhost:3000");
+		else win?.loadURL("http://localhost:7961/");
 		win?.maximize();
 		win?.show();
 	});

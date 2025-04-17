@@ -1,5 +1,5 @@
 import { Pessoa } from "@prisma/client";
-import axios from "axios";
+import Axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export interface PessoaProps {
@@ -21,6 +21,10 @@ export default function PessoaProvider({
 }: {
 	children: React.ReactNode;
 }) {
+	const axios = Axios.create({
+		withCredentials: true,
+		baseURL: "http://localhost:7961",
+	});
 	const [pessoa, setPessoa] = useState<Pessoa | undefined>(undefined);
 	const [pessoas, setPessoas] = useState<Pessoa[]>([]);
 
@@ -29,62 +33,35 @@ export default function PessoaProvider({
 	}, []);
 
 	async function refresh() {
-		const result = await axios.get("/api/pessoa/get");
+		const result = await axios.get("/pessoa/get");
 		setPessoas(result.data);
 	}
 	async function get(id?: string) {
-		const result = await axios.get(
-			`/api/pessoa/get${id ? `?id=${id}` : ""}`
-		);
+		const result = await axios.get(`/pessoa/get${id ? `?id=${id}` : ""}`);
 		return result.data;
 	}
 
 	async function create(data: Pessoa) {
-		const result = await axios.post(`/api/pessoa/create`, data);
+		const result = await axios.post(`/pessoa/create`, data);
 		return result.status === 201;
 	}
 
 	async function update(data: Pessoa) {
-		const result = await axios.put(`/api/pessoa/update`, data);
+		const result = await axios.put(`/pessoa/update`, data);
 		return result.status === 201;
 	}
 
 	async function deletePessoa(id: string) {
-		const result = await axios.delete(`/api/pessoa/delete?id=${id}`);
+		const result = await axios.delete(`/pessoa/delete?id=${id}`);
 		return result.status === 201;
 	}
 
 	async function download(id: string, type: "resultado" | "requisicao") {
 		try {
 			const response = await axios.get(
-				`/api/pessoa/download?id=${id}&type=${type}`,
-				{
-					responseType: "blob",
-				}
+				`/pessoa/download?id=${id}&type=${type}`
 			);
-
-			console.log("📄 Blob recebido:", response.data);
-
-			// Criar um blob a partir da resposta
-			const blob = new Blob([response.data], {
-				type: response.data.type,
-			});
-			const url = window.URL.createObjectURL(blob);
-			const link = document.createElement("a");
-
-			// Nome do arquivo
-			const fileName = `${type.toUpperCase()} - ${pessoa?.nome}.docx`;
-
-			// Configurar o link para download
-			link.href = url;
-			link.download = fileName;
-			document.body.appendChild(link);
-			link.click();
-
-			// Revogar a URL após o download
-			window.URL.revokeObjectURL(url);
-			document.body.removeChild(link);
-
+			console.log(response.status);
 			console.log("✅ Download concluído!");
 		} catch (error) {
 			console.error("❌ Erro ao baixar o arquivo:", error);

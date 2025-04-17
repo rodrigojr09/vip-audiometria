@@ -1,6 +1,6 @@
 import getRequisicao from "./get-requisicao";
 import { getResultadoFile } from "./get-resultado";
-import prisma from "./prisma";
+import prisma from ".//prisma";
 import { Pessoa } from "@prisma/client";
 
 class DataProvider {
@@ -35,7 +35,7 @@ class DataProvider {
 	async downloadData(id: string, type: "resultado" | "requisicao") {
 		const data = (await this.getData(id)) as Pessoa;
 		if (!data) return undefined;
-
+		
 		if (type == "resultado") {
 			const doc = await getResultadoFile(data);
 			return doc;

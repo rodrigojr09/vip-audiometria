@@ -2,10 +2,9 @@ import { ChartJSNodeCanvas } from "chartjs-node-canvas";
 import DocxTemplater from "docxtemplater";
 import PizZip from "pizzip";
 import ImageModule from "docxtemplater-image-module-free";
-import axios from "axios";
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
 import { Pessoa, ResultadoType } from "@prisma/client";
-import moment from "./moment";
+import moment from ".//moment";
 
 const width = 600;
 const height = 385;
@@ -99,25 +98,20 @@ async function createChartImageBuffer(resultado: ResultadoType) {
 		},
 		options,
 	});
-	if (existsSync("./public/od.png")) unlinkSync("./public/od.png");
-	if (existsSync("./public/oe.png")) unlinkSync("./public/oe.png");
+	if (existsSync("./assets/od.png")) unlinkSync("./assets/od.png");
+	if (existsSync("./assets/oe.png")) unlinkSync("./assets/oe.png");
 	saveFile(odBuffer, "od.png");
 	saveFile(oeBuffer, "oe.png");
 	return true;
 }
 
 function saveFile(buffer: Buffer, fileName: string) {
-	writeFileSync("./public/" + fileName, buffer);
+	writeFileSync("./assets/" + fileName, buffer);
 }
 
 export async function getResultadoFile(pessoa: Pessoa) {
 	try {
-		const response = await axios.get(
-			"https://audiometria.vipsst.com.br/arquivos/Resultado.docx",
-			{
-				responseType: "arraybuffer",
-			}
-		);
+		const response = readFileSync("./assets/Resultado.docx");
 
 		await createChartImageBuffer(pessoa.resultados!);
 
@@ -131,8 +125,7 @@ export async function getResultadoFile(pessoa: Pessoa) {
 				return [272.126, 174.614];
 			},
 		});
-
-		const zip = new PizZip(response.data);
+		const zip = new PizZip(response);
 		const doc = new DocxTemplater(zip, {
 			modules: [imageModule],
 			linebreaks: true,
@@ -171,8 +164,8 @@ export async function getResultadoFile(pessoa: Pessoa) {
 			obs:
 				pessoa.resultados?.obs.replaceAll("<br>", "\n") ||
 				"Nenhuma observação",
-			resultadoD: "public/od.png",
-			resultadoE: "public/oe.png",
+			resultadoD: "assets/od.png",
+			resultadoE: "assets/oe.png",
 		};
 		doc.render(data);
 

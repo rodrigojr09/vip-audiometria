@@ -2,12 +2,14 @@ import Input from "@/components/Input";
 import { ChangeEvent, useState } from "react";
 import { usePessoa } from "@/hooks/usePessoa";
 import { ResultadoType } from "@prisma/client";
+import { dados } from "@/lib/dados";
 
 export default function Resultados({ onClose }: { onClose: () => void }) {
 	const {
 		pessoa: { ...pessoa },
 		...pessoas
 	} = usePessoa();
+	const [laudo, setLaudo] = useState<string>("");
 	const [form, setForm] = useState<ResultadoType>(
 		pessoa.resultados || {
 			od: "",
@@ -197,6 +199,16 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 					/>
 				</div>
 			</div>
+			
+			<Input
+				label="Laudo"
+				name="laudo"
+				type="select"
+				value={laudo}
+				onChange={(e) => setLaudo(e.target.value)}
+				options={dados.laudos}
+			/>
+
 			<Input
 				label="Observações"
 				name="obs"
