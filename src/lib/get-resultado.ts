@@ -109,12 +109,12 @@ async function createChartImageBuffer(resultado: ResultadoType) {
 			options,
 		});
 
-		if (existsSync("./assets/od.png")) {
-			unlinkSync("./assets/od.png");
+		if (existsSync(dados.paths.logs + "/" + "od.png")) {
+			unlinkSync(dados.paths.logs + "/" + "od.png");
 			logger.debug("Arquivo anterior od.png deletado");
 		}
-		if (existsSync("./assets/oe.png")) {
-			unlinkSync("./assets/oe.png");
+		if (existsSync(dados.paths.logs + "/" + "od.png")) {
+			unlinkSync(dados.paths.logs + "/" + "od.png");
 			logger.debug("Arquivo anterior oe.png deletado");
 		}
 
@@ -130,7 +130,7 @@ async function createChartImageBuffer(resultado: ResultadoType) {
 }
 
 function saveFile(buffer: Buffer, fileName: string) {
-	writeFileSync("./assets/" + fileName, buffer);
+	writeFileSync(dados.paths.logs + "/" + fileName, buffer);
 	logger.debug(`Arquivo salvo: ${fileName}`);
 }
 
@@ -195,8 +195,8 @@ export async function getResultadoFile(pessoa: Pessoa) {
 			obs:
 				pessoa.resultados?.obs.replaceAll("<br>", "\n") ||
 				"Nenhuma observação",
-			resultadoD: "assets/od.png",
-			resultadoE: "assets/oe.png",
+			resultadoD: dados.paths.logs + "/" + "od.png",
+			resultadoE: dados.paths.logs + "/" + "od.png",
 		};
 
 		logger.debug("Dados para preenchimento do template montados");
