@@ -40,7 +40,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 		>
 	) => {
-		setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+		setForm((prev:any) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
 	const handleSubmit = async (e: any) => {

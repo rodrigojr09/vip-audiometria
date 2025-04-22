@@ -28,7 +28,7 @@ export default function Novo() {
 			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 		>
 	) => {
-		setForm((prev) => ({
+		setForm((prev:any) => ({
 			...prev,
 			[e.target.name]:
 				e.target.name === "dataExame"
@@ -103,7 +103,7 @@ export default function Novo() {
 					type="select"
 					value={form.responsavel}
 					onChange={(e) => {
-						setForm((prev) => ({
+						setForm((prev:any) => ({
 							...prev,
 							responsavel: e.target.value,
 							documento:

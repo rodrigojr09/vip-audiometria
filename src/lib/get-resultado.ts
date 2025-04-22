@@ -100,7 +100,9 @@ async function createChartImageBuffer(resultado: ResultadoType) {
 						data: oeData,
 						pointBackgroundColor: "white",
 						pointBorderColor: "blue",
+						pointStyle: "crossRot", // "X" no ponto
 						borderColor: "blue",
+						borderDash: [5, 5], // linha tracejada
 						pointRadius: 7,
 						pointHoverRadius: 10,
 					},
