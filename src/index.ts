@@ -1,6 +1,6 @@
 import Fastify from "fastify";
 import FastifyStatic from "@fastify/static";
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, dialog, shell } from "electron";
 import fastifyCors from "@fastify/cors";
 import path from "path";
 import { existsSync, readFileSync } from "fs";
@@ -12,10 +12,12 @@ import deleteRoute from "./pessoa/delete";
 import downloadRoute from "./pessoa/download";
 import { logger } from "./lib/Logger";
 import moment from "./lib/moment";
-import MainWindow from "./lib/Windows";
+import { MainWindow, LoadingWindow } from "./lib/Windows";
+import { GitHubRelease } from "./lib/Github";
 
 const isDev = process.env.NODE_ENV === "development";
 
+const git = new GitHubRelease("rodrigojr09", "vip-audiometria");
 const fastify = Fastify({
 	logger: {
 		file: path.join(
@@ -34,6 +36,7 @@ fastify.addHook("onRequest", (request, _, done) => {
 
 fastify.register(fastifyCors, {
 	origin: "*",
+	credentials: true,
 });
 
 fastify.register(FastifyStatic, {
@@ -57,16 +60,30 @@ fastify.get("/pessoa/download", downloadRoute);
 
 let win: BrowserWindow | null = null;
 
-app.on("ready", () => {
-
-	fastify.listen({ host: "0.0.0.0", port: 7961 }, (err) => {
+app.on("ready", async () => {
+	const release = await git.getLatestRelease();
+	fastify.listen({ host: "0.0.0.0", port: 7961 }, async (err) => {
 		if (err) {
 			logger.error("Erro ao iniciar o servidor: " + err.message);
 			app.quit();
 			return;
 		}
 		logger.info("Servidor rodando em http://0.0.0.0:7961");
-		win = MainWindow(isDev);
+		win = LoadingWindow(isDev);
+		if (release.tagName !== "v" + app.getVersion()) {
+			const filePath = await git.getLatestReleaseSetup();
+			if (filePath) {
+				shell.openPath(filePath);
+			} else {
+				shell.openExternal(
+					"https://github.com/rodrigojr09/vip-audiometria/releases/latest"
+				);
+			}
+			app.quit();
+		} else {
+			win.close();
+			win = MainWindow(isDev);
+		}
 	});
 });
 

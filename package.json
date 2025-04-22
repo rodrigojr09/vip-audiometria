@@ -20,7 +20,7 @@
 	"scripts": {
 		"dev": "yarn build && cross-env NODE_ENV=development electron .",
 		"build": "tsc",
-		"start": "yarn prisma && cross-env NODE_ENV=production electron .",
+		"start": "cross-env NODE_ENV=production electron .",
 		"prisma": "prisma generate",
 		"compile": "yarn build && yarn electron-builder"
 	},
