@@ -35,8 +35,10 @@ fastify.addHook("onRequest", (request, _, done) => {
 });
 
 fastify.register(fastifyCors, {
-	origin: "*",
+	origin: isDev ? "http://localhost:3000" : "http://localhost:7961",
 	credentials: true,
+	methods: ["GET", "POST", "PUT", "DELETE"],
+	allowedHeaders: ["Content-Type", "Authorization","Access-Control-Allow-Origin"],
 });
 
 fastify.register(FastifyStatic, {
@@ -75,9 +77,7 @@ app.on("ready", async () => {
 			if (filePath) {
 				shell.openPath(filePath);
 			} else {
-				shell.openExternal(
-					"https://github.com/rodrigojr09/vip-audiometria/releases/latest"
-				);
+				shell.openExternal(release.url);
 			}
 			app.quit();
 		} else {

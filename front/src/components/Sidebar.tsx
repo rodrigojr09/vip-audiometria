@@ -41,7 +41,7 @@ export default function Sidebar() {
 								const dateA = moment(a.dataExame); // Moment vai entender o formato ISO 8601
 								const dateB = moment(b.dataExame); // Moment vai entender o formato ISO 8601
 								return dateB.isAfter(dateA) ? 1 : -1; // Ordena do mais recente para o mais antigo
-							})
+							}).slice(0,10)
 							.map((person, index) => (
 								<li
 									onClick={() => api.set(person)}
