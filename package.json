@@ -2,7 +2,7 @@
 	"name": "vip-audiometria",
 	"productName": "Audiometria",
 	"appId": "vip.projeto.audiometria",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"main": "dist/index.js",
 	"description": "VIP Audiometria é um sistema desenvolvido para facilitar o gerenciamento de exames audiométricos, permitindo o preenchimento e a organização de resultados e requisições de forma simples e eficiente. O sistema combina uma aplicação desktop (Electron + Fastify) com uma interface moderna construída em Next.js.",
 	"repository": "https://github.com/rodrigojr09/vip-audiometria.git",
