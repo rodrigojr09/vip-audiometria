@@ -115,8 +115,8 @@ async function createChartImageBuffer(resultado: ResultadoType) {
 			unlinkSync(dados.paths.logs + "/" + "od.png");
 			logger.debug("Arquivo anterior od.png deletado");
 		}
-		if (existsSync(dados.paths.logs + "/" + "od.png")) {
-			unlinkSync(dados.paths.logs + "/" + "od.png");
+		if (existsSync(dados.paths.logs + "/" + "oe.png")) {
+			unlinkSync(dados.paths.logs + "/" + "oe.png");
 			logger.debug("Arquivo anterior oe.png deletado");
 		}
 
@@ -198,7 +198,7 @@ export async function getResultadoFile(pessoa: Pessoa) {
 				pessoa.resultados?.obs.replaceAll("<br>", "\n") ||
 				"Nenhuma observação",
 			resultadoD: dados.paths.logs + "/" + "od.png",
-			resultadoE: dados.paths.logs + "/" + "od.png",
+			resultadoE: dados.paths.logs + "/" + "oe.png",
 		};
 
 		logger.debug("Dados para preenchimento do template montados");
