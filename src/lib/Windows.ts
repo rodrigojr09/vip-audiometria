@@ -1,7 +1,7 @@
 import { BrowserWindow, nativeImage } from "electron";
 import path from "path";
 
-export default function MainWindow() {
+export default function MainWindow(isDev:boolean) {
 	const win = new BrowserWindow({
 		icon: nativeImage.createFromPath(
 			path.join(__dirname, "../assets", "icon.png")
@@ -12,7 +12,14 @@ export default function MainWindow() {
 			nodeIntegration: true,
 			contextIsolation: false,
 		},
-    });
-    
-    return win;
+	});
+	if (isDev) win?.loadURL("http://localhost:3000");
+	else win?.loadURL("http://localhost:7961/");
+
+	win.on("ready-to-show", () => {
+		win.show();
+		win?.maximize();
+	});
+
+	return win;
 }
