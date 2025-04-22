@@ -1,12 +1,9 @@
 import Fastify from "fastify";
 import FastifyStatic from "@fastify/static";
-import { app, BrowserWindow, nativeImage } from "electron";
+import { app, BrowserWindow } from "electron";
 import fastifyCors from "@fastify/cors";
 import path from "path";
 import { existsSync, readFileSync } from "fs";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 import createRoute from "./pessoa/create";
 import getRoute from "./pessoa/get";
@@ -61,7 +58,6 @@ fastify.get("/pessoa/download", downloadRoute);
 let win: BrowserWindow | null = null;
 
 app.on("ready", () => {
-	win = MainWindow();
 
 	fastify.listen({ host: "0.0.0.0", port: 7961 }, (err) => {
 		if (err) {
@@ -70,11 +66,7 @@ app.on("ready", () => {
 			return;
 		}
 		logger.info("Servidor rodando em http://0.0.0.0:7961");
-
-		if (isDev) win?.loadURL("http://localhost:3000");
-		else win?.loadURL("http://localhost:7961/");
-		win?.maximize();
-		win?.show();
+		win = MainWindow(isDev);
 	});
 });
 
