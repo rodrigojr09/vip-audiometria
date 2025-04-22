@@ -1,23 +1,38 @@
-import Fastify, { FastifyReply, FastifyRequest } from "fastify";
+import Fastify from "fastify";
 import FastifyStatic from "@fastify/static";
-import { app, BrowserWindow, nativeImage, shell } from "electron";
+import { app, BrowserWindow, nativeImage } from "electron";
 import fastifyCors from "@fastify/cors";
 import path from "path";
-import { existsSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
 import createRoute from "./pessoa/create";
 import getRoute from "./pessoa/get";
 import updateRoute from "./pessoa/update";
 import deleteRoute from "./pessoa/delete";
 import downloadRoute from "./pessoa/download";
+import { logger } from "./lib/Logger";
+import moment from "./lib/moment";
+import MainWindow from "./lib/Windows";
 
-const isDev = process.env.NODE_ENV === "development"; // Verifica o ambiente
+const isDev = process.env.NODE_ENV === "development";
 
 const fastify = Fastify({
-	logger: true,
+	logger: {
+		file: path.join(
+			logger.logDir,
+			"fastify-" + moment().format("HH-mm-DD-MM-YYYY") + ".log"
+		),
+	}, // Desativa o logger nativo
+});
+
+fastify.addHook("onRequest", (request, _, done) => {
+	logger.info(
+		`Método: ${request.method}, URL: ${request.url}, IP: ${request.ip}`
+	);
+	done();
 });
 
 fastify.register(fastifyCors, {
@@ -31,13 +46,9 @@ fastify.register(FastifyStatic, {
 
 fastify.setNotFoundHandler((req, reply) => {
 	const requestedPath = path.join(__dirname, "../views", req.url + ".html");
-
-	// Verifica se o arquivo HTML existe e serve ele
 	if (existsSync(requestedPath)) {
 		return reply.type("text/html").send(readFileSync(requestedPath));
 	}
-
-	// Se não existir, retorna erro 404
 	reply.code(404).send("Página não encontrada");
 });
 
@@ -50,29 +61,17 @@ fastify.get("/pessoa/download", downloadRoute);
 let win: BrowserWindow | null = null;
 
 app.on("ready", () => {
-	win = new BrowserWindow({
-		icon: nativeImage.createFromPath(
-			path.join(__dirname, "../assets", "icon.png")
-		),
-		title: "VIP Audiometria",
-		show: false, // Evita abrir antes de carregar
-		webPreferences: {
-			nodeIntegration: true,
-			contextIsolation: false,
-		},
-	});
+	win = MainWindow();
 
-	// Inicia o servidor Fastify antes de carregar a URL
 	fastify.listen({ host: "0.0.0.0", port: 7961 }, (err) => {
 		if (err) {
-			console.error("Erro ao iniciar o servidor:", err);
+			logger.error("Erro ao iniciar o servidor: " + err.message);
 			app.quit();
 			return;
 		}
-		console.log("Servidor rodando em http://0.0.0.0:7961");
+		logger.info("Servidor rodando em http://0.0.0.0:7961");
 
-		// Depois que o servidor iniciar, carregar a página no Electron
-		if(isDev) win?.loadURL("http://localhost:3000");
+		if (isDev) win?.loadURL("http://localhost:3000");
 		else win?.loadURL("http://localhost:7961/");
 		win?.maximize();
 		win?.show();

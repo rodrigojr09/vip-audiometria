@@ -3,115 +3,145 @@ import DocxTemplater from "docxtemplater";
 import PizZip from "pizzip";
 import ImageModule from "docxtemplater-image-module-free";
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
-import { Pessoa, ResultadoType } from "@prisma/client";
-import moment from ".//moment";
+import { Pessoa, ResultadoType } from "../../prisma/client";
+import moment from "./moment";
+import { logger } from "./Logger";
+import { dados } from "./dados";
 
 const width = 600;
 const height = 385;
 
 async function createChartImageBuffer(resultado: ResultadoType) {
-	const chartJSNodeCanvas = new ChartJSNodeCanvas({
-		width,
-		height,
-	});
-	const options = {
-		scales: {
-			y: {
-				min: -10,
-				max: 120,
-				grid: { color: "#ccc" },
-			},
-			x: {
-				grid: { color: "#ccc" },
-			},
-		},
-	};
-	const labels = [
-		"0",
-		"250",
-		"500",
-		"1000",
-		"2000",
-		"3000",
-		"4000",
-		"6000",
-		"8000",
-	];
+	try {
+		logger.info("Gerando gráficos de audiometria...");
 
-	const odBuffer = chartJSNodeCanvas.renderToBufferSync({
-		type: "line",
-		data: {
-			labels,
-			datasets: [
-				{
-					label: "Orelha Direita",
-					data: [
-						resultado.d250,
-						resultado.d250,
-						resultado.d500,
-						resultado.d1000,
-						resultado.d2000,
-						resultado.d3000,
-						resultado.d4000,
-						resultado.d6000,
-						resultado.d8000,
-						resultado.d8000,
-					].map((a) => parseInt(a)),
-					pointBackgroundColor: "white",
-					pointBorderColor: "red",
-					borderColor: "red",
-					pointRadius: 7,
-					pointHoverRadius: 10,
+		const chartJSNodeCanvas = new ChartJSNodeCanvas({
+			width,
+			height,
+		});
+
+		const options = {
+			scales: {
+				y: {
+					min: -10,
+					max: 120,
+					grid: { color: "#ccc" },
 				},
-			],
-		},
-		options,
-	});
-
-	const oeBuffer = chartJSNodeCanvas.renderToBufferSync({
-		type: "line",
-		data: {
-			labels,
-			datasets: [
-				{
-					label: "Orelha Esquerda",
-					data: [
-						resultado.e250,
-						resultado.e250,
-						resultado.e500,
-						resultado.e1000,
-						resultado.e2000,
-						resultado.e3000,
-						resultado.e4000,
-						resultado.e6000,
-						resultado.e8000,
-						resultado.e8000,
-					].map((a) => parseInt(a)),
-
-					pointBackgroundColor: "white",
-					pointBorderColor: "blue",
-					borderColor: "blue",
-					pointRadius: 7,
-					pointHoverRadius: 10,
+				x: {
+					grid: { color: "#ccc" },
 				},
-			],
-		},
-		options,
-	});
-	if (existsSync("./assets/od.png")) unlinkSync("./assets/od.png");
-	if (existsSync("./assets/oe.png")) unlinkSync("./assets/oe.png");
-	saveFile(odBuffer, "od.png");
-	saveFile(oeBuffer, "oe.png");
-	return true;
+			},
+		};
+
+		const labels = [
+			"0",
+			"250",
+			"500",
+			"1000",
+			"2000",
+			"3000",
+			"4000",
+			"6000",
+			"8000",
+		];
+
+		const odData = [
+			resultado.d250,
+			resultado.d250,
+			resultado.d500,
+			resultado.d1000,
+			resultado.d2000,
+			resultado.d3000,
+			resultado.d4000,
+			resultado.d6000,
+			resultado.d8000,
+			resultado.d8000,
+		].map((a) => parseInt(a));
+
+		const oeData = [
+			resultado.e250,
+			resultado.e250,
+			resultado.e500,
+			resultado.e1000,
+			resultado.e2000,
+			resultado.e3000,
+			resultado.e4000,
+			resultado.e6000,
+			resultado.e8000,
+			resultado.e8000,
+		].map((a) => parseInt(a));
+
+		const odBuffer = chartJSNodeCanvas.renderToBufferSync({
+			type: "line",
+			data: {
+				labels,
+				datasets: [
+					{
+						label: "Orelha Direita",
+						data: odData,
+						pointBackgroundColor: "white",
+						pointBorderColor: "red",
+						borderColor: "red",
+						pointRadius: 7,
+						pointHoverRadius: 10,
+					},
+				],
+			},
+			options,
+		});
+
+		const oeBuffer = chartJSNodeCanvas.renderToBufferSync({
+			type: "line",
+			data: {
+				labels,
+				datasets: [
+					{
+						label: "Orelha Esquerda",
+						data: oeData,
+						pointBackgroundColor: "white",
+						pointBorderColor: "blue",
+						borderColor: "blue",
+						pointRadius: 7,
+						pointHoverRadius: 10,
+					},
+				],
+			},
+			options,
+		});
+
+		if (existsSync("./assets/od.png")) {
+			unlinkSync("./assets/od.png");
+			logger.debug("Arquivo anterior od.png deletado");
+		}
+		if (existsSync("./assets/oe.png")) {
+			unlinkSync("./assets/oe.png");
+			logger.debug("Arquivo anterior oe.png deletado");
+		}
+
+		saveFile(odBuffer, "od.png");
+		saveFile(oeBuffer, "oe.png");
+
+		logger.info("Gráficos de audiometria gerados com sucesso");
+		return true;
+	} catch (error: any) {
+		logger.error(`Erro ao gerar gráficos: ${error.message}`);
+		throw error;
+	}
 }
 
 function saveFile(buffer: Buffer, fileName: string) {
 	writeFileSync("./assets/" + fileName, buffer);
+	logger.debug(`Arquivo salvo: ${fileName}`);
 }
 
 export async function getResultadoFile(pessoa: Pessoa) {
 	try {
-		const response = readFileSync("./assets/Resultado.docx");
+		logger.info(
+			`Gerando documento de resultado para pessoa ID ${pessoa.id}`
+		);
+
+		const response = readFileSync(dados.getFile("Resultado.docx"));
+		logger.debug("Template Resultado.docx carregado");
 
 		await createChartImageBuffer(pessoa.resultados!);
 
@@ -125,6 +155,7 @@ export async function getResultadoFile(pessoa: Pessoa) {
 				return [272.126, 174.614];
 			},
 		});
+
 		const zip = new PizZip(response);
 		const doc = new DocxTemplater(zip, {
 			modules: [imageModule],
@@ -167,12 +198,20 @@ export async function getResultadoFile(pessoa: Pessoa) {
 			resultadoD: "assets/od.png",
 			resultadoE: "assets/oe.png",
 		};
+
+		logger.debug("Dados para preenchimento do template montados");
+
 		doc.render(data);
+		logger.info(
+			`Documento preenchido com sucesso para pessoa ID ${pessoa.id}`
+		);
 
 		const finalBuffer = doc.getZip().generate({ type: "nodebuffer" });
 		return finalBuffer;
-	} catch (error) {
-		console.error("Erro ao renderizar o template:", error);
+	} catch (error: any) {
+		logger.error(
+			`Erro ao gerar documento de resultado para pessoa ID ${pessoa.id}: ${error.message}`
+		);
 		throw error;
 	}
 }

@@ -1,14 +1,15 @@
 generator client {
     provider = "prisma-client-js"
+    output = "./client"
 }
 
 datasource db {
     provider = "mongodb"
-    url      = env("DATABASE_URL")
+    url      = "mongodb+srv://RodrigoDB:hzmcwHkqY4ceozP2@rodrigodb.2bfnzc6.mongodb.net/VipAudiometria"
 }
 
 model Pessoa {
-    id             String        @id @default(uuid()) @map("_id")
+    id             String         @id @default(uuid()) @map("_id")
     nome           String
     cpf            String
     dataNascimento String

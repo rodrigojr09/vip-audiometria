@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = "mongodb+srv://RodrigoDB:hzmcwHkqY4ceozP2@rodrigodb.2bfnzc6.mongodb.net/VipAudiometria"
+}
+
+model Pessoa {
+  id             String         @id @default(uuid()) @map("_id")
+  nome           String
+  cpf            String
+  dataNascimento String
+  dataExame      String
+  tipoExame      String
+  funcao         String
+  empresa        String
+  responsavel    String
+  documento      String
+  resultados     ResultadoType?
+}
+
+type ResultadoType {
+  od    String
+  d250  String
+  d500  String
+  d1000 String
+  d2000 String
+  d3000 String
+  d4000 String
+  d6000 String
+  d8000 String
+  dcera String
+  oe    String
+  e250  String
+  e500  String
+  e1000 String
+  e2000 String
+  e3000 String
+  e4000 String
+  e6000 String
+  e8000 String
+  ecera String
+  obs   String
+}

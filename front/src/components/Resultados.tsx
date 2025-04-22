@@ -9,7 +9,6 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 		pessoa: { ...pessoa },
 		...pessoas
 	} = usePessoa();
-	const [laudo, setLaudo] = useState<string>("");
 	const [form, setForm] = useState<ResultadoType>(
 		pessoa.resultados || {
 			od: "",
@@ -32,7 +31,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 			e6000: "",
 			e8000: "",
 			ecera: "",
-			obs: "",
+			obs: `OD - ${dados.laudo}\nOE - ${dados.laudo}`,
 		}
 	);
 
@@ -199,15 +198,6 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 					/>
 				</div>
 			</div>
-			
-			<Input
-				label="Laudo"
-				name="laudo"
-				type="select"
-				value={laudo}
-				onChange={(e) => setLaudo(e.target.value)}
-				options={dados.laudos}
-			/>
 
 			<Input
 				label="Observações"

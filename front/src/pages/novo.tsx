@@ -1,11 +1,11 @@
 import Input from "@/components/Input";
+import  { Pessoa } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import { ChangeEvent, FormEvent, useState } from "react";
 import moment from "@/lib/moment";
-import { Pessoa } from "@prisma/client";
 import { usePessoa } from "@/hooks/usePessoa";
 import { dados } from "@/lib/dados";
-import {  ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 export default function Novo() {
 	const pessoas = usePessoa();

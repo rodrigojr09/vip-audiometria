@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useEffect, useRef } from "react";
 
 type InputFieldProps = {
 	label: string;
@@ -23,6 +23,15 @@ const Input: React.FC<InputFieldProps> = ({
 	options,
 	required = true,
 }) => {
+
+	const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+	useEffect(() => {
+		if (textareaRef.current) {
+			textareaRef.current.style.height = "auto"; // reset height
+			textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // set to scrollHeight
+		}
+	}, [value]);
 	return (
 		<div className="flex flex-col gap-2">
 			<label htmlFor={name} className="text-sm font-medium text-gray-200">
@@ -59,13 +68,14 @@ const Input: React.FC<InputFieldProps> = ({
 			)}
 			{type === "area" && (
 				<textarea
-					id={name}
+					ref={textareaRef}
 					name={name}
 					value={value}
 					onChange={onChange}
-					className="border border-vip bg-gray-800 p-2 rounded w-full text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-vip"
+					className="border border-vip bg-gray-800 p-2 rounded w-full text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-vip resize-none overflow-hidden"
 					placeholder={label}
 					required={required}
+					rows={1}
 				></textarea>
 			)}
 		</div>

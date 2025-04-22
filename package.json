@@ -8,7 +8,7 @@
 	"scripts": {
 		"dev": "yarn build && cross-env NODE_ENV=development electron .",
 		"build": "tsc",
-		"start": "cross-env NODE_ENV=production electron .",
+		"start": "yarn prisma && cross-env NODE_ENV=production electron .",
 		"prisma": "prisma generate"
 	},
 	"dependencies": {
@@ -37,16 +37,22 @@
 		"appId": "vip.projeto.audiometria",
 		"productName": "Audiometria",
 		"files": [
-			"assets",
+			"assets/**/*",
 			"dist/**/*",
-			"views/**/*"
+			"views/**/*",
+			"prisma/**/*"
 		],
 		"directories": {
-			"buildResources": "assets",
 			"output": "./Audiometria"
 		},
 		"win": {
 			"icon": "assets/icon.ico"
-		}
+		},
+		"extraResources": [
+			{
+				"from": "assets",
+				"to": ""
+			}
+		]
 	}
 }

@@ -7,21 +7,14 @@
 		"build": "next build",
 		"export": "next export",
 		"start": "next start --port=48731",
-		"lint": "next lint",
-		"prisma": "prisma generate"
+		"lint": "next lint"
 	},
 	"dependencies": {
-		"@prisma/client": "^6.6.0",
+		"@prisma/client": "../node_modules/.prisma/client",
 		"axios": "^1.8.4",
-		"canvas": "^3.1.0",
-		"chart.js": "^4.4.8",
-		"chartjs-node-canvas": "^5.0.0",
-		"docxtemplater": "^3.61.1",
-		"docxtemplater-image-module-free": "^1.1.1",
 		"lucide-react": "^0.485.0",
 		"moment-timezone": "^0.5.48",
 		"next": "15.2.4",
-		"pizzip": "^3.1.8",
 		"react": "18",
 		"react-dom": "18",
 		"uuid": "^11.1.0"
@@ -36,7 +29,6 @@
 		"eslint": "^9",
 		"eslint-config-next": "latest",
 		"postcss": "^8",
-		"prisma": "^6.6.0",
 		"tailwindcss": "^4",
 		"typescript": "^5"
 	}
