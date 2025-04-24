@@ -2,6 +2,7 @@ import { app } from "electron";
 import fs from "fs";
 import path from "path";
 import { dados } from "./dados";
+import moment from "./moment";
 
 type LogLevel = "info" | "warn" | "error" | "debug";
 
@@ -20,7 +21,7 @@ class Logger {
 	}
 
 	private writeToFile(level: LogLevel, message: string): void {
-		const date = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
+		const date = moment().format("YYYY-MM-DD"); // yyyy-mm-dd
 		const filename = path.join(this.logDir, `${date}.log`);
 		const fullMessage = this.formatMessage(level, message) + "\n";
 

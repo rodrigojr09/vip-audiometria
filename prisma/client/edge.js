@@ -120,7 +120,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Projetos\\vip-audiometria\\prisma\\client",
+      "value": "C:\\Users\\user\\Desktop\\Sistemas VIP\\vip-audiometria\\prisma\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -134,11 +134,12 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Projetos\\vip-audiometria\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\user\\Desktop\\Sistemas VIP\\vip-audiometria\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../.env"
   },
   "relativePath": "..",
   "clientVersion": "6.6.0",
@@ -151,13 +152,13 @@ const config = {
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "mongodb+srv://RodrigoDB:hzmcwHkqY4ceozP2@rodrigodb.2bfnzc6.mongodb.net/VipAudiometria"
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./client\"\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = \"mongodb+srv://RodrigoDB:hzmcwHkqY4ceozP2@rodrigodb.2bfnzc6.mongodb.net/VipAudiometria\"\n}\n\nmodel Pessoa {\n  id             String         @id @default(uuid()) @map(\"_id\")\n  nome           String\n  cpf            String\n  dataNascimento String\n  dataExame      String\n  tipoExame      String\n  funcao         String\n  empresa        String\n  responsavel    String\n  documento      String\n  resultados     ResultadoType?\n}\n\ntype ResultadoType {\n  od    String\n  d250  String\n  d500  String\n  d1000 String\n  d2000 String\n  d3000 String\n  d4000 String\n  d6000 String\n  d8000 String\n  dcera String\n  oe    String\n  e250  String\n  e500  String\n  e1000 String\n  e2000 String\n  e3000 String\n  e4000 String\n  e6000 String\n  e8000 String\n  ecera String\n  obs   String\n}\n",
-  "inlineSchemaHash": "011b9c84f7db0020c16a8eef07401bda4b446ef9b92704d7c07a818648b75962",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./client\"\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Pessoa {\n  id             String         @id @default(uuid()) @map(\"_id\")\n  nome           String\n  cpf            String\n  dataNascimento String\n  dataExame      String\n  tipoExame      String\n  funcao         String\n  empresa        String\n  responsavel    String\n  documento      String\n  resultados     ResultadoType?\n}\n\ntype ResultadoType {\n  od    String\n  d250  String\n  d500  String\n  d1000 String\n  d2000 String\n  d3000 String\n  d4000 String\n  d6000 String\n  d8000 String\n  dcera String\n  oe    String\n  e250  String\n  e500  String\n  e1000 String\n  e2000 String\n  e3000 String\n  e4000 String\n  e6000 String\n  e8000 String\n  ecera String\n  obs   String\n}\n",
+  "inlineSchemaHash": "2251fa875b16255f64cfe0fab530069a5cf36edc803991bd4d810f87414357c4",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -168,7 +169,9 @@ config.engineWasm = undefined
 config.compilerWasm = undefined
 
 config.injectableEdgeEnv = () => ({
-  parsed: {}
+  parsed: {
+    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
+  }
 })
 
 if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {
