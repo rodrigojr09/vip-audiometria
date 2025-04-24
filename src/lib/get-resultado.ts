@@ -7,6 +7,7 @@ import { Pessoa, ResultadoType } from "../../prisma/client";
 import moment from "./moment";
 import { logger } from "./Logger";
 import { dados } from "./dados";
+import { ChartOptions } from "chart.js";
 
 const width = 600;
 const height = 385;
@@ -15,23 +16,7 @@ async function createChartImageBuffer(resultado: ResultadoType) {
 	try {
 		logger.info("Gerando gráficos de audiometria...");
 
-		const chartJSNodeCanvas = new ChartJSNodeCanvas({
-			width,
-			height,
-		});
-
-		const options = {
-			scales: {
-				y: {
-					min: -10,
-					max: 120,
-					grid: { color: "#ccc" },
-				},
-				x: {
-					grid: { color: "#ccc" },
-				},
-			},
-		};
+		const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
 
 		const labels = [
 			"0",
@@ -71,7 +56,39 @@ async function createChartImageBuffer(resultado: ResultadoType) {
 			resultado.e8000,
 		].map((a) => parseInt(a));
 
-		const odBuffer = chartJSNodeCanvas.renderToBufferSync({
+		const baseOptions: ChartOptions = {
+			scales: {
+				y: {
+					min: -10,
+					max: 120,
+					grid: { color: "#ccc" },
+				},
+				x: {
+					grid: { color: "#ccc" },
+				},
+			},
+			animation: false,
+			responsive: false,
+			plugins: {},
+		};
+
+		const arrowPlugin = {
+			id: "arrowPlugin",
+			afterDatasetsDraw: (chart: any) => {
+				const { ctx } = chart;
+				const meta = chart.getDatasetMeta(0);
+				ctx.save();
+				meta.data.forEach((point: any) => {
+					const { x, y } = point.tooltipPosition();
+					ctx.font = "bold 14px Arial";
+					ctx.fillStyle = "red";
+					ctx.fillText(">", x + 10, y);
+				});
+				ctx.restore();
+			},
+		};
+
+		const odBuffer = await chartJSNodeCanvas.renderToBuffer({
 			type: "line",
 			data: {
 				labels,
@@ -87,10 +104,11 @@ async function createChartImageBuffer(resultado: ResultadoType) {
 					},
 				],
 			},
-			options,
+			options: baseOptions,
+			plugins: [arrowPlugin],
 		});
 
-		const oeBuffer = chartJSNodeCanvas.renderToBufferSync({
+		const oeBuffer = await chartJSNodeCanvas.renderToBuffer({
 			type: "line",
 			data: {
 				labels,
@@ -100,23 +118,26 @@ async function createChartImageBuffer(resultado: ResultadoType) {
 						data: oeData,
 						pointBackgroundColor: "white",
 						pointBorderColor: "blue",
-						pointStyle: "crossRot", // "X" no ponto
+						pointStyle: "crossRot",
 						borderColor: "blue",
-						borderDash: [5, 5], // linha tracejada
+						borderDash: [5, 5],
 						pointRadius: 7,
 						pointHoverRadius: 10,
 					},
 				],
 			},
-			options,
+			options: baseOptions,
 		});
 
-		if (existsSync(dados.paths.logs + "/" + "od.png")) {
-			unlinkSync(dados.paths.logs + "/" + "od.png");
+		const odPath = `${dados.paths.logs}/od.png`;
+		const oePath = `${dados.paths.logs}/oe.png`;
+
+		if (existsSync(odPath)) {
+			unlinkSync(odPath);
 			logger.debug("Arquivo anterior od.png deletado");
 		}
-		if (existsSync(dados.paths.logs + "/" + "oe.png")) {
-			unlinkSync(dados.paths.logs + "/" + "oe.png");
+		if (existsSync(oePath)) {
+			unlinkSync(oePath);
 			logger.debug("Arquivo anterior oe.png deletado");
 		}
 
