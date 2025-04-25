@@ -1,6 +1,6 @@
 generator client {
     provider = "prisma-client-js"
-    output = "./client"
+    output   = "./client"
 }
 
 datasource db {
@@ -32,7 +32,6 @@ type ResultadoType {
     d4000 String
     d6000 String
     d8000 String
-    dcera String
     oe    String
     e250  String
     e500  String
@@ -42,6 +41,22 @@ type ResultadoType {
     e4000 String
     e6000 String
     e8000 String
-    ecera String
     obs   String
+    ossea ViaOssea?
+}
+
+type ViaOssea {
+    od    String?
+    d400  String?
+    d500  String?
+    d1000 String?
+    d2000 String?
+    d3000 String?
+    d4000 String?
+    oe    String?
+    e500  String?
+    e1000 String?
+    e2000 String?
+    e3000 String?
+    e4000 String?
 }

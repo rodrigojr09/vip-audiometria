@@ -21,7 +21,6 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 			d4000: "",
 			d6000: "",
 			d8000: "",
-			dcera: "",
 			e250: "",
 			e500: "",
 			e1000: "",
@@ -30,7 +29,6 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 			e4000: "",
 			e6000: "",
 			e8000: "",
-			ecera: "",
 			obs: `OD - ${dados.laudo}\nOE - ${dados.laudo}`,
 		}
 	);
@@ -125,12 +123,6 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 						value={form.d8000}
 						onChange={handleChange}
 					/>
-					<Input
-						label="OD CERA"
-						name="dcera"
-						value={form.dcera}
-						onChange={handleChange}
-					/>
 				</div>
 
 				<div className="flex flex-col w-full">
@@ -188,12 +180,6 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 						label="OE 8000Hz"
 						name="e8000"
 						value={form.e8000}
-						onChange={handleChange}
-					/>
-					<Input
-						label="OE CERA"
-						name="ecera"
-						value={form.ecera}
 						onChange={handleChange}
 					/>
 				</div>

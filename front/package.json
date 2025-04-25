@@ -10,7 +10,7 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@prisma/client": "../node_modules/.prisma/client",
+		"@prisma/client": "../prisma/client",
 		"axios": "^1.8.4",
 		"lucide-react": "^0.485.0",
 		"moment-timezone": "^0.5.48",

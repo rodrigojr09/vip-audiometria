@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type ResultadoType = $Result.DefaultSelection<Prisma.$ResultadoTypePayload>
 /**
+ * Model ViaOssea
+ * 
+ */
+export type ViaOssea = $Result.DefaultSelection<Prisma.$ViaOsseaPayload>
+/**
  * Model Pessoa
  * 
  */
@@ -846,7 +851,6 @@ export namespace Prisma {
     d4000?: boolean
     d6000?: boolean
     d8000?: boolean
-    dcera?: boolean
     oe?: boolean
     e250?: boolean
     e500?: boolean
@@ -856,8 +860,8 @@ export namespace Prisma {
     e4000?: boolean
     e6000?: boolean
     e8000?: boolean
-    ecera?: boolean
     obs?: boolean
+    ossea?: boolean | ViaOsseaDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["resultadoType"]>
 
 
@@ -872,7 +876,6 @@ export namespace Prisma {
     d4000?: boolean
     d6000?: boolean
     d8000?: boolean
-    dcera?: boolean
     oe?: boolean
     e250?: boolean
     e500?: boolean
@@ -882,11 +885,11 @@ export namespace Prisma {
     e4000?: boolean
     e6000?: boolean
     e8000?: boolean
-    ecera?: boolean
     obs?: boolean
   }
 
-  export type ResultadoTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"od" | "d250" | "d500" | "d1000" | "d2000" | "d3000" | "d4000" | "d6000" | "d8000" | "dcera" | "oe" | "e250" | "e500" | "e1000" | "e2000" | "e3000" | "e4000" | "e6000" | "e8000" | "ecera" | "obs", ExtArgs["result"]["resultadoType"]>
+  export type ResultadoTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"od" | "d250" | "d500" | "d1000" | "d2000" | "d3000" | "d4000" | "d6000" | "d8000" | "oe" | "e250" | "e500" | "e1000" | "e2000" | "e3000" | "e4000" | "e6000" | "e8000" | "obs" | "ossea", ExtArgs["result"]["resultadoType"]>
+  export type ResultadoTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $ResultadoTypePayload = {
     name: "ResultadoType"
@@ -901,7 +904,6 @@ export namespace Prisma {
       d4000: string
       d6000: string
       d8000: string
-      dcera: string
       oe: string
       e250: string
       e500: string
@@ -911,10 +913,11 @@ export namespace Prisma {
       e4000: string
       e6000: string
       e8000: string
-      ecera: string
       obs: string
     }
-    composites: {}
+    composites: {
+      ossea: Prisma.$ViaOsseaPayload | null
+    }
   }
 
   type ResultadoTypeGetPayload<S extends boolean | null | undefined | ResultadoTypeDefaultArgs> = $Result.GetResult<Prisma.$ResultadoTypePayload, S>
@@ -936,7 +939,6 @@ export namespace Prisma {
     readonly d4000: FieldRef<"ResultadoType", 'String'>
     readonly d6000: FieldRef<"ResultadoType", 'String'>
     readonly d8000: FieldRef<"ResultadoType", 'String'>
-    readonly dcera: FieldRef<"ResultadoType", 'String'>
     readonly oe: FieldRef<"ResultadoType", 'String'>
     readonly e250: FieldRef<"ResultadoType", 'String'>
     readonly e500: FieldRef<"ResultadoType", 'String'>
@@ -946,7 +948,6 @@ export namespace Prisma {
     readonly e4000: FieldRef<"ResultadoType", 'String'>
     readonly e6000: FieldRef<"ResultadoType", 'String'>
     readonly e8000: FieldRef<"ResultadoType", 'String'>
-    readonly ecera: FieldRef<"ResultadoType", 'String'>
     readonly obs: FieldRef<"ResultadoType", 'String'>
   }
     
@@ -964,6 +965,117 @@ export namespace Prisma {
      * Omit specific fields from the ResultadoType
      */
     omit?: ResultadoTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResultadoTypeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ViaOssea
+   */
+
+
+
+
+
+  export type ViaOsseaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    od?: boolean
+    d400?: boolean
+    d500?: boolean
+    d1000?: boolean
+    d2000?: boolean
+    d3000?: boolean
+    d4000?: boolean
+    oe?: boolean
+    e500?: boolean
+    e1000?: boolean
+    e2000?: boolean
+    e3000?: boolean
+    e4000?: boolean
+  }, ExtArgs["result"]["viaOssea"]>
+
+
+
+  export type ViaOsseaSelectScalar = {
+    od?: boolean
+    d400?: boolean
+    d500?: boolean
+    d1000?: boolean
+    d2000?: boolean
+    d3000?: boolean
+    d4000?: boolean
+    oe?: boolean
+    e500?: boolean
+    e1000?: boolean
+    e2000?: boolean
+    e3000?: boolean
+    e4000?: boolean
+  }
+
+  export type ViaOsseaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"od" | "d400" | "d500" | "d1000" | "d2000" | "d3000" | "d4000" | "oe" | "e500" | "e1000" | "e2000" | "e3000" | "e4000", ExtArgs["result"]["viaOssea"]>
+
+  export type $ViaOsseaPayload = {
+    name: "ViaOssea"
+    objects: {}
+    scalars: {
+      od: string | null
+      d400: string | null
+      d500: string | null
+      d1000: string | null
+      d2000: string | null
+      d3000: string | null
+      d4000: string | null
+      oe: string | null
+      e500: string | null
+      e1000: string | null
+      e2000: string | null
+      e3000: string | null
+      e4000: string | null
+    }
+    composites: {}
+  }
+
+  type ViaOsseaGetPayload<S extends boolean | null | undefined | ViaOsseaDefaultArgs> = $Result.GetResult<Prisma.$ViaOsseaPayload, S>
+
+
+
+
+
+  /**
+   * Fields of the ViaOssea model
+   */
+  interface ViaOsseaFieldRefs {
+    readonly od: FieldRef<"ViaOssea", 'String'>
+    readonly d400: FieldRef<"ViaOssea", 'String'>
+    readonly d500: FieldRef<"ViaOssea", 'String'>
+    readonly d1000: FieldRef<"ViaOssea", 'String'>
+    readonly d2000: FieldRef<"ViaOssea", 'String'>
+    readonly d3000: FieldRef<"ViaOssea", 'String'>
+    readonly d4000: FieldRef<"ViaOssea", 'String'>
+    readonly oe: FieldRef<"ViaOssea", 'String'>
+    readonly e500: FieldRef<"ViaOssea", 'String'>
+    readonly e1000: FieldRef<"ViaOssea", 'String'>
+    readonly e2000: FieldRef<"ViaOssea", 'String'>
+    readonly e3000: FieldRef<"ViaOssea", 'String'>
+    readonly e4000: FieldRef<"ViaOssea", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ViaOssea without action
+   */
+  export type ViaOsseaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ViaOssea
+     */
+    select?: ViaOsseaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ViaOssea
+     */
+    omit?: ViaOsseaOmit<ExtArgs> | null
   }
 
 
@@ -2276,7 +2388,6 @@ export namespace Prisma {
     d4000: string
     d6000: string
     d8000: string
-    dcera: string
     oe: string
     e250: string
     e500: string
@@ -2286,8 +2397,8 @@ export namespace Prisma {
     e4000: string
     e6000: string
     e8000: string
-    ecera: string
     obs: string
+    ossea?: ViaOsseaObjectEqualityInput | null
   }
 
   export type ResultadoTypeOrderByInput = {
@@ -2300,7 +2411,6 @@ export namespace Prisma {
     d4000?: SortOrder
     d6000?: SortOrder
     d8000?: SortOrder
-    dcera?: SortOrder
     oe?: SortOrder
     e250?: SortOrder
     e500?: SortOrder
@@ -2310,8 +2420,8 @@ export namespace Prisma {
     e4000?: SortOrder
     e6000?: SortOrder
     e8000?: SortOrder
-    ecera?: SortOrder
     obs?: SortOrder
+    ossea?: ViaOsseaOrderByInput
   }
 
   export type PessoaCountOrderByAggregateInput = {
@@ -2385,7 +2495,6 @@ export namespace Prisma {
     d4000: string
     d6000: string
     d8000: string
-    dcera: string
     oe: string
     e250: string
     e500: string
@@ -2395,8 +2504,8 @@ export namespace Prisma {
     e4000: string
     e6000: string
     e8000: string
-    ecera: string
     obs: string
+    ossea?: ViaOsseaCreateInput | null
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -2436,7 +2545,6 @@ export namespace Prisma {
     d4000?: StringFilter<"ResultadoType"> | string
     d6000?: StringFilter<"ResultadoType"> | string
     d8000?: StringFilter<"ResultadoType"> | string
-    dcera?: StringFilter<"ResultadoType"> | string
     oe?: StringFilter<"ResultadoType"> | string
     e250?: StringFilter<"ResultadoType"> | string
     e500?: StringFilter<"ResultadoType"> | string
@@ -2446,8 +2554,40 @@ export namespace Prisma {
     e4000?: StringFilter<"ResultadoType"> | string
     e6000?: StringFilter<"ResultadoType"> | string
     e8000?: StringFilter<"ResultadoType"> | string
-    ecera?: StringFilter<"ResultadoType"> | string
     obs?: StringFilter<"ResultadoType"> | string
+    ossea?: XOR<ViaOsseaNullableCompositeFilter, ViaOsseaObjectEqualityInput> | null
+  }
+
+  export type ViaOsseaObjectEqualityInput = {
+    od?: string | null
+    d400?: string | null
+    d500?: string | null
+    d1000?: string | null
+    d2000?: string | null
+    d3000?: string | null
+    d4000?: string | null
+    oe?: string | null
+    e500?: string | null
+    e1000?: string | null
+    e2000?: string | null
+    e3000?: string | null
+    e4000?: string | null
+  }
+
+  export type ViaOsseaOrderByInput = {
+    od?: SortOrder
+    d400?: SortOrder
+    d500?: SortOrder
+    d1000?: SortOrder
+    d2000?: SortOrder
+    d3000?: SortOrder
+    d4000?: SortOrder
+    oe?: SortOrder
+    e500?: SortOrder
+    e1000?: SortOrder
+    e2000?: SortOrder
+    e3000?: SortOrder
+    e4000?: SortOrder
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2478,9 +2618,32 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type ViaOsseaCreateInput = {
+    od?: string | null
+    d400?: string | null
+    d500?: string | null
+    d1000?: string | null
+    d2000?: string | null
+    d3000?: string | null
+    d4000?: string | null
+    oe?: string | null
+    e500?: string | null
+    e1000?: string | null
+    e2000?: string | null
+    e3000?: string | null
+    e4000?: string | null
+  }
+
   export type ResultadoTypeUpsertInput = {
     set: ResultadoTypeCreateInput | null
     update: ResultadoTypeUpdateInput
+  }
+
+  export type ViaOsseaNullableCompositeFilter = {
+    equals?: ViaOsseaObjectEqualityInput | null
+    is?: ViaOsseaWhereInput | null
+    isNot?: ViaOsseaWhereInput | null
+    isSet?: boolean
   }
 
   export type ResultadoTypeUpdateInput = {
@@ -2493,7 +2656,6 @@ export namespace Prisma {
     d4000?: StringFieldUpdateOperationsInput | string
     d6000?: StringFieldUpdateOperationsInput | string
     d8000?: StringFieldUpdateOperationsInput | string
-    dcera?: StringFieldUpdateOperationsInput | string
     oe?: StringFieldUpdateOperationsInput | string
     e250?: StringFieldUpdateOperationsInput | string
     e500?: StringFieldUpdateOperationsInput | string
@@ -2503,8 +2665,90 @@ export namespace Prisma {
     e4000?: StringFieldUpdateOperationsInput | string
     e6000?: StringFieldUpdateOperationsInput | string
     e8000?: StringFieldUpdateOperationsInput | string
-    ecera?: StringFieldUpdateOperationsInput | string
     obs?: StringFieldUpdateOperationsInput | string
+    ossea?: XOR<ViaOsseaNullableUpdateEnvelopeInput, ViaOsseaCreateInput> | null
+  }
+
+  export type ViaOsseaWhereInput = {
+    AND?: ViaOsseaWhereInput | ViaOsseaWhereInput[]
+    OR?: ViaOsseaWhereInput[]
+    NOT?: ViaOsseaWhereInput | ViaOsseaWhereInput[]
+    od?: StringNullableFilter<"ViaOssea"> | string | null
+    d400?: StringNullableFilter<"ViaOssea"> | string | null
+    d500?: StringNullableFilter<"ViaOssea"> | string | null
+    d1000?: StringNullableFilter<"ViaOssea"> | string | null
+    d2000?: StringNullableFilter<"ViaOssea"> | string | null
+    d3000?: StringNullableFilter<"ViaOssea"> | string | null
+    d4000?: StringNullableFilter<"ViaOssea"> | string | null
+    oe?: StringNullableFilter<"ViaOssea"> | string | null
+    e500?: StringNullableFilter<"ViaOssea"> | string | null
+    e1000?: StringNullableFilter<"ViaOssea"> | string | null
+    e2000?: StringNullableFilter<"ViaOssea"> | string | null
+    e3000?: StringNullableFilter<"ViaOssea"> | string | null
+    e4000?: StringNullableFilter<"ViaOssea"> | string | null
+  }
+
+  export type ViaOsseaNullableUpdateEnvelopeInput = {
+    set?: ViaOsseaCreateInput | null
+    upsert?: ViaOsseaUpsertInput
+    unset?: boolean
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    isSet?: boolean
+  }
+
+  export type ViaOsseaUpsertInput = {
+    set: ViaOsseaCreateInput | null
+    update: ViaOsseaUpdateInput
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    isSet?: boolean
+  }
+
+  export type ViaOsseaUpdateInput = {
+    od?: NullableStringFieldUpdateOperationsInput | string | null
+    d400?: NullableStringFieldUpdateOperationsInput | string | null
+    d500?: NullableStringFieldUpdateOperationsInput | string | null
+    d1000?: NullableStringFieldUpdateOperationsInput | string | null
+    d2000?: NullableStringFieldUpdateOperationsInput | string | null
+    d3000?: NullableStringFieldUpdateOperationsInput | string | null
+    d4000?: NullableStringFieldUpdateOperationsInput | string | null
+    oe?: NullableStringFieldUpdateOperationsInput | string | null
+    e500?: NullableStringFieldUpdateOperationsInput | string | null
+    e1000?: NullableStringFieldUpdateOperationsInput | string | null
+    e2000?: NullableStringFieldUpdateOperationsInput | string | null
+    e3000?: NullableStringFieldUpdateOperationsInput | string | null
+    e4000?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+    unset?: boolean
   }
 
 

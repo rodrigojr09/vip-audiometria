@@ -197,8 +197,6 @@ export async function getResultadoFile(pessoa: Pessoa) {
 			documento: pessoa.documento,
 			od: pessoa.resultados?.od || "NORMAL",
 			oe: pessoa.resultados?.oe || "NORMAL",
-			e0: pessoa.resultados?.ecera,
-			d0: pessoa.resultados?.dcera,
 			d1: pessoa.resultados?.d250,
 			e1: pessoa.resultados?.e250,
 			d2: pessoa.resultados?.d500,
