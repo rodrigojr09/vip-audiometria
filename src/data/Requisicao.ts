@@ -1,9 +1,9 @@
 import { Pessoa } from "../../prisma/client";
 import DocxTemplater from "docxtemplater";
 import PizZip from "pizzip";
-import moment from "./moment";
+import moment from "../lib/moment";
 import { readFileSync } from "fs";
-import { logger } from "./Logger";
+import { logger } from "../lib/Logger";
 import { dados } from "./dados";
 
 export default async function getRequisicao(pessoa: Pessoa) {

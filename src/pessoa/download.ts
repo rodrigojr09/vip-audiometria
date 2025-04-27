@@ -1,5 +1,5 @@
 import { app, shell } from "electron";
-import data from "../lib/DataProvider";
+import data from "@/data/DataProvider";
 import { FastifyReply, FastifyRequest } from "fastify";
 import path from "path";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
@@ -51,7 +51,7 @@ export default async function handler(req: FastifyRequest, res: FastifyReply) {
 		logger.info(`Arquivo "${filename}" salvo com sucesso em: ${filePath}`);
 
 		return res.status(200).send({ message: "Arquivo enviado com sucesso" });
-	} catch (err:any) {
+	} catch (err: any) {
 		logger.error(`Erro durante o download: ${err.message}`);
 		console.log(err);
 		return res.status(500).send({ error: "Erro interno no servidor" });

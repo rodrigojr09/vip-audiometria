@@ -1,5 +1,5 @@
 import Input from "@/components/Input";
-import  { Pessoa } from "@prisma/client";
+import { Pessoa } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import { ChangeEvent, FormEvent, useState } from "react";
 import moment from "@/lib/moment";
@@ -20,7 +20,6 @@ export default function Novo() {
 		empresa: "",
 		responsavel: "",
 		documento: "",
-		resultados: null,
 	});
 
 	const handleChange = (
@@ -28,7 +27,7 @@ export default function Novo() {
 			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 		>
 	) => {
-		setForm((prev:any) => ({
+		setForm((prev: any) => ({
 			...prev,
 			[e.target.name]:
 				e.target.name === "dataExame"
@@ -43,7 +42,6 @@ export default function Novo() {
 		if (!res) {
 			return alert("Erro ao criar pessoa");
 		} else {
-			pessoas.refresh();
 			location.href = "/";
 		}
 	};
@@ -103,7 +101,7 @@ export default function Novo() {
 					type="select"
 					value={form.responsavel}
 					onChange={(e) => {
-						setForm((prev:any) => ({
+						setForm((prev: any) => ({
 							...prev,
 							responsavel: e.target.value,
 							documento:

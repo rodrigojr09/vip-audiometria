@@ -1,7 +1,7 @@
 import { app } from "electron";
 import fs from "fs";
 import path from "path";
-import { dados } from "./dados";
+import { dados } from "../data/dados";
 import moment from "./moment";
 
 type LogLevel = "info" | "warn" | "error" | "debug";

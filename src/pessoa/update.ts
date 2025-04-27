@@ -1,4 +1,4 @@
-import data from "../lib/DataProvider";
+import data from "@/data/DataProvider";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { Pessoa } from "../../prisma/client";
 import { logger } from "../lib/Logger"; // Importando a lib de logging
@@ -30,7 +30,7 @@ export default async function handler(req: FastifyRequest, res: FastifyReply) {
 		);
 
 		return res.status(201).send(updatedPessoa);
-	} catch (err:any) {
+	} catch (err: any) {
 		logger.error(
 			`Erro ao atualizar pessoa com ID ${pessoa.id}: ${err.message}`
 		);

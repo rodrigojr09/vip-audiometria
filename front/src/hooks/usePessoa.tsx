@@ -1,4 +1,4 @@
-import { Pessoa } from "@prisma/client";
+import { Pessoa } from "@/types";
 import Axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -11,7 +11,7 @@ export interface PessoaProps {
 	update: (pessoa: Pessoa) => Promise<boolean>;
 	delete: (id: string) => Promise<boolean>;
 	download: (id: string, type: "resultado" | "requisicao") => Promise<void>;
-	refresh: () => Promise<void>;
+	refresh: () => void;
 }
 
 const PessoaContext = createContext<PessoaProps | undefined>(undefined);
@@ -28,14 +28,23 @@ export default function PessoaProvider({
 	const [pessoa, setPessoa] = useState<Pessoa | undefined>(undefined);
 	const [pessoas, setPessoas] = useState<Pessoa[]>([]);
 
-	useEffect(() => {
-		refresh();
-	}, []);
+	let coldown = 1;
+	setInterval(() => {
+		coldown++;
+	}, 5000);
 
 	async function refresh() {
 		const result = await axios.get("/pessoa/get");
 		setPessoas(result.data);
 	}
+
+	useEffect(() => {
+		(async () => {
+			const result = await axios.get("/pessoa/get");
+			setPessoas(result.data);
+		})();
+	}, [coldown, axios]);
+
 	async function get(id?: string) {
 		const result = await axios.get(`/pessoa/get${id ? `?id=${id}` : ""}`);
 		return result.data;

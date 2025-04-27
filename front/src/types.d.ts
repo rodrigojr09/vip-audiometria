@@ -1,4 +1,4 @@
-interface Pessoa {
+export interface Pessoa {
 	id: string;
 	nome: string;
 	cpf: string;
@@ -12,7 +12,7 @@ interface Pessoa {
 	resultados?: ResultadoType;
 }
 
-interface ResultadoType {
+export interface ResultadoType {
 	od: string;
 	d250: string;
 	d500: string;
@@ -35,18 +35,18 @@ interface ResultadoType {
 	ossea?: ViaOssea;
 }
 
-interface ViaOssea {
-	od?: string;
-	d400?: string;
-	d500?: string;
-	d1000?: string;
-	d2000?: string;
-	d3000?: string;
-	d4000?: string;
-	oe?: string;
-	e500?: string;
-	e1000?: string;
-	e2000?: string;
-	e3000?: string;
-	e4000?: string;
+export interface ViaOssea {
+	od: boolean;
+	d400: string | null;
+	d500: string | null;
+	d1000: string | null;
+	d2000: string | null;
+	d3000: string | null;
+	d4000: string | null;
+	oe: boolean;
+	e500: string | null;
+	e1000: string | null;
+	e2000: string | null;
+	e3000: string | null;
+	e4000: string | null;
 }

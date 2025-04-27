@@ -1020,14 +1020,14 @@ export namespace Prisma {
     name: "ViaOssea"
     objects: {}
     scalars: {
-      od: string | null
+      od: boolean
       d400: string | null
       d500: string | null
       d1000: string | null
       d2000: string | null
       d3000: string | null
       d4000: string | null
-      oe: string | null
+      oe: boolean
       e500: string | null
       e1000: string | null
       e2000: string | null
@@ -1047,14 +1047,14 @@ export namespace Prisma {
    * Fields of the ViaOssea model
    */
   interface ViaOsseaFieldRefs {
-    readonly od: FieldRef<"ViaOssea", 'String'>
+    readonly od: FieldRef<"ViaOssea", 'Boolean'>
     readonly d400: FieldRef<"ViaOssea", 'String'>
     readonly d500: FieldRef<"ViaOssea", 'String'>
     readonly d1000: FieldRef<"ViaOssea", 'String'>
     readonly d2000: FieldRef<"ViaOssea", 'String'>
     readonly d3000: FieldRef<"ViaOssea", 'String'>
     readonly d4000: FieldRef<"ViaOssea", 'String'>
-    readonly oe: FieldRef<"ViaOssea", 'String'>
+    readonly oe: FieldRef<"ViaOssea", 'Boolean'>
     readonly e500: FieldRef<"ViaOssea", 'String'>
     readonly e1000: FieldRef<"ViaOssea", 'String'>
     readonly e2000: FieldRef<"ViaOssea", 'String'>
@@ -2177,6 +2177,13 @@ export namespace Prisma {
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
   /**
    * Deep Input Types
    */
@@ -2559,14 +2566,14 @@ export namespace Prisma {
   }
 
   export type ViaOsseaObjectEqualityInput = {
-    od?: string | null
+    od: boolean
     d400?: string | null
     d500?: string | null
     d1000?: string | null
     d2000?: string | null
     d3000?: string | null
     d4000?: string | null
-    oe?: string | null
+    oe: boolean
     e500?: string | null
     e1000?: string | null
     e2000?: string | null
@@ -2619,14 +2626,14 @@ export namespace Prisma {
   }
 
   export type ViaOsseaCreateInput = {
-    od?: string | null
+    od: boolean
     d400?: string | null
     d500?: string | null
     d1000?: string | null
     d2000?: string | null
     d3000?: string | null
     d4000?: string | null
-    oe?: string | null
+    oe: boolean
     e500?: string | null
     e1000?: string | null
     e2000?: string | null
@@ -2673,14 +2680,14 @@ export namespace Prisma {
     AND?: ViaOsseaWhereInput | ViaOsseaWhereInput[]
     OR?: ViaOsseaWhereInput[]
     NOT?: ViaOsseaWhereInput | ViaOsseaWhereInput[]
-    od?: StringNullableFilter<"ViaOssea"> | string | null
+    od?: BoolFilter<"ViaOssea"> | boolean
     d400?: StringNullableFilter<"ViaOssea"> | string | null
     d500?: StringNullableFilter<"ViaOssea"> | string | null
     d1000?: StringNullableFilter<"ViaOssea"> | string | null
     d2000?: StringNullableFilter<"ViaOssea"> | string | null
     d3000?: StringNullableFilter<"ViaOssea"> | string | null
     d4000?: StringNullableFilter<"ViaOssea"> | string | null
-    oe?: StringNullableFilter<"ViaOssea"> | string | null
+    oe?: BoolFilter<"ViaOssea"> | boolean
     e500?: StringNullableFilter<"ViaOssea"> | string | null
     e1000?: StringNullableFilter<"ViaOssea"> | string | null
     e2000?: StringNullableFilter<"ViaOssea"> | string | null
@@ -2692,6 +2699,11 @@ export namespace Prisma {
     set?: ViaOsseaCreateInput | null
     upsert?: ViaOsseaUpsertInput
     unset?: boolean
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -2715,6 +2727,11 @@ export namespace Prisma {
     update: ViaOsseaUpdateInput
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -2731,19 +2748,23 @@ export namespace Prisma {
   }
 
   export type ViaOsseaUpdateInput = {
-    od?: NullableStringFieldUpdateOperationsInput | string | null
+    od?: BoolFieldUpdateOperationsInput | boolean
     d400?: NullableStringFieldUpdateOperationsInput | string | null
     d500?: NullableStringFieldUpdateOperationsInput | string | null
     d1000?: NullableStringFieldUpdateOperationsInput | string | null
     d2000?: NullableStringFieldUpdateOperationsInput | string | null
     d3000?: NullableStringFieldUpdateOperationsInput | string | null
     d4000?: NullableStringFieldUpdateOperationsInput | string | null
-    oe?: NullableStringFieldUpdateOperationsInput | string | null
+    oe?: BoolFieldUpdateOperationsInput | boolean
     e500?: NullableStringFieldUpdateOperationsInput | string | null
     e1000?: NullableStringFieldUpdateOperationsInput | string | null
     e2000?: NullableStringFieldUpdateOperationsInput | string | null
     e3000?: NullableStringFieldUpdateOperationsInput | string | null
     e4000?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type NullableStringFieldUpdateOperationsInput = {

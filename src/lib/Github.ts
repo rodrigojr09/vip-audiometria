@@ -2,7 +2,7 @@ import axios from "axios";
 import { logger } from "./Logger";
 import { writeFile, mkdirSync, existsSync } from "fs";
 import path from "path";
-import { dados } from "./dados";
+import { dados } from "../data/dados";
 
 export class GitHubRelease {
 	private owner: string;

@@ -1,7 +1,7 @@
 import Input from "@/components/Input";
 import { ChangeEvent, useState } from "react";
 import { usePessoa } from "@/hooks/usePessoa";
-import { ResultadoType } from "@prisma/client";
+import { ResultadoType } from "@/types";
 import { dados } from "@/lib/dados";
 
 export default function Resultados({ onClose }: { onClose: () => void }) {
@@ -30,6 +30,21 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 			e6000: "",
 			e8000: "",
 			obs: `OD - ${dados.laudo}\nOE - ${dados.laudo}`,
+			ossea: {
+				od: false,
+				d400: "",
+				d500: "",
+				d1000: "",
+				d2000: "",
+				d3000: "",
+				d4000: "",
+				oe: false,
+				e500: "",
+				e1000: "",
+				e2000: "",
+				e3000: "",
+				e4000: "",
+			},
 		}
 	);
 
@@ -38,7 +53,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 		>
 	) => {
-		setForm((prev:any) => ({ ...prev, [e.target.name]: e.target.value }));
+		setForm((prev: any) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
 	const handleSubmit = async (e: any) => {

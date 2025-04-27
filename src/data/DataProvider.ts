@@ -1,9 +1,8 @@
-import getRequisicao from "./get-requisicao";
-import { getResultadoFile } from "./get-resultado";
-import prisma from "./prisma";
-import { Pessoa } from "../../prisma/client";
-import { logger } from "./Logger";
-
+import getRequisicao from "@/data/Requisicao";
+import { getResultado } from "@/data/Resultado";
+import prisma from "@/lib/prisma";
+import { Pessoa } from "@/../prisma/client";
+import { logger } from "@/lib/Logger";
 
 class DataProvider {
 	async getData(id?: string): Promise<Pessoa | Pessoa[] | null> {
@@ -75,7 +74,7 @@ class DataProvider {
 			}
 
 			if (type == "resultado") {
-				const doc = await getResultadoFile(data);
+				const doc = await getResultado(data);
 				logger.info(`Arquivo de resultado gerado para ID ${id}`);
 				return doc;
 			} else {
