@@ -46,8 +46,8 @@ export async function Grafico(
 			meta.data.forEach((point: any) => {
 				const { x, y } = point.tooltipPosition();
 				ctx.font = "bold 14px Arial";
-				ctx.fillStyle = "red";
-				ctx.fillText(direction === "d" ? ">" : "<", x + 10, y);
+				ctx.fillStyle = direction === "d" ? "red" : "blue";
+				ctx.fillText(direction === "d" ? ">" : "<", x + (direction === "e" ? -15 : 10) , y);
 			});
 			ctx.restore();
 		},
@@ -74,7 +74,7 @@ export async function Grafico(
 			],
 		},
 		options: baseOptions,
-		plugins: direction ? [arrowPlugin] : [],
+		plugins: ossea ? [arrowPlugin] : [],
 	});
 
 	return buffer;

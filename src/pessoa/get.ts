@@ -1,4 +1,4 @@
-import data from "@/data/DataProvider";
+import data from "../data/DataProvider";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { logger } from "../lib/Logger"; // Importando a lib de logging
 
@@ -33,14 +33,14 @@ export default async function handler(req: FastifyRequest, res: FastifyReply) {
 		try {
 			const pessoas = await data.getData();
 
-			if (!pessoas) {
+			if (!pessoas || !Array.isArray(pessoas)) {
 				logger.warn(`Pessoas não encontradas.`);
 				return res
 					.status(404)
 					.send({ error: "Pessoas não encontradas" });
 			}
 
-			logger.info(`Pessoas encontradas: ${JSON.stringify(pessoas)}`);
+			logger.info(`Quantidade de Pessoas encontradas: ${pessoas.length}`);
 
 			return res.status(200).send(pessoas);
 		} catch (err: any) {

@@ -3,7 +3,7 @@ import React, { ChangeEvent, useEffect, useRef } from "react";
 type InputFieldProps = {
 	label: string;
 	name: string;
-	value: string;
+	value?: string;
 	onChange: (
 		e: ChangeEvent<
 			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement

@@ -28,10 +28,6 @@ export default function PessoaProvider({
 	const [pessoa, setPessoa] = useState<Pessoa | undefined>(undefined);
 	const [pessoas, setPessoas] = useState<Pessoa[]>([]);
 
-	let coldown = 1;
-	setInterval(() => {
-		coldown++;
-	}, 5000);
 
 	async function refresh() {
 		const result = await axios.get("/pessoa/get");
@@ -43,7 +39,8 @@ export default function PessoaProvider({
 			const result = await axios.get("/pessoa/get");
 			setPessoas(result.data);
 		})();
-	}, [coldown, axios]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	async function get(id?: string) {
 		const result = await axios.get(`/pessoa/get${id ? `?id=${id}` : ""}`);

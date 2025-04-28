@@ -2,11 +2,14 @@ import Resultados from "@/components/Resultados";
 import { usePessoa } from "@/hooks/usePessoa";
 import moment from "@/lib/moment";
 import { Download, FileText, Trash, Upload, User } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
 	const { pessoa, ...pessoas } = usePessoa();
 	const [enableResultado, setEnableResultado] = useState(false);
+	useEffect(() => {
+		setEnableResultado(false);
+	}, [pessoa]);
 	if (!pessoa)
 		return (
 			<div className="flex items-center ml-[25%] justify-center w-[75%] h-screen text-gray-500">

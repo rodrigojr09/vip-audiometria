@@ -8,7 +8,7 @@ import moment from "../lib/moment";
 import { logger } from "../lib/Logger";
 import { dados } from "./dados";
 import { ChartOptions } from "chart.js";
-import { Grafico } from "@/lib/Grafico";
+import { Grafico } from "../lib/Grafico";
 
 function saveFile(buffer: Buffer, fileName: string) {
 	writeFileSync(dados.paths.logs + "/" + fileName, buffer);
@@ -39,7 +39,7 @@ export async function getResultado(pessoa: Pessoa) {
 					pessoa.resultados?.d8000,
 				].map((a) => parseInt(a || "0")),
 				"d",
-				pessoa.resultados?.ossea?.od
+				!!pessoa.resultados?.ossea?.od
 			),
 			"od.png"
 		);
@@ -59,7 +59,7 @@ export async function getResultado(pessoa: Pessoa) {
 					pessoa.resultados?.e8000,
 				].map((a) => parseInt(a || "0")),
 				"e",
-				pessoa.resultados?.ossea?.oe
+				!!pessoa.resultados?.ossea?.oe
 			),
 			"oe.png"
 		);

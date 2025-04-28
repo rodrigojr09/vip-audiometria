@@ -37,16 +37,16 @@ export interface ResultadoType {
 
 export interface ViaOssea {
 	od: boolean;
-	d400: string | null;
-	d500: string | null;
-	d1000: string | null;
-	d2000: string | null;
-	d3000: string | null;
-	d4000: string | null;
+	d400?: string;
+	d500?: string;
+	d1000?: string;
+	d2000?: string;
+	d3000?: string;
+	d4000?: string;
 	oe: boolean;
-	e500: string | null;
-	e1000: string | null;
-	e2000: string | null;
-	e3000: string | null;
-	e4000: string | null;
+	e500?: string;
+	e1000?: string;
+	e2000?: string;
+	e3000?: string;
+	e4000?: string;
 }

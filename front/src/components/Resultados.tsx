@@ -9,6 +9,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 		pessoa: { ...pessoa },
 		...pessoas
 	} = usePessoa();
+	const [viaOssea, setViaOssea] = useState(false);
 	const [form, setForm] = useState<ResultadoType>(
 		pessoa.resultados || {
 			od: "",
@@ -53,8 +54,22 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 		>
 	) => {
-		setForm((prev: any) => ({ ...prev, [e.target.name]: e.target.value }));
+		setForm((prev: any) => ({
+			...prev,
+			[e.target.name.replace("ossea.", "")]: e.target.value,
+		}));
 	};
+
+	function handleChangeOsseo(
+		e: ChangeEvent<
+			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+		>
+	) {
+		setForm((prev: any) => ({
+			...prev,
+			ossea: { ...prev.ossea, [e.target.name]: e.target.value },
+		}));
+	}
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
@@ -200,6 +215,152 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 				</div>
 			</div>
 
+			{/**
+			 * Form Via Ossea
+			 */}
+			<h3 className="mt-8 font-bold text-xl text-center">Via Ossea</h3>
+			<label
+				htmlFor="ossea"
+				className="flex space-x-2 w-full justify-center mb-4"
+			>
+				<input
+					type="checkbox"
+					onChange={() => {
+						setViaOssea(!viaOssea);
+						if (!viaOssea) setForm({ ...form, ossea: undefined });
+						else
+							setForm({
+								...form,
+								ossea: { od: false, oe: false },
+							});
+					}}
+					checked={viaOssea}
+					name="ossea"
+				/>
+				<p>Utilizar via ossea?</p>
+			</label>
+
+			{viaOssea && (
+				<div className={"flex space-x-4 w-full"}>
+					<div className="flex flex-col w-full">
+						<label
+							htmlFor="ossea.od"
+							className="text-sm font-medium text-gray-200"
+						>
+							<input
+								type="checkbox"
+								className="w-4 h-4"
+								onChange={() => {
+									setForm({
+										...form,
+										ossea: {
+											...form.ossea,
+											oe: form.ossea?.oe || false,
+											od: !form.ossea?.od || false,
+										},
+									});
+								}}
+								checked={form.ossea?.od}
+								name="ossea.od"
+							/>
+							Via Ossea Direita
+						</label>
+						{form.ossea?.od && (
+							<>
+								<Input
+									label="OD 500Hz"
+									name="d500"
+									value={form.ossea?.d500}
+									onChange={handleChangeOsseo}
+								/>
+								<Input
+									label="OD 1000Hz"
+									name="d1000"
+									value={form.ossea?.d1000}
+									onChange={handleChangeOsseo}
+								/>
+								<Input
+									label="OD 2000Hz"
+									name="d2000"
+									value={form.ossea?.d2000}
+									onChange={handleChangeOsseo}
+								/>
+								<Input
+									label="OD 3000Hz"
+									name="d3000"
+									value={form.ossea?.d3000}
+									onChange={handleChangeOsseo}
+								/>
+								<Input
+									label="OD 4000Hz"
+									name="d4000"
+									value={form.ossea?.d4000}
+									onChange={handleChangeOsseo}
+								/>
+							</>
+						)}
+					</div>
+
+					<div className="flex flex-col w-full">
+						<label
+							htmlFor="ossea.oe"
+							className="text-sm font-medium text-gray-200"
+						>
+							<input
+								type="checkbox"
+								className="w-4 h-4"
+								onChange={() => {
+									setForm({
+										...form,
+										ossea: {
+											...form.ossea,
+											od: form.ossea?.od || false,
+											oe: !form.ossea?.oe || false,
+										},
+									});
+								}}
+								checked={form.ossea?.oe}
+								name="ossea.oe"
+							/>
+							Via Ossea Esquerda
+						</label>
+						{form.ossea?.oe && (
+							<>
+								<Input
+									label="OE 500Hz"
+									name="e500"
+									value={form.ossea?.e500}
+									onChange={handleChangeOsseo}
+								/>
+								<Input
+									label="OE 1000Hz"
+									name="e1000"
+									value={form.ossea?.e1000}
+									onChange={handleChangeOsseo}
+								/>
+								<Input
+									label="OE 2000Hz"
+									name="e2000"
+									value={form.ossea?.e2000}
+									onChange={handleChangeOsseo}
+								/>
+								<Input
+									label="OE 3000Hz"
+									name="e3000"
+									value={form.ossea?.e3000}
+									onChange={handleChangeOsseo}
+								/>
+								<Input
+									label="OE 4000Hz"
+									name="e4000"
+									value={form.ossea?.e4000}
+									onChange={handleChangeOsseo}
+								/>
+							</>
+						)}
+					</div>
+				</div>
+			)}
 			<Input
 				label="Observações"
 				name="obs"

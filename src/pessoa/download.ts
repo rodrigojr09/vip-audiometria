@@ -1,5 +1,5 @@
 import { app, shell } from "electron";
-import data from "@/data/DataProvider";
+import data from "../data/DataProvider";
 import { FastifyReply, FastifyRequest } from "fastify";
 import path from "path";
 import { existsSync, mkdirSync, writeFileSync } from "fs";

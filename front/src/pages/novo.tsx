@@ -42,6 +42,7 @@ export default function Novo() {
 		if (!res) {
 			return alert("Erro ao criar pessoa");
 		} else {
+			pessoas.refresh();
 			location.href = "/";
 		}
 	};

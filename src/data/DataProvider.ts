@@ -1,8 +1,8 @@
-import getRequisicao from "@/data/Requisicao";
-import { getResultado } from "@/data/Resultado";
-import prisma from "@/lib/prisma";
-import { Pessoa } from "@/../prisma/client";
-import { logger } from "@/lib/Logger";
+import getRequisicao from "./Requisicao";
+import { getResultado } from "./Resultado";
+import prisma from "../lib/prisma";
+import { Pessoa } from "../../prisma/client";
+import { logger } from "../lib/Logger";
 
 class DataProvider {
 	async getData(id?: string): Promise<Pessoa | Pessoa[] | null> {

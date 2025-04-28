@@ -1,4 +1,4 @@
-import data from "@/data/DataProvider";
+import data from "../data/DataProvider";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { Pessoa } from "../../prisma/client";
 import { logger } from "../lib/Logger"; // Importando a lib de logging
