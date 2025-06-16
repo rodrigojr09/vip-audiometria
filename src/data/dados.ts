@@ -4,8 +4,8 @@ import path from "path";
 export const dados = {
 	medicas: [
 		{
-			nome: "Dra. Milena Zaia Miguel",
-			documento: "CRFa 15158",
+			nome: "Jussara Alvarenga Pazoti",
+			documento: "CRFa 9196/sp",
 		},
 		{
 			nome: "Dra. Daniela Scarparo Naufel",

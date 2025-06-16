@@ -3,6 +3,7 @@ import { logger } from "./Logger";
 import { writeFile, mkdirSync, existsSync } from "fs";
 import path from "path";
 import { dados } from "../data/dados";
+import { app } from "electron";
 
 export class GitHubRelease {
 	private owner: string;
@@ -52,7 +53,7 @@ export class GitHubRelease {
 			const downloadUrl = asset.browser_download_url;
 			const fileName = asset.name;
 
-			const filePath = dados.getFile(fileName);
+			const filePath = path.join(app.getPath("downloads"), fileName);
 
 			logger.debug(`Baixando asset da release: ${downloadUrl}`);
 
