@@ -1,8 +1,8 @@
 export const dados = {
 	medicas: [
 		{
-			nome: "Dra. Milena Zaia Miguel",
-			documento: "CRFa 15158",
+			nome: "Dra. Jussara Alvarenga Pazoti",
+			documento: "CRFa 9196/sp",
 		},
 		{
 			nome: "Dra. Daniela Scarparo Naufel",
