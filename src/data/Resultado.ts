@@ -24,22 +24,28 @@ export async function getResultado(pessoa: Pessoa) {
 		const response = readFileSync(dados.getFile("Resultado.docx"));
 		logger.debug("Template Resultado.docx carregado");
 		logger.info("Gerando gráficos de audiometria...");
-		saveFile(
-			await Grafico(
-				[
-					pessoa.resultados?.d250,
-					pessoa.resultados?.d250,
-					pessoa.resultados?.d500,
-					pessoa.resultados?.d1000,
-					pessoa.resultados?.d2000,
-					pessoa.resultados?.d3000,
-					pessoa.resultados?.d4000,
-					pessoa.resultados?.d6000,
-					pessoa.resultados?.d8000,
-					pessoa.resultados?.d8000,
-				].map((a) => parseInt(a || "0")),
-				"d",
-				!!pessoa.resultados?.ossea?.od
+        saveFile(
+            await Grafico(
+                [
+                    pessoa.resultados?.d250,
+                    pessoa.resultados?.d250,
+                    pessoa.resultados?.d500,
+                    pessoa.resultados?.d1000,
+                    pessoa.resultados?.d2000,
+                    pessoa.resultados?.d3000,
+                    pessoa.resultados?.d4000,
+                    pessoa.resultados?.d6000,
+                    pessoa.resultados?.d8000,
+                    pessoa.resultados?.d8000,
+                ].map((a) => parseInt(a || "0")),
+                "d",
+                [
+                    pessoa.resultados?.ossea?.d500,
+                    pessoa.resultados?.ossea?.d1000,
+                    pessoa.resultados?.ossea?.d2000,
+                    pessoa.resultados?.ossea?.d3000,
+                    pessoa.resultados?.ossea?.d4000,
+                ].map((a) => parseInt(a || "0"))
 			),
 			"od.png"
 		);
@@ -59,7 +65,13 @@ export async function getResultado(pessoa: Pessoa) {
 					pessoa.resultados?.e8000,
 				].map((a) => parseInt(a || "0")),
 				"e",
-				!!pessoa.resultados?.ossea?.oe
+				[
+                    pessoa.resultados?.ossea?.e500,
+                    pessoa.resultados?.ossea?.e1000,
+                    pessoa.resultados?.ossea?.e2000,
+                    pessoa.resultados?.ossea?.e3000,
+                    pessoa.resultados?.ossea?.e4000,
+                ].map((a) => parseInt(a || "0"))
 			),
 			"oe.png"
 		);

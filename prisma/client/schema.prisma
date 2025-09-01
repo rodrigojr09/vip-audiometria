@@ -47,7 +47,6 @@ type ResultadoType {
 
 type ViaOssea {
   od    Boolean
-  d400  String?
   d500  String?
   d1000 String?
   d2000 String?

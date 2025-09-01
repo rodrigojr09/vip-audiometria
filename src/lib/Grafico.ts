@@ -7,7 +7,7 @@ const height = 385;
 export async function Grafico(
 	data: number[],
 	direction: "d" | "e",
-	ossea?: boolean
+	ossea: number[]
 ) {
 	const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
 	const baseOptions: ChartOptions = {

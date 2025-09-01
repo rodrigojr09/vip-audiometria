@@ -982,7 +982,6 @@ export namespace Prisma {
 
   export type ViaOsseaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     od?: boolean
-    d400?: boolean
     d500?: boolean
     d1000?: boolean
     d2000?: boolean
@@ -1000,7 +999,6 @@ export namespace Prisma {
 
   export type ViaOsseaSelectScalar = {
     od?: boolean
-    d400?: boolean
     d500?: boolean
     d1000?: boolean
     d2000?: boolean
@@ -1014,14 +1012,13 @@ export namespace Prisma {
     e4000?: boolean
   }
 
-  export type ViaOsseaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"od" | "d400" | "d500" | "d1000" | "d2000" | "d3000" | "d4000" | "oe" | "e500" | "e1000" | "e2000" | "e3000" | "e4000", ExtArgs["result"]["viaOssea"]>
+  export type ViaOsseaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"od" | "d500" | "d1000" | "d2000" | "d3000" | "d4000" | "oe" | "e500" | "e1000" | "e2000" | "e3000" | "e4000", ExtArgs["result"]["viaOssea"]>
 
   export type $ViaOsseaPayload = {
     name: "ViaOssea"
     objects: {}
     scalars: {
       od: boolean
-      d400: string | null
       d500: string | null
       d1000: string | null
       d2000: string | null
@@ -1048,7 +1045,6 @@ export namespace Prisma {
    */
   interface ViaOsseaFieldRefs {
     readonly od: FieldRef<"ViaOssea", 'Boolean'>
-    readonly d400: FieldRef<"ViaOssea", 'String'>
     readonly d500: FieldRef<"ViaOssea", 'String'>
     readonly d1000: FieldRef<"ViaOssea", 'String'>
     readonly d2000: FieldRef<"ViaOssea", 'String'>
@@ -2567,7 +2563,6 @@ export namespace Prisma {
 
   export type ViaOsseaObjectEqualityInput = {
     od: boolean
-    d400?: string | null
     d500?: string | null
     d1000?: string | null
     d2000?: string | null
@@ -2583,7 +2578,6 @@ export namespace Prisma {
 
   export type ViaOsseaOrderByInput = {
     od?: SortOrder
-    d400?: SortOrder
     d500?: SortOrder
     d1000?: SortOrder
     d2000?: SortOrder
@@ -2627,7 +2621,6 @@ export namespace Prisma {
 
   export type ViaOsseaCreateInput = {
     od: boolean
-    d400?: string | null
     d500?: string | null
     d1000?: string | null
     d2000?: string | null
@@ -2681,7 +2674,6 @@ export namespace Prisma {
     OR?: ViaOsseaWhereInput[]
     NOT?: ViaOsseaWhereInput | ViaOsseaWhereInput[]
     od?: BoolFilter<"ViaOssea"> | boolean
-    d400?: StringNullableFilter<"ViaOssea"> | string | null
     d500?: StringNullableFilter<"ViaOssea"> | string | null
     d1000?: StringNullableFilter<"ViaOssea"> | string | null
     d2000?: StringNullableFilter<"ViaOssea"> | string | null
@@ -2749,7 +2741,6 @@ export namespace Prisma {
 
   export type ViaOsseaUpdateInput = {
     od?: BoolFieldUpdateOperationsInput | boolean
-    d400?: NullableStringFieldUpdateOperationsInput | string | null
     d500?: NullableStringFieldUpdateOperationsInput | string | null
     d1000?: NullableStringFieldUpdateOperationsInput | string | null
     d2000?: NullableStringFieldUpdateOperationsInput | string | null
