@@ -1,36 +1,26 @@
-import Fastify from "fastify";
-import FastifyStatic from "@fastify/static";
-import { app, BrowserWindow, dialog, shell } from "electron";
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
 import fastifyCors from "@fastify/cors";
-import path from "path";
-import { existsSync, readFileSync } from "fs";
-
-import createRoute from "./pessoa/create";
-import getRoute from "./pessoa/get";
-import updateRoute from "./pessoa/update";
-import deleteRoute from "./pessoa/delete";
-import downloadRoute from "./pessoa/download";
+import FastifyStatic from "@fastify/static";
+import { app, type BrowserWindow, shell } from "electron";
+import Fastify from "fastify";
+import { GitHubRelease } from "./lib/Github";
 import { logger } from "./lib/Logger";
 import moment from "./lib/moment";
-import { MainWindow, LoadingWindow } from "./lib/Windows";
-import { GitHubRelease } from "./lib/Github";
+import { LoadingWindow, MainWindow } from "./lib/Windows";
+import pessoaRoute from "./routes/pessoa";
 
 const isDev = process.env.NODE_ENV === "development";
 
 const git = new GitHubRelease("rodrigojr09", "vip-audiometria");
 const fastify = Fastify({
 	logger: {
-		file: path.join(
-			logger.logDir,
-			"fastify-" + moment().format("HH-mm-DD-MM-YYYY") + ".log"
-		),
+		file: path.join(logger.logDir, `fastify-${moment().format("HH-mm-DD-MM-YYYY")}.log`),
 	}, // Desativa o logger nativo
 });
 
 fastify.addHook("onRequest", (request, _, done) => {
-	logger.info(
-		`Método: ${request.method}, URL: ${request.url}, IP: ${request.ip}`
-	);
+	logger.info(`Método: ${request.method}, URL: ${request.url}, IP: ${request.ip}`);
 	done();
 });
 
@@ -38,7 +28,7 @@ fastify.register(fastifyCors, {
 	origin: isDev ? "http://localhost:3000" : "http://localhost:7961",
 	credentials: true,
 	methods: ["GET", "POST", "PUT", "DELETE"],
-	allowedHeaders: ["Content-Type", "Authorization","Access-Control-Allow-Origin"],
+	allowedHeaders: ["Content-Type", "Authorization", "Access-Control-Allow-Origin"],
 });
 
 fastify.register(FastifyStatic, {
@@ -47,18 +37,14 @@ fastify.register(FastifyStatic, {
 });
 
 fastify.setNotFoundHandler((req, reply) => {
-	const requestedPath = path.join(__dirname, "../views", req.url + ".html");
+	const requestedPath = path.join(__dirname, "../views", `${req.url}.html`);
 	if (existsSync(requestedPath)) {
 		return reply.type("text/html").send(readFileSync(requestedPath));
 	}
 	reply.code(404).send("Página não encontrada");
 });
 
-fastify.post("/pessoa/create", createRoute);
-fastify.get("/pessoa/get", getRoute);
-fastify.put("/pessoa/update", updateRoute);
-fastify.delete("/pessoa/delete", deleteRoute);
-fastify.get("/pessoa/download", downloadRoute);
+fastify.register(pessoaRoute, { prefix: "/pessoa" });
 
 let win: BrowserWindow | null = null;
 
@@ -66,13 +52,13 @@ app.on("ready", async () => {
 	const release = await git.getLatestRelease();
 	fastify.listen({ host: "0.0.0.0", port: 7961 }, async (err) => {
 		if (err) {
-			logger.error("Erro ao iniciar o servidor: " + err.message);
+			logger.error(`Erro ao iniciar o servidor: ${err.message}`);
 			app.quit();
 			return;
 		}
 		logger.info("Servidor rodando em http://0.0.0.0:7961");
 		win = LoadingWindow(isDev);
-		if (release.tagName !== "v" + app.getVersion()) {
+		if (release.tagName !== `v${app.getVersion()}`) {
 			const filePath = await git.getLatestReleaseSetup();
 			if (filePath) {
 				shell.openPath(filePath);

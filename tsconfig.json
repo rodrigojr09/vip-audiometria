@@ -1,17 +1,21 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "commonjs",
+    "module": "nodenext",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "resolveJsonModule": true,
-    "sourceMap": true,
+    "sourceMap": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+  ],
+  "exclude": [
+    "node_modules",
+    "prisma"
   ]
 }

@@ -22,6 +22,12 @@ model Pessoa {
     resultados     ResultadoType?
 }
 
+model Medica {
+    id             String         @id @default(uuid()) @map("_id")
+    nome           String
+    documento      String
+}
+
 type ResultadoType {
     od    String
     d250  String

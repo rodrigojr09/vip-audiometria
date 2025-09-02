@@ -1,14 +1,10 @@
-import { ChartOptions } from "chart.js";
+import type { ChartOptions, Plugin } from "chart.js";
 import { ChartJSNodeCanvas } from "chartjs-node-canvas";
 
 const width = 600;
 const height = 385;
 
-export async function Grafico(
-	data: number[],
-	direction: "d" | "e",
-	ossea: number[]
-) {
+export async function Grafico(data: number[], direction: "d" | "e", ossea: number[]) {
 	const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
 	const baseOptions: ChartOptions = {
 		scales: {
@@ -25,29 +21,20 @@ export async function Grafico(
 		responsive: false,
 		plugins: {},
 	};
-	const labels = [
-		"0",
-		"250",
-		"500",
-		"1000",
-		"2000",
-		"3000",
-		"4000",
-		"6000",
-		"8000",
-	];
+	const labels = ["0", "250", "500", "1000", "2000", "3000", "4000", "6000", "8000"];
 
-	const arrowPlugin = {
+	const arrowPlugin: Plugin = {
 		id: "arrowPlugin",
-		afterDatasetsDraw: (chart: any) => {
+		afterDatasetsDraw: (chart) => {
 			const { ctx } = chart;
-			const meta = chart.getDatasetMeta(0);
+			const meta = chart.getDatasetMeta(1);
 			ctx.save();
 			meta.data.forEach((point: any) => {
-				const { x, y } = point.tooltipPosition();
+				if (point.skip) return;
+				const { x, y } = point.tooltipPosition(true);
 				ctx.font = "bold 14px Arial";
 				ctx.fillStyle = direction === "d" ? "red" : "blue";
-				ctx.fillText(direction === "d" ? ">" : "<", x + (direction === "e" ? -15 : 10) , y);
+				ctx.fillText(direction === "d" ? ">" : "<", x + (direction === "e" ? -15 : 10), y);
 			});
 			ctx.restore();
 		},
@@ -59,10 +46,19 @@ export async function Grafico(
 			labels,
 			datasets: [
 				{
-					label:
-						"Orelha " +
-						(direction === "d" ? "Direita" : "Esquerda"),
+					label: `Via Aérea`,
 					data: data,
+					pointBackgroundColor: "white",
+					pointBorderColor: direction === "e" ? "blue" : "red",
+					borderColor: direction === "e" ? "blue" : "red",
+					pointStyle: direction === "e" ? "crossRot" : "circle",
+					pointRadius: 7,
+					borderDash: direction === "e" ? [5, 5] : undefined,
+					pointHoverRadius: 10,
+				},
+				{
+					label: `Via Ossea ${direction === "d" ? ">" : "<"}`,
+					data: [null, null, ...ossea],
 					pointBackgroundColor: "white",
 					pointBorderColor: direction === "e" ? "blue" : "red",
 					borderColor: direction === "e" ? "blue" : "red",

@@ -1,5 +1,5 @@
+import path from "node:path";
 import { BrowserWindow, nativeImage } from "electron";
-import path from "path";
 
 const defaultOptions = {
 	icon: nativeImage.createFromPath(
@@ -15,7 +15,7 @@ const defaultOptions = {
 
 export function MainWindow(isDev: boolean) {
 	const win = new BrowserWindow(defaultOptions);
-	
+
 	if (isDev) win?.loadURL("http://localhost:3000");
 	else win?.loadURL("http://localhost:7961/");
 

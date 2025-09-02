@@ -1,6 +1,5 @@
-import { app } from "electron";
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 import { dados } from "../data/dados";
 import moment from "./moment";
 
@@ -23,7 +22,7 @@ class Logger {
 	private writeToFile(level: LogLevel, message: string): void {
 		const date = moment().format("YYYY-MM-DD"); // yyyy-mm-dd
 		const filename = path.join(this.logDir, `${date}.log`);
-		const fullMessage = this.formatMessage(level, message) + "\n";
+		const fullMessage = `${this.formatMessage(level, message)}\n`;
 
 		fs.appendFileSync(filename, fullMessage, "utf8");
 	}

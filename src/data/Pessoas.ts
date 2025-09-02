@@ -1,11 +1,11 @@
+import type { Pessoa } from "../../prisma/client";
+import { logger } from "../lib/Logger";
+import prisma from "../lib/prisma";
 import getRequisicao from "./Requisicao";
 import { getResultado } from "./Resultado";
-import prisma from "../lib/prisma";
-import { Pessoa } from "../../prisma/client";
-import { logger } from "../lib/Logger";
 
-class DataProvider {
-	async getData(id?: string): Promise<Pessoa | Pessoa[] | null> {
+class Pessoas {
+	async get(id?: string): Promise<Pessoa | Pessoa[] | null> {
 		try {
 			if (id) {
 				logger.info(`Buscando pessoa com ID: ${id}`);
@@ -24,7 +24,7 @@ class DataProvider {
 		}
 	}
 
-	async createData(data: Pessoa) {
+	async create(data: Pessoa) {
 		try {
 			logger.info(`Criando nova pessoa: ${JSON.stringify(data)}`);
 			const newPessoa = await prisma.pessoa.create({ data });
@@ -35,7 +35,7 @@ class DataProvider {
 		}
 	}
 
-	async updateData({ id, ...data }: Pessoa) {
+	async update({ id, ...data }: Pessoa) {
 		try {
 			logger.info(`Atualizando pessoa com ID: ${id}`);
 			const updatedPessoa = await prisma.pessoa.update({
@@ -51,7 +51,7 @@ class DataProvider {
 		}
 	}
 
-	async deleteData(id: string) {
+	async delete(id: string) {
 		try {
 			logger.info(`Deletando pessoa com ID: ${id}`);
 			const deletedPessoa = await prisma.pessoa.delete({ where: { id } });
@@ -64,16 +64,16 @@ class DataProvider {
 		}
 	}
 
-	async downloadData(id: string, type: "resultado" | "requisicao") {
+	async download(id: string, type: "resultado" | "requisicao") {
 		try {
 			logger.info(`Baixando dados para pessoa ID ${id}, tipo: ${type}`);
-			const data = (await this.getData(id)) as Pessoa;
+			const data = (await this.get(id)) as Pessoa;
 			if (!data) {
 				logger.warn(`Pessoa com ID ${id} não encontrada`);
 				return undefined;
 			}
 
-			if (type == "resultado") {
+			if (type === "resultado") {
 				const doc = await getResultado(data);
 				logger.info(`Arquivo de resultado gerado para ID ${id}`);
 				return doc;
@@ -89,5 +89,5 @@ class DataProvider {
 	}
 }
 
-const data = new DataProvider();
-export default data;
+const pessoas = new Pessoas();
+export default pessoas;

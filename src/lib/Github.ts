@@ -1,9 +1,8 @@
+import { writeFile } from "node:fs";
+import path from "node:path";
 import axios from "axios";
-import { logger } from "./Logger";
-import { writeFile, mkdirSync, existsSync } from "fs";
-import path from "path";
-import { dados } from "../data/dados";
 import { app } from "electron";
+import { logger } from "./Logger";
 
 export class GitHubRelease {
 	private owner: string;

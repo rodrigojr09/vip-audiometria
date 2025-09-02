@@ -123,6 +123,12 @@ exports.Prisma.PessoaScalarFieldEnum = {
   documento: 'documento'
 };
 
+exports.Prisma.MedicaScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  documento: 'documento'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -135,7 +141,8 @@ exports.Prisma.QueryMode = {
 
 
 exports.Prisma.ModelName = {
-  Pessoa: 'Pessoa'
+  Pessoa: 'Pessoa',
+  Medica: 'Medica'
 };
 
 /**

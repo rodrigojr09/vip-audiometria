@@ -28,6 +28,11 @@ export type ViaOssea = $Result.DefaultSelection<Prisma.$ViaOsseaPayload>
  * 
  */
 export type Pessoa = $Result.DefaultSelection<Prisma.$PessoaPayload>
+/**
+ * Model Medica
+ * 
+ */
+export type Medica = $Result.DefaultSelection<Prisma.$MedicaPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -130,6 +135,16 @@ export class PrismaClient<
     * ```
     */
   get pessoa(): Prisma.PessoaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.medica`: Exposes CRUD operations for the **Medica** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Medicas
+    * const medicas = await prisma.medica.findMany()
+    * ```
+    */
+  get medica(): Prisma.MedicaDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -570,7 +585,8 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    Pessoa: 'Pessoa'
+    Pessoa: 'Pessoa',
+    Medica: 'Medica'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -589,7 +605,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "pessoa"
+      modelProps: "pessoa" | "medica"
       txIsolationLevel: never
     }
     model: {
@@ -667,6 +683,80 @@ export namespace Prisma {
           }
         }
       }
+      Medica: {
+        payload: Prisma.$MedicaPayload<ExtArgs>
+        fields: Prisma.MedicaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MedicaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedicaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MedicaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedicaPayload>
+          }
+          findFirst: {
+            args: Prisma.MedicaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedicaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MedicaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedicaPayload>
+          }
+          findMany: {
+            args: Prisma.MedicaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedicaPayload>[]
+          }
+          create: {
+            args: Prisma.MedicaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedicaPayload>
+          }
+          createMany: {
+            args: Prisma.MedicaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MedicaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedicaPayload>
+          }
+          update: {
+            args: Prisma.MedicaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedicaPayload>
+          }
+          deleteMany: {
+            args: Prisma.MedicaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MedicaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MedicaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedicaPayload>
+          }
+          aggregate: {
+            args: Prisma.MedicaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMedica>
+          }
+          groupBy: {
+            args: Prisma.MedicaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MedicaGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.MedicaFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.MedicaAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.MedicaCountArgs<ExtArgs>
+            result: $Utils.Optional<MedicaCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -739,6 +829,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     pessoa?: PessoaOmit
+    medica?: MedicaOmit
   }
 
   /* Types for Logging */
@@ -2107,6 +2198,916 @@ export namespace Prisma {
 
 
   /**
+   * Model Medica
+   */
+
+  export type AggregateMedica = {
+    _count: MedicaCountAggregateOutputType | null
+    _min: MedicaMinAggregateOutputType | null
+    _max: MedicaMaxAggregateOutputType | null
+  }
+
+  export type MedicaMinAggregateOutputType = {
+    id: string | null
+    nome: string | null
+    documento: string | null
+  }
+
+  export type MedicaMaxAggregateOutputType = {
+    id: string | null
+    nome: string | null
+    documento: string | null
+  }
+
+  export type MedicaCountAggregateOutputType = {
+    id: number
+    nome: number
+    documento: number
+    _all: number
+  }
+
+
+  export type MedicaMinAggregateInputType = {
+    id?: true
+    nome?: true
+    documento?: true
+  }
+
+  export type MedicaMaxAggregateInputType = {
+    id?: true
+    nome?: true
+    documento?: true
+  }
+
+  export type MedicaCountAggregateInputType = {
+    id?: true
+    nome?: true
+    documento?: true
+    _all?: true
+  }
+
+  export type MedicaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Medica to aggregate.
+     */
+    where?: MedicaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Medicas to fetch.
+     */
+    orderBy?: MedicaOrderByWithRelationInput | MedicaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MedicaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Medicas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Medicas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Medicas
+    **/
+    _count?: true | MedicaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MedicaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MedicaMaxAggregateInputType
+  }
+
+  export type GetMedicaAggregateType<T extends MedicaAggregateArgs> = {
+        [P in keyof T & keyof AggregateMedica]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMedica[P]>
+      : GetScalarType<T[P], AggregateMedica[P]>
+  }
+
+
+
+
+  export type MedicaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MedicaWhereInput
+    orderBy?: MedicaOrderByWithAggregationInput | MedicaOrderByWithAggregationInput[]
+    by: MedicaScalarFieldEnum[] | MedicaScalarFieldEnum
+    having?: MedicaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MedicaCountAggregateInputType | true
+    _min?: MedicaMinAggregateInputType
+    _max?: MedicaMaxAggregateInputType
+  }
+
+  export type MedicaGroupByOutputType = {
+    id: string
+    nome: string
+    documento: string
+    _count: MedicaCountAggregateOutputType | null
+    _min: MedicaMinAggregateOutputType | null
+    _max: MedicaMaxAggregateOutputType | null
+  }
+
+  type GetMedicaGroupByPayload<T extends MedicaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MedicaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MedicaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MedicaGroupByOutputType[P]>
+            : GetScalarType<T[P], MedicaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MedicaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome?: boolean
+    documento?: boolean
+  }, ExtArgs["result"]["medica"]>
+
+
+
+  export type MedicaSelectScalar = {
+    id?: boolean
+    nome?: boolean
+    documento?: boolean
+  }
+
+  export type MedicaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "documento", ExtArgs["result"]["medica"]>
+
+  export type $MedicaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Medica"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      nome: string
+      documento: string
+    }, ExtArgs["result"]["medica"]>
+    composites: {}
+  }
+
+  type MedicaGetPayload<S extends boolean | null | undefined | MedicaDefaultArgs> = $Result.GetResult<Prisma.$MedicaPayload, S>
+
+  type MedicaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MedicaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MedicaCountAggregateInputType | true
+    }
+
+  export interface MedicaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Medica'], meta: { name: 'Medica' } }
+    /**
+     * Find zero or one Medica that matches the filter.
+     * @param {MedicaFindUniqueArgs} args - Arguments to find a Medica
+     * @example
+     * // Get one Medica
+     * const medica = await prisma.medica.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MedicaFindUniqueArgs>(args: SelectSubset<T, MedicaFindUniqueArgs<ExtArgs>>): Prisma__MedicaClient<$Result.GetResult<Prisma.$MedicaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Medica that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MedicaFindUniqueOrThrowArgs} args - Arguments to find a Medica
+     * @example
+     * // Get one Medica
+     * const medica = await prisma.medica.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MedicaFindUniqueOrThrowArgs>(args: SelectSubset<T, MedicaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MedicaClient<$Result.GetResult<Prisma.$MedicaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Medica that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedicaFindFirstArgs} args - Arguments to find a Medica
+     * @example
+     * // Get one Medica
+     * const medica = await prisma.medica.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MedicaFindFirstArgs>(args?: SelectSubset<T, MedicaFindFirstArgs<ExtArgs>>): Prisma__MedicaClient<$Result.GetResult<Prisma.$MedicaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Medica that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedicaFindFirstOrThrowArgs} args - Arguments to find a Medica
+     * @example
+     * // Get one Medica
+     * const medica = await prisma.medica.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MedicaFindFirstOrThrowArgs>(args?: SelectSubset<T, MedicaFindFirstOrThrowArgs<ExtArgs>>): Prisma__MedicaClient<$Result.GetResult<Prisma.$MedicaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Medicas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedicaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Medicas
+     * const medicas = await prisma.medica.findMany()
+     * 
+     * // Get first 10 Medicas
+     * const medicas = await prisma.medica.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const medicaWithIdOnly = await prisma.medica.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MedicaFindManyArgs>(args?: SelectSubset<T, MedicaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MedicaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Medica.
+     * @param {MedicaCreateArgs} args - Arguments to create a Medica.
+     * @example
+     * // Create one Medica
+     * const Medica = await prisma.medica.create({
+     *   data: {
+     *     // ... data to create a Medica
+     *   }
+     * })
+     * 
+     */
+    create<T extends MedicaCreateArgs>(args: SelectSubset<T, MedicaCreateArgs<ExtArgs>>): Prisma__MedicaClient<$Result.GetResult<Prisma.$MedicaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Medicas.
+     * @param {MedicaCreateManyArgs} args - Arguments to create many Medicas.
+     * @example
+     * // Create many Medicas
+     * const medica = await prisma.medica.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MedicaCreateManyArgs>(args?: SelectSubset<T, MedicaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Medica.
+     * @param {MedicaDeleteArgs} args - Arguments to delete one Medica.
+     * @example
+     * // Delete one Medica
+     * const Medica = await prisma.medica.delete({
+     *   where: {
+     *     // ... filter to delete one Medica
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MedicaDeleteArgs>(args: SelectSubset<T, MedicaDeleteArgs<ExtArgs>>): Prisma__MedicaClient<$Result.GetResult<Prisma.$MedicaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Medica.
+     * @param {MedicaUpdateArgs} args - Arguments to update one Medica.
+     * @example
+     * // Update one Medica
+     * const medica = await prisma.medica.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MedicaUpdateArgs>(args: SelectSubset<T, MedicaUpdateArgs<ExtArgs>>): Prisma__MedicaClient<$Result.GetResult<Prisma.$MedicaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Medicas.
+     * @param {MedicaDeleteManyArgs} args - Arguments to filter Medicas to delete.
+     * @example
+     * // Delete a few Medicas
+     * const { count } = await prisma.medica.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MedicaDeleteManyArgs>(args?: SelectSubset<T, MedicaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Medicas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedicaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Medicas
+     * const medica = await prisma.medica.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MedicaUpdateManyArgs>(args: SelectSubset<T, MedicaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Medica.
+     * @param {MedicaUpsertArgs} args - Arguments to update or create a Medica.
+     * @example
+     * // Update or create a Medica
+     * const medica = await prisma.medica.upsert({
+     *   create: {
+     *     // ... data to create a Medica
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Medica we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MedicaUpsertArgs>(args: SelectSubset<T, MedicaUpsertArgs<ExtArgs>>): Prisma__MedicaClient<$Result.GetResult<Prisma.$MedicaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Medicas that matches the filter.
+     * @param {MedicaFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const medica = await prisma.medica.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: MedicaFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a Medica.
+     * @param {MedicaAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const medica = await prisma.medica.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: MedicaAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of Medicas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedicaCountArgs} args - Arguments to filter Medicas to count.
+     * @example
+     * // Count the number of Medicas
+     * const count = await prisma.medica.count({
+     *   where: {
+     *     // ... the filter for the Medicas we want to count
+     *   }
+     * })
+    **/
+    count<T extends MedicaCountArgs>(
+      args?: Subset<T, MedicaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MedicaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Medica.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedicaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MedicaAggregateArgs>(args: Subset<T, MedicaAggregateArgs>): Prisma.PrismaPromise<GetMedicaAggregateType<T>>
+
+    /**
+     * Group by Medica.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedicaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MedicaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MedicaGroupByArgs['orderBy'] }
+        : { orderBy?: MedicaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MedicaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMedicaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Medica model
+   */
+  readonly fields: MedicaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Medica.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MedicaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Medica model
+   */
+  interface MedicaFieldRefs {
+    readonly id: FieldRef<"Medica", 'String'>
+    readonly nome: FieldRef<"Medica", 'String'>
+    readonly documento: FieldRef<"Medica", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Medica findUnique
+   */
+  export type MedicaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medica
+     */
+    select?: MedicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medica
+     */
+    omit?: MedicaOmit<ExtArgs> | null
+    /**
+     * Filter, which Medica to fetch.
+     */
+    where: MedicaWhereUniqueInput
+  }
+
+  /**
+   * Medica findUniqueOrThrow
+   */
+  export type MedicaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medica
+     */
+    select?: MedicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medica
+     */
+    omit?: MedicaOmit<ExtArgs> | null
+    /**
+     * Filter, which Medica to fetch.
+     */
+    where: MedicaWhereUniqueInput
+  }
+
+  /**
+   * Medica findFirst
+   */
+  export type MedicaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medica
+     */
+    select?: MedicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medica
+     */
+    omit?: MedicaOmit<ExtArgs> | null
+    /**
+     * Filter, which Medica to fetch.
+     */
+    where?: MedicaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Medicas to fetch.
+     */
+    orderBy?: MedicaOrderByWithRelationInput | MedicaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Medicas.
+     */
+    cursor?: MedicaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Medicas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Medicas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Medicas.
+     */
+    distinct?: MedicaScalarFieldEnum | MedicaScalarFieldEnum[]
+  }
+
+  /**
+   * Medica findFirstOrThrow
+   */
+  export type MedicaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medica
+     */
+    select?: MedicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medica
+     */
+    omit?: MedicaOmit<ExtArgs> | null
+    /**
+     * Filter, which Medica to fetch.
+     */
+    where?: MedicaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Medicas to fetch.
+     */
+    orderBy?: MedicaOrderByWithRelationInput | MedicaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Medicas.
+     */
+    cursor?: MedicaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Medicas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Medicas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Medicas.
+     */
+    distinct?: MedicaScalarFieldEnum | MedicaScalarFieldEnum[]
+  }
+
+  /**
+   * Medica findMany
+   */
+  export type MedicaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medica
+     */
+    select?: MedicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medica
+     */
+    omit?: MedicaOmit<ExtArgs> | null
+    /**
+     * Filter, which Medicas to fetch.
+     */
+    where?: MedicaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Medicas to fetch.
+     */
+    orderBy?: MedicaOrderByWithRelationInput | MedicaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Medicas.
+     */
+    cursor?: MedicaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Medicas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Medicas.
+     */
+    skip?: number
+    distinct?: MedicaScalarFieldEnum | MedicaScalarFieldEnum[]
+  }
+
+  /**
+   * Medica create
+   */
+  export type MedicaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medica
+     */
+    select?: MedicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medica
+     */
+    omit?: MedicaOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Medica.
+     */
+    data: XOR<MedicaCreateInput, MedicaUncheckedCreateInput>
+  }
+
+  /**
+   * Medica createMany
+   */
+  export type MedicaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Medicas.
+     */
+    data: MedicaCreateManyInput | MedicaCreateManyInput[]
+  }
+
+  /**
+   * Medica update
+   */
+  export type MedicaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medica
+     */
+    select?: MedicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medica
+     */
+    omit?: MedicaOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Medica.
+     */
+    data: XOR<MedicaUpdateInput, MedicaUncheckedUpdateInput>
+    /**
+     * Choose, which Medica to update.
+     */
+    where: MedicaWhereUniqueInput
+  }
+
+  /**
+   * Medica updateMany
+   */
+  export type MedicaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Medicas.
+     */
+    data: XOR<MedicaUpdateManyMutationInput, MedicaUncheckedUpdateManyInput>
+    /**
+     * Filter which Medicas to update
+     */
+    where?: MedicaWhereInput
+    /**
+     * Limit how many Medicas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Medica upsert
+   */
+  export type MedicaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medica
+     */
+    select?: MedicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medica
+     */
+    omit?: MedicaOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Medica to update in case it exists.
+     */
+    where: MedicaWhereUniqueInput
+    /**
+     * In case the Medica found by the `where` argument doesn't exist, create a new Medica with this data.
+     */
+    create: XOR<MedicaCreateInput, MedicaUncheckedCreateInput>
+    /**
+     * In case the Medica was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MedicaUpdateInput, MedicaUncheckedUpdateInput>
+  }
+
+  /**
+   * Medica delete
+   */
+  export type MedicaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medica
+     */
+    select?: MedicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medica
+     */
+    omit?: MedicaOmit<ExtArgs> | null
+    /**
+     * Filter which Medica to delete.
+     */
+    where: MedicaWhereUniqueInput
+  }
+
+  /**
+   * Medica deleteMany
+   */
+  export type MedicaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Medicas to delete
+     */
+    where?: MedicaWhereInput
+    /**
+     * Limit how many Medicas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Medica findRaw
+   */
+  export type MedicaFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Medica aggregateRaw
+   */
+  export type MedicaAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Medica without action
+   */
+  export type MedicaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Medica
+     */
+    select?: MedicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Medica
+     */
+    omit?: MedicaOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -2124,6 +3125,15 @@ export namespace Prisma {
   };
 
   export type PessoaScalarFieldEnum = (typeof PessoaScalarFieldEnum)[keyof typeof PessoaScalarFieldEnum]
+
+
+  export const MedicaScalarFieldEnum: {
+    id: 'id',
+    nome: 'nome',
+    documento: 'documento'
+  };
+
+  export type MedicaScalarFieldEnum = (typeof MedicaScalarFieldEnum)[keyof typeof MedicaScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -2265,6 +3275,48 @@ export namespace Prisma {
     documento?: StringWithAggregatesFilter<"Pessoa"> | string
   }
 
+  export type MedicaWhereInput = {
+    AND?: MedicaWhereInput | MedicaWhereInput[]
+    OR?: MedicaWhereInput[]
+    NOT?: MedicaWhereInput | MedicaWhereInput[]
+    id?: StringFilter<"Medica"> | string
+    nome?: StringFilter<"Medica"> | string
+    documento?: StringFilter<"Medica"> | string
+  }
+
+  export type MedicaOrderByWithRelationInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    documento?: SortOrder
+  }
+
+  export type MedicaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MedicaWhereInput | MedicaWhereInput[]
+    OR?: MedicaWhereInput[]
+    NOT?: MedicaWhereInput | MedicaWhereInput[]
+    nome?: StringFilter<"Medica"> | string
+    documento?: StringFilter<"Medica"> | string
+  }, "id">
+
+  export type MedicaOrderByWithAggregationInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    documento?: SortOrder
+    _count?: MedicaCountOrderByAggregateInput
+    _max?: MedicaMaxOrderByAggregateInput
+    _min?: MedicaMinOrderByAggregateInput
+  }
+
+  export type MedicaScalarWhereWithAggregatesInput = {
+    AND?: MedicaScalarWhereWithAggregatesInput | MedicaScalarWhereWithAggregatesInput[]
+    OR?: MedicaScalarWhereWithAggregatesInput[]
+    NOT?: MedicaScalarWhereWithAggregatesInput | MedicaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Medica"> | string
+    nome?: StringWithAggregatesFilter<"Medica"> | string
+    documento?: StringWithAggregatesFilter<"Medica"> | string
+  }
+
   export type PessoaCreateInput = {
     id?: string
     nome: string
@@ -2357,6 +3409,44 @@ export namespace Prisma {
     responsavel?: StringFieldUpdateOperationsInput | string
     documento?: StringFieldUpdateOperationsInput | string
     resultados?: XOR<ResultadoTypeNullableUpdateEnvelopeInput, ResultadoTypeCreateInput> | null
+  }
+
+  export type MedicaCreateInput = {
+    id?: string
+    nome: string
+    documento: string
+  }
+
+  export type MedicaUncheckedCreateInput = {
+    id?: string
+    nome: string
+    documento: string
+  }
+
+  export type MedicaUpdateInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    documento?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MedicaUncheckedUpdateInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    documento?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MedicaCreateManyInput = {
+    id?: string
+    nome: string
+    documento: string
+  }
+
+  export type MedicaUpdateManyMutationInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    documento?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MedicaUncheckedUpdateManyInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    documento?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -2482,6 +3572,24 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type MedicaCountOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    documento?: SortOrder
+  }
+
+  export type MedicaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    documento?: SortOrder
+  }
+
+  export type MedicaMinOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    documento?: SortOrder
   }
 
   export type ResultadoTypeNullableCreateEnvelopeInput = {
