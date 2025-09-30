@@ -31,6 +31,7 @@ export async function Grafico(data: number[], direction: "d" | "e", ossea: numbe
 			ctx.save();
 			meta.data.forEach((point: any) => {
 				if (point.skip) return;
+                console.log(point);
 				const { x, y } = point.tooltipPosition(true);
 				ctx.font = "bold 14px Arial";
 				ctx.fillStyle = direction === "d" ? "red" : "blue";
@@ -59,13 +60,11 @@ export async function Grafico(data: number[], direction: "d" | "e", ossea: numbe
 				{
 					label: `Via Ossea ${direction === "d" ? ">" : "<"}`,
 					data: [null, null, ...ossea],
-					pointBackgroundColor: "white",
-					pointBorderColor: direction === "e" ? "blue" : "red",
-					borderColor: direction === "e" ? "blue" : "red",
-					pointStyle: direction === "e" ? "crossRot" : "circle",
-					pointRadius: 7,
-					borderDash: direction === "e" ? [5, 5] : undefined,
-					pointHoverRadius: 10,
+					borderColor: "transparent", // linha invisível
+					backgroundColor: "transparent", // sem preenchimento
+					pointRadius: 0, // não renderiza bolinhas
+					pointHoverRadius: 0, // não mostra nada no hover
+					borderWidth: 0, // sem borda de linha
 				},
 			],
 		},

@@ -9,7 +9,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 		pessoa: { ...pessoa },
 		...pessoas
 	} = usePessoa();
-	const [viaOssea, setViaOssea] = useState(false);
+	const [viaOssea, setViaOssea] = useState(pessoa.resultados?.ossea ? true : false);
 	const [form, setForm] = useState<ResultadoType>(
 		pessoa.resultados || {
 			od: "",
