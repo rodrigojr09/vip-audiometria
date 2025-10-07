@@ -1,7 +1,7 @@
-import { usePessoa } from "@/hooks/usePessoa";
-import moment from "@/lib/moment";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { usePessoa } from "@/hooks/usePessoa";
+import moment from "@/lib/moment";
 
 export default function Sidebar() {
 	const [search, setSearch] = useState<string>("");
@@ -23,7 +23,8 @@ export default function Sidebar() {
 						className="p-2 w-full rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-vip mb-2"
 					/>
 					<button
-						onClick={() => (window.location.href = "/novo")}
+						type="button"
+						onClick={() => { window.location.href = "/novo"; }}
 						className="p-2 w-full rounded bg-vip text-white hover:cursor-pointer mb-4"
 					>
 						Criar
@@ -42,10 +43,15 @@ export default function Sidebar() {
 								const dateB = moment(b.dataExame); // Moment vai entender o formato ISO 8601
 								return dateB.isAfter(dateA) ? 1 : -1; // Ordena do mais recente para o mais antigo
 							}).slice(0,10)
-							.map((person, index) => (
+							.map((person) => (
 								<li
 									onClick={() => api.set(person)}
-									key={index}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+											api.set(person);
+										}
+									}}
+									key={person.cpf}
 									className="flex flex-col p-3 space-y-2 rounded bg-gray-800 hover:bg-gray-700"
 								>
 									<div className="flex w-full justify-between">

@@ -128,7 +128,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Projetos\\vip-audiometria\\prisma\\client",
+      "value": "C:\\Users\\user\\Desktop\\Sistemas VIP\\vip-audiometria\\prisma\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -142,11 +142,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Projetos\\vip-audiometria\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\user\\Desktop\\Sistemas VIP\\vip-audiometria\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
+    "rootEnvPath": "../../.env",
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "..",

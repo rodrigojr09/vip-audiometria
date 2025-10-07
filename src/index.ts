@@ -15,12 +15,17 @@ const isDev = process.env.NODE_ENV === "development";
 const git = new GitHubRelease("rodrigojr09", "vip-audiometria");
 const fastify = Fastify({
 	logger: {
-		file: path.join(logger.logDir, `fastify-${moment().format("HH-mm-DD-MM-YYYY")}.log`),
+		file: path.join(
+			logger.logDir,
+			`fastify-${moment().format("HH-mm-DD-MM-YYYY")}.log`,
+		),
 	}, // Desativa o logger nativo
 });
 
 fastify.addHook("onRequest", (request, _, done) => {
-	logger.info(`Método: ${request.method}, URL: ${request.url}, IP: ${request.ip}`);
+	logger.info(
+		`Método: ${request.method}, URL: ${request.url}, IP: ${request.ip}`,
+	);
 	done();
 });
 
@@ -28,7 +33,11 @@ fastify.register(fastifyCors, {
 	origin: isDev ? "http://localhost:3000" : "http://localhost:7961",
 	credentials: true,
 	methods: ["GET", "POST", "PUT", "DELETE"],
-	allowedHeaders: ["Content-Type", "Authorization", "Access-Control-Allow-Origin"],
+	allowedHeaders: [
+		"Content-Type",
+		"Authorization",
+		"Access-Control-Allow-Origin",
+	],
 });
 
 fastify.register(FastifyStatic, {

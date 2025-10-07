@@ -1,8 +1,8 @@
+import { Download, FileText, Trash, Upload, User } from "lucide-react";
+import { useEffect, useState } from "react";
 import Resultados from "@/components/Resultados";
 import { usePessoa } from "@/hooks/usePessoa";
 import moment from "@/lib/moment";
-import { Download, FileText, Trash, Upload, User } from "lucide-react";
-import { useEffect, useState } from "react";
 
 export default function Home() {
 	const { pessoa, ...pessoas } = usePessoa();

@@ -35,7 +35,7 @@ export async function Grafico(data: number[], direction: "d" | "e", ossea: numbe
 				const { x, y } = point.tooltipPosition(true);
 				ctx.font = "bold 14px Arial";
 				ctx.fillStyle = direction === "d" ? "red" : "blue";
-				ctx.fillText(direction === "d" ? ">" : "<", x + (direction === "e" ? -15 : 10), y);
+				ctx.fillText(direction === "d" ? "<" : ">", x + (direction === "e" ? -15 : 10), y);
 			});
 			ctx.restore();
 		},
@@ -58,7 +58,7 @@ export async function Grafico(data: number[], direction: "d" | "e", ossea: numbe
 					pointHoverRadius: 10,
 				},
 				{
-					label: `Via Ossea ${direction === "d" ? ">" : "<"}`,
+					label: `Via Ossea ${direction === "d" ? "<" : ">"}`,
 					data: [null, null, ...ossea],
 					borderColor: "transparent", // linha invisível
 					backgroundColor: "transparent", // sem preenchimento
