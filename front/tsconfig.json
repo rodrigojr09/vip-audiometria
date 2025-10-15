@@ -7,16 +7,15 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
     "paths": {
       "@/*": ["./src/*"]
-    },
-    "ignoreDeprecations": "6.0"
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "tailwind.config.js", "../src/types.d.ts"],
   "exclude": ["node_modules"]

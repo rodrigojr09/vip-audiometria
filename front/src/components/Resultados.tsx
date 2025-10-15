@@ -33,7 +33,6 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 			obs: `OD - ${dados.laudo}\nOE - ${dados.laudo}`,
 			ossea: {
 				od: false,
-				d400: "",
 				d500: "",
 				d1000: "",
 				d2000: "",
@@ -78,10 +77,10 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 			resultados: { ...form, obs: form.obs.replaceAll("\n", "<br>") },
 		});
 		if (status) {
-			alert("Exame registrado com sucesso!");
-			const data = await pessoas.get(pessoa.id);
+            const data = await pessoas.get(pessoa.id);
 			if (!Array.isArray(data)) pessoas.set(data);
 			onClose();
+			alert("Exame registrado com sucesso!");
 		} else alert("Erro ao finalizar exame!");
 	};
 
@@ -231,7 +230,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 						else
 							setForm({
 								...form,
-								ossea: { od: false, oe: false },
+								ossea: { od: false, oe: false } as any,
 							});
 					}}
 					checked={viaOssea}
@@ -257,7 +256,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 											...form.ossea,
 											oe: form.ossea?.oe || false,
 											od: !form.ossea?.od || false,
-										},
+										} as any,
 									});
 								}}
 								checked={form.ossea?.od}
@@ -316,7 +315,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 											...form.ossea,
 											od: form.ossea?.od || false,
 											oe: !form.ossea?.oe || false,
-										},
+										} as any,
 									});
 								}}
 								checked={form.ossea?.oe}
