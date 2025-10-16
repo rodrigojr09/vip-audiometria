@@ -44,6 +44,7 @@ export async function getResultado(pessoa: Pessoa) {
 											pessoa.resultados?.ossea?.d3000,
 											pessoa.resultados?.ossea?.d4000,
 										].map((a) => parseInt(a || "0", 10)),
+										pessoa.resultados?.ossea?.od
 									),
 									"od.png",
 								);
@@ -69,7 +70,7 @@ export async function getResultado(pessoa: Pessoa) {
 					pessoa.resultados?.ossea?.e2000,
 					pessoa.resultados?.ossea?.e3000,
 					pessoa.resultados?.ossea?.e4000,
-				].map((a) => parseInt(a || "0", 10)),
+				].map((a) => parseInt(a || "0", 10)), pessoa.resultados?.ossea?.oe
 			),
 			"oe.png",
 		);
