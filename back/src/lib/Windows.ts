@@ -24,7 +24,7 @@ export function MainWindow(isDev: boolean) {
 	const win = new BrowserWindow(defaultOptions);
 
 	if (isDev) win?.loadURL("http://localhost:3000");
-	else win?.loadURL("http://localhost:7961/");
+	else win?.loadURL("https://vip-audiometria.vercel.app/");
 
 	win.on("ready-to-show", () => {
 		win.show();
@@ -37,7 +37,8 @@ export function MainWindow(isDev: boolean) {
 			{
 				label: "Configurações",
 				click: () => {
-					win.loadURL("http://localhost:3000/config");
+					if (isDev) win?.loadURL("http://localhost:3000/config");
+					else win?.loadURL("https://vip-audiometria.vercel.app/config");
 				},
 			},
 			{
@@ -66,7 +67,7 @@ export function LoadingWindow(isDev: boolean) {
 		minimizable: false,
 	});
 	if (isDev) win?.loadURL("http://localhost:3000/loading");
-	else win?.loadURL("http://localhost:7961/loading");
+	else win?.loadURL("https://vip-audiometria.vercel.app/loading");
 
 	win.on("ready-to-show", () => {
 		win.show();
