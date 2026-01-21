@@ -13,3 +13,6 @@ assets/Setup.exe
 assets/oe.png
 assets/od.png
 /prisma/client
+/back/node_modules
+/back/prisma/client
+/back/dist

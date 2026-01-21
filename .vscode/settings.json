@@ -4,5 +4,9 @@
     "notebook.defaultFormatter": "biomejs.biome",
     "[typescript]": {
         "editor.defaultFormatter": "biomejs.biome"
+    },
+    "prisma.pinToPrisma6": true,
+    "[prisma]": {
+        "editor.defaultFormatter": "Prisma.prisma-insider"
     }
 }

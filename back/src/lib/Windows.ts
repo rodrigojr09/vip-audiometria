@@ -1,9 +1,16 @@
 import path from "node:path";
-import { BrowserWindow, nativeImage } from "electron";
+import {
+	app,
+	BrowserWindow,
+	type BrowserWindowConstructorOptions,
+	Menu,
+	MenuItem,
+	nativeImage,
+} from "electron";
 
-const defaultOptions = {
+const defaultOptions: BrowserWindowConstructorOptions = {
 	icon: nativeImage.createFromPath(
-		path.join(__dirname, "../assets", "icon.png")
+		path.join(__dirname, "../assets", "icon.png"),
 	),
 	title: "VIP Audiometria",
 	show: false,
@@ -23,6 +30,26 @@ export function MainWindow(isDev: boolean) {
 		win.show();
 		win?.maximize();
 	});
+
+	const menu = new MenuItem({
+		label: "Audiometria",
+		submenu: [
+			{
+				label: "Configurações",
+				click: () => {
+					win.loadURL("http://localhost:3000/config");
+				},
+			},
+			{
+				label: "Sair",
+				click: () => {
+					app.quit();
+				},
+			},
+		],
+	});
+
+	win.setMenu(Menu.buildFromTemplate([menu]));
 
 	return win;
 }

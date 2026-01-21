@@ -6,9 +6,13 @@ import moment from "@/lib/moment";
 import { usePessoa } from "@/hooks/usePessoa";
 import { dados } from "@/lib/dados";
 import { ChevronRight } from "lucide-react";
+import { useRouter } from "next/router";
+import { useConfig } from "@/hooks/useConfig";
 
 export default function Novo() {
 	const pessoas = usePessoa();
+	const router = useRouter();
+	const { medicas } = useConfig();
 	const [form, setForm] = useState<Pessoa>({
 		id: uuidv4(),
 		nome: "",
@@ -23,9 +27,7 @@ export default function Novo() {
 	});
 
 	const handleChange = (
-		e: ChangeEvent<
-			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-		>
+		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
 	) => {
 		setForm((prev: any) => ({
 			...prev,
@@ -106,12 +108,11 @@ export default function Novo() {
 							...prev,
 							responsavel: e.target.value,
 							documento:
-								dados.medicas.find(
-									(pessoa) => pessoa.nome === e.target.value
-								)?.documento || "",
+								medicas.find((pessoa) => pessoa.nome === e.target.value)
+									?.documento || "",
 						}));
 					}}
-					options={dados.medicas.map((pessoa) => pessoa.nome)}
+					options={medicas.map((pessoa) => pessoa.nome)}
 				/>
 				{form.responsavel !== "" && (
 					<p className="flex space-x-2">
@@ -124,12 +125,7 @@ export default function Novo() {
 					value={form.tipoExame}
 					onChange={handleChange}
 					type="select"
-					options={[
-						"admissional",
-						"demissional",
-						"periodico",
-						"mudanca",
-					]}
+					options={["admissional", "demissional", "periodico", "mudanca"]}
 				/>
 
 				<div className="flex justify-between w-full space-x-4">
@@ -141,7 +137,7 @@ export default function Novo() {
 					</button>
 					<button
 						type="reset"
-						onClick={() => (location.href = "/")}
+						onClick={() => router.push("/")}
 						className="bg-red-500 hover:bg-red-600 w-full transition-colors text-white p-3 rounded font-semibold"
 					>
 						Voltar

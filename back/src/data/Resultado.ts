@@ -7,6 +7,7 @@ import { Grafico } from "../lib/Grafico";
 import { logger } from "../lib/Logger";
 import moment from "../lib/moment";
 import { dados } from "./dados";
+import prisma from "../lib/prisma";
 
 function saveFile(buffer: Buffer, fileName: string) {
 	writeFileSync(`${dados.paths.logs}/${fileName}`, buffer);
@@ -14,40 +15,43 @@ function saveFile(buffer: Buffer, fileName: string) {
 }
 
 export async function getResultado(pessoa: Pessoa) {
+	const calibracao = await prisma.config.findFirst({
+		where: {
+			key: "calibracao",
+		},
+	});
 	try {
-		logger.info(
-			`Gerando documento de resultado para pessoa ID ${pessoa.id}`
-		);
+		logger.info(`Gerando documento de resultado para pessoa ID ${pessoa.id}`);
 
 		const response = readFileSync(dados.getFile("Resultado.docx"));
 		logger.debug("Template Resultado.docx carregado");
 		logger.info("Gerando gráficos de audiometria...");
-        saveFile(
-									await Grafico(
-										[
-											pessoa.resultados?.d250,
-											pessoa.resultados?.d250,
-											pessoa.resultados?.d500,
-											pessoa.resultados?.d1000,
-											pessoa.resultados?.d2000,
-											pessoa.resultados?.d3000,
-											pessoa.resultados?.d4000,
-											pessoa.resultados?.d6000,
-											pessoa.resultados?.d8000,
-											pessoa.resultados?.d8000,
-										].map((a) => parseInt(a || "0", 10)),
-										"d",
-										[
-											pessoa.resultados?.ossea?.d500,
-											pessoa.resultados?.ossea?.d1000,
-											pessoa.resultados?.ossea?.d2000,
-											pessoa.resultados?.ossea?.d3000,
-											pessoa.resultados?.ossea?.d4000,
-										].map((a) => parseInt(a || "0", 10)),
-										pessoa.resultados?.ossea?.od
-									),
-									"od.png",
-								);
+		saveFile(
+			await Grafico(
+				[
+					pessoa.resultados?.d250,
+					pessoa.resultados?.d250,
+					pessoa.resultados?.d500,
+					pessoa.resultados?.d1000,
+					pessoa.resultados?.d2000,
+					pessoa.resultados?.d3000,
+					pessoa.resultados?.d4000,
+					pessoa.resultados?.d6000,
+					pessoa.resultados?.d8000,
+					pessoa.resultados?.d8000,
+				].map((a) => parseInt(a || "0", 10)),
+				"d",
+				[
+					pessoa.resultados?.ossea?.d500,
+					pessoa.resultados?.ossea?.d1000,
+					pessoa.resultados?.ossea?.d2000,
+					pessoa.resultados?.ossea?.d3000,
+					pessoa.resultados?.ossea?.d4000,
+				].map((a) => parseInt(a || "0", 10)),
+				pessoa.resultados?.ossea?.od,
+			),
+			"od.png",
+		);
 
 		saveFile(
 			await Grafico(
@@ -70,7 +74,8 @@ export async function getResultado(pessoa: Pessoa) {
 					pessoa.resultados?.ossea?.e2000,
 					pessoa.resultados?.ossea?.e3000,
 					pessoa.resultados?.ossea?.e4000,
-				].map((a) => parseInt(a || "0", 10)), pessoa.resultados?.ossea?.oe
+				].map((a) => parseInt(a || "0", 10)),
+				pessoa.resultados?.ossea?.oe,
 			),
 			"oe.png",
 		);
@@ -100,6 +105,7 @@ export async function getResultado(pessoa: Pessoa) {
 			funcao: pessoa.funcao,
 			tipoExame: pessoa.tipoExame,
 			dataExame: moment(pessoa.dataExame).format("DD/MM/YYYY"),
+			calibracao: calibracao?.value || "",
 			responsavel: pessoa.responsavel,
 			documento: pessoa.documento,
 			od: pessoa.resultados?.od || "NORMAL",
@@ -121,8 +127,7 @@ export async function getResultado(pessoa: Pessoa) {
 			d8: pessoa.resultados?.d8000,
 			e8: pessoa.resultados?.e8000,
 			obs:
-				pessoa.resultados?.obs.replaceAll("<br>", "\n") ||
-				"Nenhuma observação",
+				pessoa.resultados?.obs.replaceAll("<br>", "\n") || "Nenhuma observação",
 			resultadoD: `${dados.paths.logs}/od.png`,
 			resultadoE: `${dados.paths.logs}/oe.png`,
 			o1: pessoa.resultados?.ossea?.d500 || "-",
@@ -140,15 +145,13 @@ export async function getResultado(pessoa: Pessoa) {
 		logger.debug("Dados para preenchimento do template montados");
 
 		doc.render(data);
-		logger.info(
-			`Documento preenchido com sucesso para pessoa ID ${pessoa.id}`
-		);
+		logger.info(`Documento preenchido com sucesso para pessoa ID ${pessoa.id}`);
 
 		const finalBuffer = doc.getZip().generate({ type: "nodebuffer" });
 		return finalBuffer;
 	} catch (error: any) {
 		logger.error(
-			`Erro ao gerar documento de resultado para pessoa ID ${pessoa.id}: ${error.message}`
+			`Erro ao gerar documento de resultado para pessoa ID ${pessoa.id}: ${error.message}`,
 		);
 		throw error;
 	}

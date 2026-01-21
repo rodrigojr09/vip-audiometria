@@ -23,9 +23,9 @@ model Pessoa {
 }
 
 model Medica {
-    id             String         @id @default(uuid()) @map("_id")
-    nome           String
-    documento      String
+    id        String @id @default(uuid()) @map("_id")
+    nome      String
+    documento String
 }
 
 type ResultadoType {
@@ -64,4 +64,10 @@ type ViaOssea {
     e2000 String?
     e3000 String?
     e4000 String?
+}
+
+model Config {
+    id    String @id @default(auto()) @map("_id") @db.ObjectId
+    key   String @unique
+    value String
 }

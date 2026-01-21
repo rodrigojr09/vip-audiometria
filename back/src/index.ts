@@ -9,6 +9,7 @@ import { logger } from "./lib/Logger";
 import moment from "./lib/moment";
 import { LoadingWindow, MainWindow } from "./lib/Windows";
 import pessoaRoute from "./routes/pessoa";
+import configRoute from "./routes/config";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -22,15 +23,8 @@ const fastify = Fastify({
 	}, // Desativa o logger nativo
 });
 
-fastify.addHook("onRequest", (request, _, done) => {
-	logger.info(
-		`Método: ${request.method}, URL: ${request.url}, IP: ${request.ip}`,
-	);
-	done();
-});
-
 fastify.register(fastifyCors, {
-	origin: isDev ? "http://localhost:3000" : "http://localhost:7961",
+	origin: ["http://localhost:3000","https://vip-audiometria.vercel.app"],
 	credentials: true,
 	methods: ["GET", "POST", "PUT", "DELETE"],
 	allowedHeaders: [
@@ -40,26 +34,14 @@ fastify.register(fastifyCors, {
 	],
 });
 
-fastify.register(FastifyStatic, {
-	root: path.join(__dirname, "../views"),
-	prefix: "/",
-});
-
-fastify.setNotFoundHandler((req, reply) => {
-	const requestedPath = path.join(__dirname, "../views", `${req.url}.html`);
-	if (existsSync(requestedPath)) {
-		return reply.type("text/html").send(readFileSync(requestedPath));
-	}
-	reply.code(404).send("Página não encontrada");
-});
-
-fastify.register(pessoaRoute, { prefix: "/pessoa" });
+fastify.register(pessoaRoute, { prefix: "/api/pessoa" });
+fastify.register(configRoute, { prefix: "/api/config" });
 
 let win: BrowserWindow | null = null;
 
 app.on("ready", async () => {
 	const release = await git.getLatestRelease();
-	fastify.listen({ host: "0.0.0.0", port: 7961 }, async (err) => {
+	fastify.listen({ port: 7961 }, async (err) => {
 		if (err) {
 			logger.error(`Erro ao iniciar o servidor: ${err.message}`);
 			app.quit();
@@ -67,7 +49,8 @@ app.on("ready", async () => {
 		}
 		logger.info("Servidor rodando em http://0.0.0.0:7961");
 		win = LoadingWindow(isDev);
-		if (release.tagName !== `v${app.getVersion()}`) {
+
+		if (!isDev && release.tagName !== `v${app.getVersion()}`) {
 			const filePath = await git.getLatestReleaseSetup();
 			if (filePath) {
 				shell.openPath(filePath);

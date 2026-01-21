@@ -1,57 +1,65 @@
 import Input from "@/components/Input";
-import { ChangeEvent, useState } from "react";
 import { usePessoa } from "@/hooks/usePessoa";
-import { ResultadoType } from "@/types";
 import { dados } from "@/lib/dados";
+import { Pessoa, ResultadoType } from "@/types";
+import { useRouter } from "next/router";
+import { ChangeEvent, useEffect, useState } from "react";
 
-export default function Resultados({ onClose }: { onClose: () => void }) {
-	const {
-		pessoa: { ...pessoa },
-		...pessoas
-	} = usePessoa();
-	const [viaOssea, setViaOssea] = useState(pessoa.resultados?.ossea ? true : false);
-	const [form, setForm] = useState<ResultadoType>(
-		pessoa.resultados || {
-			od: "",
-			oe: "",
-			d250: "",
+export default function Resultados() {
+	const pessoas = usePessoa();
+	const router = useRouter();
+	const [pessoa, setPessoa] = useState<Pessoa | undefined>(undefined);
+	const [viaOssea, setViaOssea] = useState(false);
+	const [form, setForm] = useState<ResultadoType>({
+		od: "",
+		oe: "",
+		d250: "",
+		d500: "",
+		d1000: "",
+		d2000: "",
+		d3000: "",
+		d4000: "",
+		d6000: "",
+		d8000: "",
+		e250: "",
+		e500: "",
+		e1000: "",
+		e2000: "",
+		e3000: "",
+		e4000: "",
+		e6000: "",
+		e8000: "",
+		obs: `OD - ${dados.laudo}\nOE - ${dados.laudo}`,
+		ossea: {
+			od: false,
 			d500: "",
 			d1000: "",
 			d2000: "",
 			d3000: "",
 			d4000: "",
-			d6000: "",
-			d8000: "",
-			e250: "",
+			oe: false,
 			e500: "",
 			e1000: "",
 			e2000: "",
 			e3000: "",
 			e4000: "",
-			e6000: "",
-			e8000: "",
-			obs: `OD - ${dados.laudo}\nOE - ${dados.laudo}`,
-			ossea: {
-				od: false,
-				d500: "",
-				d1000: "",
-				d2000: "",
-				d3000: "",
-				d4000: "",
-				oe: false,
-				e500: "",
-				e1000: "",
-				e2000: "",
-				e3000: "",
-				e4000: "",
-			},
-		}
-	);
+		},
+	});
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: off
+	useEffect(() => {
+		(async () => {
+			const result = (await pessoas.obterPessoa(router.query.id as string)) as
+				| Pessoa
+				| undefined;
+			setPessoa(result);
+			setViaOssea(result?.resultados?.ossea ? true : false);
+			setForm(result?.resultados || form);
+		})();
+	}, [router.query.id]);
 
 	const handleChange = (
-		e: ChangeEvent<
-			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-		>
+		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
 	) => {
 		setForm((prev: any) => ({
 			...prev,
@@ -60,9 +68,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 	};
 
 	function handleChangeOsseo(
-		e: ChangeEvent<
-			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-		>
+		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
 	) {
 		setForm((prev: any) => ({
 			...prev,
@@ -72,15 +78,14 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
+		if (!pessoa) return;
 		const status = await pessoas.update({
 			...pessoa,
 			resultados: { ...form, obs: form.obs.replaceAll("\n", "<br>") },
 		});
 		if (status) {
-            const data = await pessoas.get(pessoa.id);
-			if (!Array.isArray(data)) pessoas.set(data);
-			onClose();
 			alert("Exame registrado com sucesso!");
+			router.push(`/pessoas/${router.query.id}`);
 		} else alert("Erro ao finalizar exame!");
 	};
 
@@ -377,7 +382,7 @@ export default function Resultados({ onClose }: { onClose: () => void }) {
 				</button>
 				<button
 					type="button"
-					onClick={onClose}
+					onClick={() => router.back()}
 					className="bg-red-500 hover:bg-red-600 w-full text-white p-3 rounded font-semibold mt-4"
 				>
 					Voltar

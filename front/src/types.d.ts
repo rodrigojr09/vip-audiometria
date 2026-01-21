@@ -36,16 +36,23 @@ export interface ResultadoType {
 }
 
 export interface ViaOssea {
-	od:boolean,
-    d500?:string,
-    d1000?:string,
-    d2000?:string,
-    d3000?:string,
-    d4000?:string,
-    oe   :boolean,
-    e500 ?:string,
-    e1000?:string,
-    e2000?:string,
-    e3000?:string,
-    e4000?:string
+	od: boolean;
+	d500?: string;
+	d1000?: string;
+	d2000?: string;
+	d3000?: string;
+	d4000?: string;
+	oe: boolean;
+	e500?: string;
+	e1000?: string;
+	e2000?: string;
+	e3000?: string;
+	e4000?: string;
 }
+
+export interface Medica {
+	id?: string;
+	nome: string;
+	documento: string;
+}
+

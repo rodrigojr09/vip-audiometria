@@ -8,13 +8,11 @@ export default function Sidebar() {
 	const router = useRouter();
 	const api = usePessoa();
 
-	if (router.asPath === "/")
+	if (!router.asPath.startsWith("/novo") && !router.asPath.startsWith("/config"))
 		return (
 			<div className="w-[25%] h-screen fixed bg-slate-900 text-white shadow-xl">
 				<div className="p-4">
-					<h2 className="text-xl font-semibold mb-4">
-						Lista de Pessoas
-					</h2>
+					<h2 className="text-xl font-semibold mb-4">Lista de Pessoas</h2>
 					<input
 						type="text"
 						value={search}
@@ -24,7 +22,9 @@ export default function Sidebar() {
 					/>
 					<button
 						type="button"
-						onClick={() => { window.location.href = "/novo"; }}
+						onClick={() => {
+							router.push("/novo");
+						}}
 						className="p-2 w-full rounded bg-vip text-white hover:cursor-pointer mb-4"
 					>
 						Criar
@@ -33,22 +33,21 @@ export default function Sidebar() {
 						{api.pessoas
 							.filter(
 								(person) =>
-									person.nome
-										.toLowerCase()
-										.includes(search.toLowerCase()) ||
-									person.cpf.includes(search)
+									person.nome.toLowerCase().includes(search.toLowerCase()) ||
+									person.cpf.includes(search),
 							)
 							.sort((a, b) => {
 								const dateA = moment(a.dataExame); // Moment vai entender o formato ISO 8601
 								const dateB = moment(b.dataExame); // Moment vai entender o formato ISO 8601
 								return dateB.isAfter(dateA) ? 1 : -1; // Ordena do mais recente para o mais antigo
-							}).slice(0,10)
+							})
+							.slice(0, 10)
 							.map((person) => (
 								<li
-									onClick={() => api.set(person)}
+									onClick={() => router.push(`/pessoas/${person.id}`)}
 									onKeyDown={(e) => {
 										if (e.key === "Enter" || e.key === " ") {
-											api.set(person);
+											router.push(`/pessoas/${person.id}`);
 										}
 									}}
 									key={person.cpf}
@@ -60,9 +59,7 @@ export default function Sidebar() {
 									</div>
 									<div className="flex w-full justify-between">
 										<span>
-											{moment(person.dataExame).format(
-												"DD/MM/YYYY "
-											)}
+											{moment(person.dataExame).format("DD/MM/YYYY ")}
 										</span>
 										<span>{person.tipoExame}</span>
 									</div>
