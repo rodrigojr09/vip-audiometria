@@ -1,0 +1,62 @@
+export interface Exame {
+    id: string;
+    dataExame: string;
+    tipoExame: string;
+    funcao: string;
+    responsavel: string;
+    documento: string;
+    resultados: ResultadoType;
+    pessoa: Pessoa;
+    empresa: Empresa;
+    calibracao: string;
+}
+
+export interface Empresa {
+    id: string;
+    nome: string;
+}
+
+export interface Pessoa {
+    id: string
+    nome: string
+    cpf: string
+    dataNascimento: string
+}
+
+export interface ResultadoType {
+    od: string
+    d250?: string
+    d500?: string
+    d1000?: string
+    d2000?: string
+    d3000?: string
+    d4000?: string
+    d6000?: string
+    d8000?: string
+    oe: string
+    e250?: string
+    e500?: string
+    e1000?: string
+    e2000?: string
+    e3000?: string
+    e4000?: string
+    e6000?: string
+    e8000?: string
+    obs: string
+    ossea?: ViaOssea
+}
+
+export interface ViaOssea {
+    od: boolean
+    d500?: string
+    d1000?: string
+    d2000?: string
+    d3000?: string
+    d4000?: string
+    oe: boolean
+    e500?: string
+    e1000?: string
+    e2000?: string
+    e3000?: string
+    e4000?: string
+}

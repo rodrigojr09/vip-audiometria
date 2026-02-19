@@ -5,25 +5,26 @@ type InputFieldProps = {
 	name: string;
 	value?: string;
 	onChange: (
-		e: ChangeEvent<
-			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-		>
+		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
 	) => void;
+	className?: string;
 	type?: string;
 	options?: string[];
 	required?: boolean;
+	readonly?: boolean;
 };
 
 const Input: React.FC<InputFieldProps> = ({
 	label,
 	name,
 	value,
+	className,
 	onChange,
 	type = "text",
 	options,
+	readonly = false,
 	required = true,
 }) => {
-
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	useEffect(() => {
@@ -33,8 +34,8 @@ const Input: React.FC<InputFieldProps> = ({
 		}
 	}, [value]);
 	return (
-		<div className="flex flex-col gap-2">
-			<label htmlFor={name} className="text-sm font-medium text-gray-200">
+		<div className="flex flex-col gap-1">
+			<label htmlFor={name} className="text-sm font-medium mt-3 text-gray-200">
 				{label}
 			</label>
 			{type === "select" && (
@@ -43,12 +44,15 @@ const Input: React.FC<InputFieldProps> = ({
 					name={name}
 					value={value}
 					onChange={onChange}
-					className="border border-vip bg-gray-800 p-2 rounded w-full text-white focus:outline-none focus:ring-2 focus:ring-vip"
+					className={
+						"border border-vip bg-gray-800 p-2 rounded w-full text-white focus:outline-none focus:ring-2 focus:ring-vip " +
+						className
+					}
 					required={required}
 				>
 					<option value={""}>{label}</option>
-					{options?.map((option, index) => (
-						<option key={index} value={option}>
+					{options?.map((option) => (
+						<option key={option} value={option}>
 							{option.charAt(0).toUpperCase() + option.slice(1)}
 						</option>
 					))}
@@ -59,9 +63,13 @@ const Input: React.FC<InputFieldProps> = ({
 					id={name}
 					type={type}
 					name={name}
+					readOnly={readonly}
 					value={value}
 					onChange={onChange}
-					className="border border-vip bg-gray-800 p-2 rounded w-full text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-vip"
+					className={
+						"border border-vip bg-gray-800 p-2 rounded w-full text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-vip " +
+						className
+					}
 					placeholder={label}
 					required={required}
 				/>
@@ -72,7 +80,10 @@ const Input: React.FC<InputFieldProps> = ({
 					name={name}
 					value={value}
 					onChange={onChange}
-					className="border border-vip bg-gray-800 p-2 rounded w-full text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-vip resize-none overflow-hidden"
+					className={
+						"border border-vip bg-gray-800 p-2 rounded w-full text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-vip resize-none overflow-hidden " +
+						className
+					}
 					placeholder={label}
 					required={required}
 					rows={1}

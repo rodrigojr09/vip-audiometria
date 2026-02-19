@@ -1,0 +1,50 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+model Exame {
+    id          String @id @default(uuid()) @map("_id")
+    dataExame   String
+    tipoExame   String
+    funcao      String
+    responsavel String
+    documento   String
+    resultados  Json?
+
+    empresaId String?
+    pessoaId  String?
+
+    empresa Empresa? @relation(fields: [empresaId], references: [id])
+    pessoa  Pessoa?  @relation(fields: [pessoaId], references: [id])
+}
+
+model Pessoa {
+    id             String @id @default(uuid()) @map("_id")
+    nome           String
+    cpf            String
+    dataNascimento String
+
+    exames Exame[]
+}
+
+model Empresa {
+    id      String   @id @default(uuid()) @map("_id")
+    nome    String
+    exames  Exame[]
+}
+
+model Medica {
+    id        String @id @default(uuid()) @map("_id")
+    nome      String
+    documento String
+}
+
+model Config {
+    id    String @id @default(uuid()) @map("_id")
+    key   String @unique
+    value String
+}

@@ -1,14 +1,13 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import type { Pessoa } from "@prisma/client";
+import { createContext, useContext, useState } from "react";
 import api from "@/lib/api";
-import type { Pessoa } from "@/types";
 
 export interface PessoaProps {
 	pessoas: Pessoa[];
 	obterPessoa: (id?: string) => Promise<Pessoa | Pessoa[] | undefined>;
-	create: (pessoa: Pessoa) => Promise<boolean>;
+	create: (pessoa: Pessoa) => Promise<Pessoa | false>;
 	update: (pessoa: Pessoa) => Promise<boolean>;
 	removerPessoa: (id: string) => Promise<boolean>;
-	download: (id: string, type: "resultado" | "requisicao") => Promise<void>;
 	refresh: () => Promise<void>;
 }
 
@@ -22,38 +21,31 @@ export default function PessoaProvider({
 	const [pessoas, setPessoas] = useState<Pessoa[]>([]);
 
 	async function refresh() {
-		const result = await api.get("/pessoa/get");
+		const result = await api.get("/pessoas/get");
 		setPessoas(result.data);
 	}
 
 	async function obterPessoa(id?: string) {
-		const result = await api.get(`/pessoa/get${id ? `?id=${id}` : ""}`);
+		const result = await api.get(`/pessoas/get${id ? `?id=${id}` : ""}`);
 		return result.data;
 	}
 
 	async function create(data: Pessoa) {
-		const result = await api.post(`/pessoa/create`, data);
-		return result.status === 201;
+		const result = await api.post(`/pessoas/create`, data);
+		refresh();
+		return result.status === 201 ? (result.data as Pessoa) : false;
 	}
 
 	async function update(data: Pessoa) {
-		const result = await api.put(`/pessoa/update`, data);
+		const result = await api.put(`/pessoas/update`, data);
+		refresh();
 		return result.status === 201;
 	}
 
 	async function removerPessoa(id: string) {
-		const result = await api.delete(`/pessoa/delete?id=${id}`);
+		const result = await api.delete(`/pessoas/delete?id=${id}`);
+		refresh();
 		return result.status === 201;
-	}
-
-	async function download(id: string, type: "resultado" | "requisicao") {
-		try {
-			const response = await api.get(`/pessoa/download?id=${id}&type=${type}`);
-			console.log(response.status);
-			console.log("✅ Download concluído!");
-		} catch (error) {
-			console.error("❌ Erro ao baixar o arquivo:", error);
-		}
 	}
 
 	return (
@@ -65,7 +57,6 @@ export default function PessoaProvider({
 				pessoas,
 				removerPessoa,
 				refresh,
-				download,
 			}}
 		>
 			{children}

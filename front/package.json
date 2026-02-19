@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "export": "next export",
     "start": "next start --port=48731",
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.4.0",
+    "@prisma/client": "^7.4.0",
     "axios": "^1.8.4",
     "lucide-react": "^0.485.0",
     "moment-timezone": "^0.5.48",
@@ -25,7 +27,9 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^10.0.0",
+    "dotenv": "^17.3.1",
     "postcss": "^8",
+    "prisma": "^7.4.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

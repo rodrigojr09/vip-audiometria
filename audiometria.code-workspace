@@ -1,0 +1,15 @@
+{
+    "folders": [
+        {
+            "name": "Backend",
+            "path": "./back"
+        },
+        {
+            "name": "Frontend",
+            "path": "./front"
+        }
+    ],
+    "settings": {
+        "prisma.pinToPrisma6": false
+    }
+}

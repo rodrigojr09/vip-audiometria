@@ -1,14 +1,17 @@
-import api from "@/lib/api";
-import { Medica } from "@/types";
+import type { Medica } from "@prisma/client";
 import { createContext, useContext, useEffect, useState } from "react";
+import api from "@/lib/api";
+import { useExame } from "./useExame";
 import { usePessoa } from "./usePessoa";
+import { useEmpresa } from "./useEmpresa";
+import Loading from "@/pages/loading";
 
 interface Config {
 	medicas: Medica[];
 	calibracao: string;
 	reload: () => Promise<void>;
-    removerMedica: (id: string) => Promise<void>;
-    criarMedica: (data: Medica) => Promise<void>;
+	removerMedica: (id: string) => Promise<void>;
+	criarMedica: (data: Medica) => Promise<void>;
 	change: (key: string, value: string) => Promise<void>;
 }
 
@@ -18,6 +21,8 @@ export function ConfigProvider({ children }: { children: React.ReactNode }) {
 	const [state, setState] = useState<boolean>(false);
 	const [medicas, setMedicas] = useState<Medica[]>([]);
 	const pessoas = usePessoa();
+	const exames = useExame();
+    const empresas = useEmpresa();
 	const [calibracao, setCalibracao] = useState<string>("");
 
 	async function reload() {
@@ -29,6 +34,8 @@ export function ConfigProvider({ children }: { children: React.ReactNode }) {
 			setMedicas(result.data.medicas);
 			setCalibracao(result.data.calibracao);
 			await pessoas.refresh();
+			await exames.refresh();
+            await empresas.refresh();
 			setState(false);
 		} catch (e) {
 			console.log(e);
@@ -43,21 +50,23 @@ export function ConfigProvider({ children }: { children: React.ReactNode }) {
 		setState(false);
 	}
 
-    async function removerMedica(id: string) {
-        setState(true);
-        const result = await api.delete(`/config/medicas/delete?id=${id}`);
-        if (result.status !== 200) return alert("Erro ao remover configurações!");
-        setState(false);
-    }
+	async function removerMedica(id: string) {
+		setState(true);
+		const result = await api.delete(`/config/medicas/delete?id=${id}`);
+		if (result.status !== 200) return alert("Erro ao remover configurações!");
+		setState(false);
+	}
 
-    async function criarMedica(data: Medica) {
-        setState(true);
-        const result = await api.post(`/config/medicas/create`, data);
-        if (result.status !== 200) return alert("Erro ao criar configurações!");
-        setState(false);
-    }
+	async function criarMedica(data: Medica) {
+		setState(true);
+		const result = await api.post(`/config/medicas/create`, {
+			nome: data.nome,
+			documento: data.documento,
+		});
+		if (result.status !== 201) return alert("Erro ao criar configurações!");
+		setState(false);
+	}
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: off
 	useEffect(() => {
 		(async () => {
 			await reload();
@@ -66,15 +75,22 @@ export function ConfigProvider({ children }: { children: React.ReactNode }) {
 
 	if (state)
 		return (
-			<div className="w-screen h-screen flex items-center justify-center">
-				<p className="text-white font-bold text-3xl">
-					Carregando configurações...
-				</p>
+			<div className="w-screen h-screen">
+				<Loading />
 			</div>
 		);
 
 	return (
-		<ConfigContext.Provider value={{ medicas, calibracao, reload, change, removerMedica, criarMedica }}>
+		<ConfigContext.Provider
+			value={{
+				medicas,
+				calibracao,
+				reload,
+				change,
+				removerMedica,
+				criarMedica,
+			}}
+		>
 			{children}
 		</ConfigContext.Provider>
 	);

@@ -1,14 +1,15 @@
-import { useConfig } from "@/hooks/useConfig";
-import moment from "@/lib/moment";
-import { Medica } from "@/types";
+import type { Medica } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useConfig } from "@/hooks/useConfig";
+import moment from "@/lib/moment";
 
 export default function Config() {
 	const router = useRouter();
 	const config = useConfig();
 
 	const [medica, setMedica] = useState<Medica>({
+		id: "",
 		nome: "",
 		documento: "",
 	});
@@ -87,7 +88,11 @@ export default function Config() {
 									<td className="p-2">
 										<button
 											type="button"
-											onClick={() => config.removerMedica(m.id as string).then(() => config.reload())}
+											onClick={() =>
+												config
+													.removerMedica(m.id as string)
+													.then(() => config.reload())
+											}
 											className="text-red-400 hover:text-red-500"
 										>
 											Remover

@@ -10,7 +10,7 @@ html {
 }
 
 * {
-	@apply outline-none overflow-x-hidden;
+	@apply outline-none;
 }
 
 button {
