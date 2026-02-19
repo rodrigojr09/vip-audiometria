@@ -29,6 +29,7 @@ export default function PessoaPage() {
 			</div>
 		);
 
+    
 	return (
 		<div className="bg-gray-900 p-6 w-full h-full text-white">
 			{/* 📌 Cabeçalho */}
@@ -81,6 +82,15 @@ export default function PessoaPage() {
 				>
 					<Download size={18} />
 					<span>Baixar Resultado</span>
+                </button>
+                
+                <button
+					type="button"
+					onClick={() => download(exame.id,config.calibracao,true)}
+					className="flex items-center space-x-2 bg-orange-600 hover:bg-orange-700 px-4 py-2 w-1/4 rounded-lg transition"
+				>
+					<Download size={18} />
+					<span>Baixar Requisição</span>
 				</button>
 
 				<button

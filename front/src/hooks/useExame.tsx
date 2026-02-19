@@ -9,7 +9,7 @@ export interface ExameProps {
 	create: (exame: Exame) => Promise<boolean>;
 	update: (exame: Exame) => Promise<boolean>;
 	removerExame: (id: string) => Promise<boolean>;
-	download: (id: string, calibracao: string) => Promise<void>;
+	download: (id: string, calibracao: string, requisicao?: boolean) => Promise<void>;
 	refresh: () => Promise<void>;
 }
 
@@ -50,12 +50,12 @@ export default function ExameProvider({
 		return result.status === 200;
 	}
 
-	async function download(id: string, calibracao: string) {
+	async function download(id: string, calibracao: string,requisicao?:boolean) {
 		try {
 			const exame = await obterExame(id);
 
 			const response = await axios.post(
-				"http://localhost:7961/download",
+				requisicao ? "http://localhost:7961/download-requisicao" : "http://localhost:7961/download",
 				{
 					...exame,
 					calibracao,
@@ -73,7 +73,7 @@ export default function ExameProvider({
 
 			const a = document.createElement("a");
 			a.href = url;
-			a.download = `Resultado - ${exame.pessoa?.nome}.docx`;
+			a.download = `${requisicao ? "Requisicao" : "Resultado"} - ${exame.pessoa?.nome}.docx`;
 			document.body.appendChild(a);
 			a.click();
 
@@ -82,7 +82,7 @@ export default function ExameProvider({
 		} catch (error) {
 			console.error("❌ Erro ao baixar o exame:", error);
 		}
-	}
+    }
 
 
 	return (

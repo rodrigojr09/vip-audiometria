@@ -8,6 +8,7 @@ import moment from "./lib/moment";
 import { LoadingWindow, MainWindow } from "./lib/Windows";
 import { Exame } from "./types/types";
 import { getResultado } from "./data/Resultado";
+import getRequisicao from "./data/Requisicao";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -43,8 +44,21 @@ fastify.post("/download", async (request, reply) => {
         .send(resultado);
 });
 
+fastify.post("/download-requisicao", async (request, reply) => {
+    const exame = request.body as Exame;
 
+    const resultado = await getRequisicao(exame); // Buffer
 
+    reply
+        .header("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        .header("Content-Disposition", 'attachment; filename="requisicao.docx"')
+        .send(resultado);
+});
+
+fastify.get("/open", async (request, reply) => {
+    const url = (request.query as any).url as string;
+    shell.openExternal(url);
+});
 
 let win: BrowserWindow | null = null;
 

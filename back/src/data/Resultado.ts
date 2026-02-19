@@ -96,7 +96,7 @@ export async function getResultado(exame: Exame) {
             nome: exame.pessoa.nome,
             cpf: exame.pessoa.cpf,
             nascimento: moment(exame.pessoa.dataNascimento).format("DD/MM/YYYY"),
-            empresa: exame.empresa,
+            empresa: exame.empresa.nome,
             funcao: exame.funcao,
             tipoExame: exame.tipoExame,
             dataExame: moment(exame.dataExame).format("DD/MM/YYYY"),
