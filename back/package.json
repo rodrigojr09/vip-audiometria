@@ -53,7 +53,7 @@
 			"dist/**/*"
 		],
 		"directories": {
-			"output": "./Audiometria"
+			"output": "./Audiometria v4"
 		},
 		"win": {
 			"icon": "assets/icon.ico"
