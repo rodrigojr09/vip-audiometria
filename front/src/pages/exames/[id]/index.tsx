@@ -20,7 +20,7 @@ export default function PessoaPage() {
 				| undefined;
 			setExame(getE);
 		})();
-	}, []);
+	}, [router.asPath]);
 
 	if (!exame)
 		return (
