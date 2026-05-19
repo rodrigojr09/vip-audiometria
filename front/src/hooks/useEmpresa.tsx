@@ -45,7 +45,7 @@ export default function EmpresaProvider({
 	async function removerEmpresa(id: string) {
 		const result = await api.delete(`/empresas/delete?id=${id}`);
 		refresh();
-		return result.status === 201;
+		return result.status === 200;
 	}
 
 	return (

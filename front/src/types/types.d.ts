@@ -40,7 +40,6 @@ export interface ViaOssea {
 
 
 declare module "@prisma/client" {
-    export * from "@prisma/client";
     export interface Exame extends Prisma.ExameGetPayload<{ include: { pessoa: true, empresa: true } }> {
         resultados?: ResultadoType;
         pessoa?: Pessoa

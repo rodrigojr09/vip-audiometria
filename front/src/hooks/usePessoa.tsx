@@ -45,7 +45,7 @@ export default function PessoaProvider({
 	async function removerPessoa(id: string) {
 		const result = await api.delete(`/pessoas/delete?id=${id}`);
 		refresh();
-		return result.status === 201;
+		return result.status === 200;
 	}
 
 	return (

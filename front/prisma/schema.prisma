@@ -32,9 +32,9 @@ model Pessoa {
 }
 
 model Empresa {
-    id      String   @id @default(uuid()) @map("_id")
-    nome    String
-    exames  Exame[]
+    id     String  @id @default(uuid()) @map("_id")
+    nome   String
+    exames Exame[]
 }
 
 model Medica {
